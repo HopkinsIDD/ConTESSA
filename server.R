@@ -2619,6 +2619,7 @@ function(input, output, session) {
           mult_b = mult_b(),
           omega_c_b = omega_c_b(),
           omega_h_b = omega_h_b(),
+          omega_q_b = omega_q_b(),
           rho_s_b = rho_s_b(),
           rho_a_b = rho_a_b(),
           R_b = input$R_b,
