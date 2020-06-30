@@ -1,0 +1,1 @@
+On this page, we are trying to capture information about how many infections are detected through surveillance and how many of those infected people are isolated by your program. Infections you detect are often called ‘cases’, although you should include anyone infected that you detect by surveillance, whether or not they have clinical disease.

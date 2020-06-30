@@ -1,0 +1,1 @@
+Please enter the **weekly average number** of COVID-19 deaths in your community over the past **two weeks**. This should include the laboratory confirmed cases, as well as cases you believe were likely due to COVID-19, but where no laboratory testing was done.

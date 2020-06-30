@@ -1,0 +1,1 @@
+How many people have tested positive **on average per week** in your community over the past **four weeks**. This is often referred to as the number of 'cases' detected, although, this should include all new infected people, including those with and without symptoms.

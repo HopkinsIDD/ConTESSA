@@ -1,0 +1,36 @@
+---
+title: "Help files"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(glue)
+```
+
+```{r}
+output_md <- function(file){
+
+  add_breaks <- function(x){
+    if(nchar(x) == 0){
+      return("\n\n") 
+    } else {
+      return(x)
+    }
+  }
+
+
+  cat(glue(" 
+           \n## {file}\n\n",
+    "{glue_collapse(lapply(readLines(file), FUN = function(x) add_breaks(x)))} \n\n"
+    )
+  )
+
+}
+```
+
+```{r, results = "asis"}
+help_files <- fs::dir_ls(glob = "*.md")
+purrr::walk(help_files, output_md)
+```
+

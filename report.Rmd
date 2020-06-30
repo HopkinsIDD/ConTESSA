@@ -1,0 +1,472 @@
+---
+title: ''
+params:
+  name: NA
+  mult: NA
+  alpha: NA
+  omega_c: NA
+  omega_h: NA
+  omega_q: NA
+  rho_s: NA
+  rho_a: NA
+  R: NA
+  eta: NA
+  nu: NA
+  kappa: NA
+  t_ps: NA
+  t_pa: NA
+  t_qcs: NA
+  t_qca: NA
+  t_qhs: NA
+  t_qha: NA
+  t_q: NA
+  generation: NA
+---
+
+```{r, include = FALSE}
+  knitr::opts_chunk$set(echo = FALSE)
+
+  fig_counter <- 1
+  p <- params
+
+  pqc <- function(input=p){
+    return(
+    get_pqc_equilibrium(
+      alpha = input$alpha,
+      omega_c = input$omega_c,
+      omega_h = input$omega_h,
+      omega_q = input$omega_q,
+      rho_s = input$rho_s,
+      rho_a = input$rho_a,
+      R = input$R,
+      kappa = input$kappa,
+      eta = input$eta,
+      nu = input$nu,
+      t_ps = input$t_ps,
+      t_pa = input$t_pa,
+      t_qcs = input$t_qcs,
+      t_qca = input$t_qca,
+      t_qhs = input$t_qhs,
+      t_qha = input$t_qha,
+      t_q = input$t_q,
+      shape = input$generation
+    ))
+  }
+  
+  r_eff <-function(input=p){
+    return(get_r_effective(pqc(input),
+            alpha = input$alpha,
+            R = input$R,
+            kappa = input$kappa,
+            eta = input$eta,
+            nu = input$nu,
+            t_ps = input$t_ps,
+            t_pa = input$t_pa,
+            t_qcs = input$t_qcs,
+            t_qca = input$t_qca,
+            t_qhs = input$t_qhs,
+            t_qha = input$t_qha,
+            t_q = input$t_q,
+            shape = as.numeric(input$generation))
+    )
+    }
+
+  p$t_p <- p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha
+  p$t_qh <- p$t_qhs * (1 - p$alpha) + p$t_qha * p$alpha
+  p$t_qc <- p$t_qcs * (1 - p$alpha) + p$t_qca * p$alpha
+
+```
+
+## `r glue("Contact Tracing Program Evaluation: ", "{p$name}")`
+
+*Report automatically generated from the [ConTESSA application](https://lucy.shinyapps.io/test-trace-isolate/) on `r Sys.Date()`*
+
+This report provides estimates of the effectiveness of a specified contact tracing program, based on key indicators for the timing and completeness of contact tracing.
+
+### Program Assumptions
+
+| Parameter                  | Value                    | 
+|:---------------------------|:-------------------------|
+| **Surveillance**           |                           |
+| Percent of all symptomatic infections (not previously quarantined) that are isolated | `r glue("{round(p$rho_s*100, 1)}", "%")`     |
+| Percent of all asymptomatic infections (not previously quarantined) that are isolated | `r glue("{round(p$rho_a*100, 1)}", "%")`     |
+| Average number of days between symptom onset and isolation of a detected case | `r glue("{p$t_p}")`     |
+| **Household Contact Tracing**            |                           |
+| Percent of household contacts traced and quarantined | `r glue("{round(p$omega_h*100, 1)}", "%")`     |
+| Average number of days between symptom onset of a symptomatic index case and household contacts notified and quarantined | `r glue("{p$t_qhs}")`     |
+| **Community Contact Tracing**            |                           |
+| Percent of community contacts traced and quarantined | `r glue("{round(p$omega_c*100, 1)}", "%")`     |
+| Average number of days between symptom onset of a symptomatic index case and community contacts notified and quarantined | `r glue("{p$t_qcs}")`     |
+| **Natural History and Transmission**  |                           |
+| Basic reproductive number $R_0$                       | `r glue("{p$R}")`     |
+| Percent asymptomatic     | `r glue("{round(p$alpha*100,1)}", "%")`     |
+| Relative risk of transmission for an asymptomatic individual compared to a symptomatic individual |  `r glue("{round(p$kappa, 2)}")`     |
+| Percent of all contacts that occur in the household |  `r glue("{round(p$eta*100, 1)}", "%")`     |
+| Relative risk of infection for a household contact compared to a community contact |  `r glue("{p$nu}")`     |
+
+*Note that Natural History assumptions can be modified in the "Advanced Options" module of the interactive application.*
+
+### Effectiveness of Contact Tracing
+
+```{r reductions}
+  valA <- r_eff(input=p)
+  redA <- (p$R - valA)/p$R
+  percQ_A <- get_prop_identified(pqc(input=p))
+  
+```
+
+**The contact tracing program following the assumptions listed above would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valA,1)}")`. This program is identifying `r glue("{round(percQ_A*100, 1)}", "%")` of infections in the community.**
+
+
+### Surveillance
+
+```{r detection prob plot, fig.cap = cap, fig.width=6, fig.height=4}
+
+  grid <- expand.grid(
+        alpha = p$alpha,
+        R = p$R,
+        kappa = p$kappa,
+        eta = p$eta,
+        nu = p$nu,
+        t_ps = p$t_ps,
+        t_pa = p$t_pa,
+        t_qcs = p$t_qcs,
+        t_qca = p$t_qca,
+        t_qhs = p$t_qhs,
+        t_qha = p$t_qha,
+        t_q = p$t_q,
+        omega_c = p$omega_c,
+        omega_h = p$omega_h,
+        omega_q = p$omega_q,
+        rho_s = seq(0, 1, 0.01),
+        rho_a = 1,
+        offset = 2.31,
+        shape = as.numeric(p$generation),
+        rate = 0.69
+      )
+
+  grid <- grid %>%
+      mutate(rho_a = rho_s * p$mult)
+    
+  d <- pmap_df(grid, tti:::get_r_effective_df_one)
+  d <- d %>%
+      mutate(
+        prop_detect = (rho_s * (1 - alpha) + rho_a * alpha),
+        prop_detect_f = as.factor(prop_detect),
+        prop_detect_c = glue("{round(prop_detect, 1)}% of infections detected via surveillance"),
+        t = t_ps * (1 - alpha) + t_pa * alpha
+      )
+
+  you_are_here <- tibble(
+      x = p$rho_s * (1 - p$alpha) + p$rho_a * p$alpha,
+      y = r_eff(),
+      name = "You are here"
+    )
+    
+  pSurv <- ggplot(d, aes(x = prop_detect, y = r_effective)) +
+      geom_line(color="#4278cf") +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+      geom_hline(yintercept=1, lty=2) +
+      geom_hline(yintercept=p$R, lwd=0.5) +
+      ggtitle("Impact of the completeness of case isolation \non the reproductive number") +
+      scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
+      scale_x_continuous(name = "Proportion cases identified by surveillance and isolated") +
+      theme_hc() + theme(legend.position = "none")
+      
+  pSurv
+      
+  cap <- paste0("**Figure ", fig_counter, "**: Impact of completeness of case isolation, as the proportion of cases identified by surveillance and isolated, on the reproductive number, assuming that infections are isolated on average ", round(p$t_p, 1), " days after symptom onset. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the proportion of infections identified and isolated is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  fig_counter <- fig_counter + 1
+
+```
+
+
+
+```{r detection delay plot, fig.cap = cap, fig.width=6, fig.height=4}
+
+  grid <- expand.grid(
+        alpha = p$alpha,
+        R = p$R,
+        kappa = p$kappa,
+        eta = p$eta,
+        nu = p$nu,
+        t_ps = seq(0, 14, 0.1),
+        t_pa = 1,
+        t_qcs = p$t_qcs,
+        t_qca = p$t_qca,
+        t_qhs = p$t_qhs,
+        t_qha = p$t_qha,
+        t_q = p$t_q,
+        omega_c = p$omega_c,
+        omega_h = p$omega_h,
+        omega_q = p$omega_q,
+        rho_s = p$rho_s,
+        rho_a = p$rho_a,
+        offset = 2.31,
+        shape = as.numeric(p$generation),
+        rate = 0.69
+      )
+
+  grid <- grid %>%
+      mutate(t_pa = t_ps)
+    
+  d <- pmap_df(grid, tti:::get_r_effective_df_one)
+  d <- d %>%
+      mutate(
+        t = t_ps * (1 - alpha) + t_pa * alpha
+      )
+
+  you_are_here <- tibble(
+      x = p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha,
+      y = r_eff(),
+      name = "You are here"
+    )
+    
+  pSurvDelay <- ggplot(d, aes(x = t, y = r_effective)) +
+                  geom_line(color="#4278cf") +
+                  geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+                  geom_hline(yintercept=1, lty=2) +
+                  geom_hline(yintercept=p$R, lwd=0.5) +
+                  ggtitle("Impact of the delay from symptom onset to isolation \non the reproductive number") +
+                  scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
+                  scale_x_continuous(name = "Days from symptom onset to isolation") +
+                  theme_hc() + theme(legend.position = "none")
+      
+  pSurvDelay
+      
+  cap <- paste0("**Figure ", fig_counter, "**: Impact of timing of case isolation, as the delay from symptom onset, on the reproductive number, assuming that ", round(p$p_s*100), "% of cases are detected and isolated. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the average time between symptom onset and case isolation is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  fig_counter <- fig_counter + 1
+
+```
+
+
+### Impact of Household Contact Tracing
+
+```{r hh contact plot, fig.cap=cap, fig.width=6, fig.height=4}
+
+  grid <- expand.grid(
+      alpha = p$alpha,
+      R = p$R,
+      kappa = p$kappa,
+      eta = p$eta,
+      nu = p$nu,
+      t_ps = p$t_ps,
+      t_pa = p$t_pa,
+      t_qcs = p$t_qcs,
+      t_qca = p$t_qca,
+      t_qhs = p$t_qhs,
+      t_qha = p$t_qha,
+      t_q = p$t_q,
+      omega_c = p$omega_c,
+      omega_h = seq(0, 1, 0.01),
+      omega_q = p$omega_q,
+      rho_s = p$rho_s,
+      rho_a = p$rho_a,
+      offset = 2.31,
+      shape = as.numeric(p$generation),
+      rate = 0.69
+    )
+  
+  d <- pmap_df(grid, tti:::get_r_effective_df_one)
+  d <- d %>%
+      mutate(
+        omega_h_cat = glue("{omega_h * 100}% of household contacts quarantined"),
+        t = t_qhs * (1 - alpha) + t_qha * alpha
+      )
+
+  you_are_here <- tibble(
+      x = p$omega_h,
+      y = r_eff(),
+      name = "You are here"
+    )
+
+        
+  pH <- ggplot(d, aes(x = omega_h, y = r_effective)) +
+      geom_line(color="#4278cf") +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+      geom_hline(yintercept=1, lty=2) +
+      geom_hline(yintercept=p$R, lwd=0.5) +
+      ggtitle("Impact of the completeness of household contact quarantine \non the reproductive number") +
+      scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
+      scale_x_continuous(name = "Proportion household contacts notified and quarantined") +
+      theme_hc() + theme(legend.position = "none")
+  pH
+ 
+  cap <- paste0("**Figure ", fig_counter, "**: Impact of completeness of household contact tracing, as the proportion of household contacts notified and quarantined through contact tracing, on the reproductive number, assuming that contacts are isolated on average ", round(p$t_qh, 1), " days after symptom onset of the index case. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the proportion of household contacts notified and quarantined is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  fig_counter <- fig_counter + 1
+  
+```
+
+```{r hh delay plot, fig.cap=cap, fig.width=6, fig.height=4}
+
+  grid <- expand.grid(
+      alpha = p$alpha,
+      R = p$R,
+      kappa = p$kappa,
+      eta = p$eta,
+      nu = p$nu,
+      t_ps = p$t_ps,
+      t_pa = p$t_pa,
+      t_qcs = p$t_qcs,
+      t_qca = p$t_qca,
+      t_qhs = seq(0,14,0.1),
+      t_qha = 1,
+      t_q = p$t_q,
+      omega_c = p$omega_c,
+      omega_h = p$omega_h,
+      omega_q = p$omega_q,
+      rho_s = p$rho_s,
+      rho_a = p$rho_a,
+      offset = 2.31,
+      shape = as.numeric(p$generation),
+      rate = 0.69
+    )
+  grid <- grid %>%
+       mutate(t_qha = t_qhs)
+  
+  d <- pmap_df(grid, tti:::get_r_effective_df_one)
+  d <- d %>%
+      mutate(
+        t = t_qhs * (1 - alpha) + t_qha * alpha
+      )
+
+  you_are_here <- tibble(
+      x = p$t_qh,
+      y = r_eff(),
+      name = "You are here"
+    )
+
+        
+  pHDelay <- ggplot(d, aes(x = t, y = r_effective)) +
+              geom_line(color="#4278cf") +
+              geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+              geom_hline(yintercept=1, lty=2) +
+              geom_hline(yintercept=p$R, lwd=0.5) +
+              ggtitle("Impact of the delay in quarantine of household contacts \non the reproductive number") +
+              scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
+              scale_x_continuous(name = "Delay from case's symptom onset to quarantine of household contacts") +
+              theme_hc() + theme(legend.position = "none")
+  pHDelay
+ 
+  cap <- paste0("**Figure ", fig_counter, "**: Impact of timing of household contact tracing, as the delay between symptom onset of the detected case and quarantine of their household contacts, assuming that on average ", round(p$omega_h*100), "% of household contacts are notified and quarantined. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the average time between case symptom onset and household contact quarantine is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  fig_counter <- fig_counter + 1
+  
+```
+
+### Impact of Community Contact Tracing
+
+```{r c contact plot, fig.cap=cap, fig.width=6, fig.height=4}
+  grid <- expand.grid(
+      alpha = p$alpha,
+      R = p$R,
+      kappa = p$kappa,
+      eta = p$eta,
+      nu = p$nu,
+      t_ps = p$t_ps,
+      t_pa = p$t_pa,
+      t_qcs = p$t_qcs,
+      t_qca = p$t_qca,
+      t_qhs = p$t_qhs,
+      t_qha = p$t_qha,
+      t_q = p$t_q,
+      omega_c = seq(0, 1, 0.01),
+      omega_h = p$omega_h,
+      omega_q = p$omega_q,
+      rho_s = p$rho_s,
+      rho_a = p$rho_a,
+      offset = 2.31,
+      shape = as.numeric(p$generation),
+      rate = 0.69
+    )
+  grid <- grid
+  
+  d <- pmap_df(grid, tti:::get_r_effective_df_one)
+  d <- d %>%
+      mutate(
+        omega_c_cat = glue("{omega_c * 100}% of community contacts quarantined"),
+        t = t_qcs * (1 - alpha) + t_qca * alpha
+      )
+
+  you_are_here <- tibble(
+      x = p$omega_c,
+      y = r_eff(),
+      name = "You are here"
+    )
+
+    
+  pC <- ggplot(d, aes(x = omega_c, y = r_effective)) +
+      geom_line(color="#4278cf") +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"))  +
+      geom_hline(yintercept=1, lty=2) +
+      geom_hline(yintercept=p$R, lwd=0.5) +
+      ggtitle("Impact of the completeness of community contact quarantine \non the reproductive number") +
+      scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
+      scale_x_continuous(name = "Proportion community contacts notified and quarantined") +
+      theme_hc() + theme(legend.position = "none")
+  pC
+ 
+    cap <- paste0("**Figure ", fig_counter, "**: Impact of completeness of household contact tracing, as the proportion of household contacts notified and quarantined through contact tracing, on the reproductive number, assuming that contacts are isolated on average ", round(p$t_qc, 1), " days after symptom onset of the index case. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the proportion of household contacts notified and quarantined is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  fig_counter <- fig_counter + 1
+
+```
+
+```{r c delay plot, fig.cap=cap, fig.width=6, fig.height=4}
+  grid <- expand.grid(
+      alpha = p$alpha,
+      R = p$R,
+      kappa = p$kappa,
+      eta = p$eta,
+      nu = p$nu,
+      t_ps = p$t_ps,
+      t_pa = p$t_pa,
+      t_qcs = seq(0,14,0.1),
+      t_qca = 1,
+      t_qhs = p$t_qhs,
+      t_qha = p$t_qha,
+      t_q = p$t_q,
+      omega_c = p$omega_c,
+      omega_h = p$omega_h,
+      omega_q = p$omega_q,
+      rho_s = p$rho_s,
+      rho_a = p$rho_a,
+      offset = 2.31,
+      shape = as.numeric(p$generation),
+      rate = 0.69
+    )
+  grid <- grid %>%
+          mutate(t_qca = t_qcs)
+  
+  d <- pmap_df(grid, tti:::get_r_effective_df_one)
+  d <- d %>%
+      mutate(
+        omega_c_cat = glue("{omega_c * 100}% of community contacts quarantined"),
+        t = t_qcs * (1 - alpha) + t_qca * alpha
+      )
+
+  you_are_here <- tibble(
+      x = p$t_qc,
+      y = r_eff(),
+      name = "You are here"
+    )
+
+  pCDelay <- ggplot(d, aes(x = t, y = r_effective)) +
+      geom_line(color="#4278cf") +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"))  +
+      geom_hline(yintercept=1, lty=2) +
+      geom_hline(yintercept=p$R, lwd=0.5) + 
+      ggtitle("Impact of the delay in quarantine of community contacts \non the reproductive number") +
+      scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
+      scale_x_continuous(name = "Delay from case's symptom onset to quarantine of community contacts") +
+      theme_hc() + theme(legend.position = "none")
+  pCDelay
+ 
+  cap <- paste0("**Figure ", fig_counter, "**: Impact of timing of community contact tracing, as the delay between symptom onset of the detected case and quarantine of their community contacts, assuming that on average ", round(p$omega_c*100), "% of community contacts are notified and quarantined. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the average time between case symptom onset and community contact quarantine is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  fig_counter <- fig_counter + 1
+```
+
+### Technical Details
+
+We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been captured in surveillance (V), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
+
+Full details of this model can be found here.  An interactive application implementing this model to explore the effectiveness of contact tracing programs can be found [here](https://lucy.shinyapps.io/test-trace-isolate/).
+
