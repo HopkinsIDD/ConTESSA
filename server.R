@@ -481,7 +481,7 @@ function(input, output, session) {
     infoBox(
       value = glue("{round(prop_detect_isol_passive() * 100)}%"),
       title = "Isolating",
-      subtitle = glue("of infections who were not already in quarantine"),
+      subtitle = glue("of infections who were not identified during contact tracing"),
       icon = icon("user-circle-o")
     )
   })
@@ -1234,7 +1234,7 @@ function(input, output, session) {
     infoBox(
       value = glue("{round(prop_detect_isol_passive_b() * 100)}%"),
       title = "Isolating",
-      subtitle = glue("of infections who were not already in quarantine"),
+      subtitle = glue("of infections who were not identified during contact tracing"),
       icon = icon("user-circle-o")
     )
   })
@@ -2552,9 +2552,7 @@ function(input, output, session) {
       "household contact is <span class='assumption'>{t_qha()}</span>. The time ",
       "delay from symptom onset of the case to ",
       "quarantine of person with infected by an asymptomatic ",
-      "community contact is <span class='assumption'>{t_qca()}</span>. The ",
-      "time delay from symptom onset of the case to quarantine of a person infected by ",
-      "a quarantined individual is <span class='assumption'>{t_q()}</span>.</p>"
+      "community contact is <span class='assumption'>{t_qca()}</span>."
     ))
   })
 
