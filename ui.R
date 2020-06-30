@@ -661,6 +661,9 @@ function(request) {
               includeMarkdown("help/dashboard-figure.md"),
               ## Scenario B ----
               checkboxInput("scenario_b", "I'd like to create a 'Scenario B'"),
+              conditionalPanel("input.scenario_b == true",
+                               p("If you uncheck this box, you will lose your current Scenario B inputs."),
+              br()),
               conditionalPanel(
                 "input.scenario_b == true & (input.update_b >= input.plots)",
                 ## Scenario A Inputs ----
