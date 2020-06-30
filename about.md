@@ -47,3 +47,7 @@ This application was built by Lucy D'Agostino McGowan, based on a model develope
 
 * More [details on the model can be found here](link).
 * More information about [Johns Hopkins Infectious Disease Dynamics](http://www.iddynamics.jhsph.edu)
+
+### Bug Reports:
+
+Notice an issue? Please let us know by submitting an issue on [GitHub](https://github.com/HopkinsIDD/ConTESSA/issues).
