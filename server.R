@@ -334,9 +334,9 @@ function(input, output, session) {
   })
 
   mult_b <- reactive({
-    constraint <- (prop_detect_isol_passive_b() - (1 - alpha())) / alpha()
-    if (constraint < input$mult) {
-      return(input$mult)
+    constraint <- (prop_detect_isol_passive_b() - (1 - alpha_b())) / alpha_b()
+    if (constraint < input$mult_b) {
+      return(input$mult_b)
     } else {
       return(constraint)
     }
