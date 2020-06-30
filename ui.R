@@ -54,25 +54,26 @@ function(request) {
           actionButton("get_report", "Generate Report")
         ),
         conditionalPanel(
-          "input.get_report == true",
+          "input.get_report > 0",
           radioButtons("word", "Would you like an editable Word document or a PDF?",
-            choices = c("Word" = "word", "PDF" = "pdf"),
-            selected = "word"
+                       choices = c("Word" = "word", "PDF" = "pdf"),
+                       selected = "word"
           ),
+          textInput("report_name", "File name:", value = "contessa-report"),
           customdownloadButton("report", "Generate report")
         ),
         div(tagList("This application does not save any data ",
-                     br(),
-                  "inputs. Please be sure to use the ",
-                  br(),
-                  "'Save Inputs' button if you want to come",
-                  br(),
-                  " back to your scenarios at a later time."),
-             style = "font-size: 14px; margin: 10px;"),
+                    br(),
+                    "inputs. Please be sure to use the ",
+                    br(),
+                    "'Save Inputs' button if you want to come",
+                    br(),
+                    " back to your scenarios at a later time."),
+            style = "font-size: 14px; margin: 10px;"),
         actionButton("save_name", "Save inputs"),
         conditionalPanel("input.save_name > 0",
-        textInput("file_name", "File name:", value = "contessa-inputs"),
-        customdownloadButton("save", "Save")
+                         textInput("file_name", "File name:", value = "contessa-inputs"),
+                         customdownloadButton("save", "Save")
         ),
         actionButton("return", "Load inputs"),
         conditionalPanel(
@@ -156,7 +157,7 @@ function(request) {
           ),
           fluidRow(
             actionButton("surv", "GET STARTED",
-              style = "background-color: #f1c400;"
+                         style = "background-color: #f1c400;"
             )
           )
         ),
@@ -179,7 +180,7 @@ function(request) {
                 numericInput(
                   "n_detect",
                   text_q("S1. Over the past 4 weeks, what was the average weekly number of cases detected?",
-                          "help/s1_n_detect_month.md"),
+                         "help/s1_n_detect_month.md"),
                   7500,
                   0,
                   1e10
@@ -219,22 +220,22 @@ function(request) {
                     375, 0, 1e10
                   ),
                   radioButtons("ifr",
-                    text_q("S2.2. Which infection fatality ratio (IFR) best represents your community?",
-                           "help/s1_ifr.md"),
-                    choices = c(
-                      "0.25%" = "0.25",
-                      "0.5%" = "0.5",
-                      "0.75%" = "0.75",
-                      "1%" = "1",
-                      "Other" = "other"
-                    ),
-                    selected = "0.75"
+                               text_q("S2.2. Which infection fatality ratio (IFR) best represents your community?",
+                                      "help/s1_ifr.md"),
+                               choices = c(
+                                 "0.25%" = "0.25",
+                                 "0.5%" = "0.5",
+                                 "0.75%" = "0.75",
+                                 "1%" = "1",
+                                 "Other" = "other"
+                               ),
+                               selected = "0.75"
                   ),
                   conditionalPanel(
                     "input.ifr == 'other'",
                     numericInput("ifr_other",
-                      label = "Estimated IFR (%)",
-                      value = 0.75, min = 0, max = 20
+                                 label = "Estimated IFR (%)",
+                                 value = 0.75, min = 0, max = 20
                     ),
                     uiOutput("ifr_out")
                   ),
@@ -243,11 +244,11 @@ function(request) {
                 conditionalPanel(
                   "input.n_infect_calc == 'direct'",
                   sliderInput("prop_detect",
-                    glue(
-                      "S2.1. What percent of all infected ",
-                      "people in your community are detected by your surveillance program?"
-                    ),
-                    min = 0, max = 100, value = 20
+                              glue(
+                                "S2.1. What percent of all infected ",
+                                "people in your community are detected by your surveillance program?"
+                              ),
+                              min = 0, max = 100, value = 20
                   )
                 )
               )
@@ -300,8 +301,8 @@ function(request) {
                   style = "margin: auto; width: 92%",
                   sliderTextInput("pass_test", text_q("S5. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and having a sample collected for testing?",
                                                       "help/s5.md"),
-                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"),
-                    "Day 2", width = "100%"
+                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"),
+                                  "Day 2", width = "100%"
                   ),
 
                   div(
@@ -315,8 +316,8 @@ function(request) {
                   uiOutput("pass_test_out"),
                   sliderTextInput("pass_isol", text_q("S6. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate?",
                                                       "help/s6.md"),
-                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
-                    from_fixed = TRUE, width = "100%"
+                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
+                                  from_fixed = TRUE, width = "100%"
                   ),
                   div(
                     class = "slider-subtitle",
@@ -341,7 +342,7 @@ function(request) {
             column(
               width = 4,
               actionButton("next_house", "Next",
-                style = "background-color: #f1c400;"
+                           style = "background-color: #f1c400;"
               )
             )
           ),
@@ -420,8 +421,8 @@ function(request) {
                   div(
                     style = "margin-top: -30px",
                     sliderTextInput("pass_isol2", "",
-                      choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
-                      from_fixed = TRUE, to_fixed = TRUE, width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
+                                    from_fixed = TRUE, to_fixed = TRUE, width = "100%"
                     ),
                     uiOutput("pass_isol2_out"),
                   )
@@ -429,7 +430,7 @@ function(request) {
                 div(
                   style = "padding-left: 20px; padding-right: 20px; padding-bottom: 10px;",
                   sliderTextInput("house_quar", "",
-                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
                   ),
                   uiOutput("house_quar_explain")
                 )
@@ -445,7 +446,7 @@ function(request) {
             column(
               width = 4,
               actionButton("next_comm", "Next",
-                style = "background-color: #f1c400;"
+                           style = "background-color: #f1c400;"
               )
             )
           ),
@@ -525,8 +526,8 @@ function(request) {
                   div(
                     style = "margin-top: -30px",
                     sliderTextInput("pass_isol3", "",
-                      choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
-                      from_fixed = TRUE, to_fixed = TRUE, width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
+                                    from_fixed = TRUE, to_fixed = TRUE, width = "100%"
                     ),
                     uiOutput("pass_isol3_out"),
                   )
@@ -534,7 +535,7 @@ function(request) {
                 div(
                   style = "padding-left: 20px; padding-right: 20px; padding-bottom: 10px;",
                   sliderTextInput("comm_quar", "",
-                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
                   ),
                   uiOutput("comm_quar_explain")
                 )
@@ -550,7 +551,7 @@ function(request) {
             column(
               width = 4,
               actionButton("next_dash", "Next",
-                style = "background-color: #f1c400;"
+                           style = "background-color: #f1c400;"
               )
             )
           ),
@@ -695,32 +696,32 @@ function(request) {
                         375, 0, 1e10
                       ),
                       radioButtons("ifr_a",
-                        "S2.2. Which infection fatality ratio (IFR) best represents your community? (Scenario A)",
-                        choices = c(
-                          "0.25%" = "0.25",
-                          "0.5%" = "0.5",
-                          "0.75%" = "0.75",
-                          "1%" = "1",
-                          "Other" = "other"
-                        ),
-                        selected = "0.75"
+                                   "S2.2. Which infection fatality ratio (IFR) best represents your community? (Scenario A)",
+                                   choices = c(
+                                     "0.25%" = "0.25",
+                                     "0.5%" = "0.5",
+                                     "0.75%" = "0.75",
+                                     "1%" = "1",
+                                     "Other" = "other"
+                                   ),
+                                   selected = "0.75"
                       ),
                       conditionalPanel(
                         "input.ifr_a == 'other'",
                         numericInput("ifr_other_a",
-                          label = "Estimated IFR (%)",
-                          value = 0.75, min = 0, max = 20
+                                     label = "Estimated IFR (%)",
+                                     value = 0.75, min = 0, max = 20
                         )
                       )
                     ),
                     conditionalPanel(
                       "input.n_infect_calc_a == 'direct'",
                       sliderInput("prop_detect_a",
-                        glue(
-                          "S2.1. What percent of all infected ",
-                          "people in your community are detected by your surveillance program? (Scenario A)"
-                        ),
-                        min = 0, max = 100, value = 20
+                                  glue(
+                                    "S2.1. What percent of all infected ",
+                                    "people in your community are detected by your surveillance program? (Scenario A)"
+                                  ),
+                                  min = 0, max = 100, value = 20
                       )
                     ),
                     numericInput(
@@ -738,8 +739,8 @@ function(request) {
                       1e10
                     ),
                     sliderTextInput("pass_isol_a", "S6. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario A)",
-                      choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
-                      width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                    width = "100%"
                     ),
                     numericInput(
                       "contact_h_a",
@@ -755,8 +756,8 @@ function(request) {
                       100,
                       50
                     ),
-                       sliderTextInput("house_quar_a", "H3. Among household contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the household contacts were quarantined? (Scenario A)",
-                        choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                    sliderTextInput("house_quar_a", "H3. Among household contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the household contacts were quarantined? (Scenario A)",
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
                     ),
                     numericInput(
                       "contact_c_a",
@@ -772,8 +773,8 @@ function(request) {
                       100,
                       50
                     ),
-                        sliderTextInput("comm_quar_a", "C3. Among community contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the community contacts were quarantined? (Scenario A)",
-                        choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                    sliderTextInput("comm_quar_a", "C3. Among community contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the community contacts were quarantined? (Scenario A)",
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
 
                     )
                   ),
@@ -810,21 +811,21 @@ function(request) {
                         375, 0, 1e10
                       ),
                       radioButtons("ifr_b",
-                        "S2.2. Which infection fatality ratio (IFR) best represents your community? (Scenario B)",
-                        choices = c(
-                          "0.25%" = "0.25",
-                          "0.5%" = "0.5",
-                          "0.75%" = "0.75",
-                          "1%" = "1",
-                          "Other" = "other"
-                        ),
-                        selected = "0.75"
+                                   "S2.2. Which infection fatality ratio (IFR) best represents your community? (Scenario B)",
+                                   choices = c(
+                                     "0.25%" = "0.25",
+                                     "0.5%" = "0.5",
+                                     "0.75%" = "0.75",
+                                     "1%" = "1",
+                                     "Other" = "other"
+                                   ),
+                                   selected = "0.75"
                       ),
                       conditionalPanel(
                         "input.ifr_b == 'other'",
                         numericInput("ifr_other_b",
-                          label = "Estimated IFR (%)",
-                          value = 0.75, min = 0, max = 20
+                                     label = "Estimated IFR (%)",
+                                     value = 0.75, min = 0, max = 20
                         )
                       ),
                       uiOutput("ifr_warning_b")
@@ -832,11 +833,11 @@ function(request) {
                     conditionalPanel(
                       "input.n_infect_calc_b == 'direct'",
                       sliderInput("prop_detect_b",
-                        glue(
-                          "S2.1. What percent of all infected ",
-                          "people in your community are detected by your surveillance program? (Scenario B)"
-                        ),
-                        min = 0, max = 100, value = 20
+                                  glue(
+                                    "S2.1. What percent of all infected ",
+                                    "people in your community are detected by your surveillance program? (Scenario B)"
+                                  ),
+                                  min = 0, max = 100, value = 20
                       )
                     ),
                     numericInput(
@@ -856,8 +857,8 @@ function(request) {
                     ),
                     uiOutput("n_quar_warning_b"),
                     sliderTextInput("pass_isol_b", "S6. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario B)",
-                      choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
-                      width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                    width = "100%"
                     ),
                     numericInput(
                       "contact_h_b",
@@ -873,8 +874,8 @@ function(request) {
                       100,
                       50
                     ),
-                        sliderTextInput("house_quar_b", "H3. Among household contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the household contacts were quarantined? (Scenario B)",
-                        choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                    sliderTextInput("house_quar_b", "H3. Among household contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the household contacts were quarantined? (Scenario B)",
+                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
 
                     ),
                     numericInput(
@@ -932,44 +933,44 @@ function(request) {
             )
           ),
           p("Your Model Assumptions", class = "app-title", style = "font-size: 36px;"),
-         conditionalPanel("input.scenario_b == false",
-           h2("SURVEILLANCE AND ISOLATION", align = "center"),
-          fluidRow(
-            infoBoxOutput("prop_quar2", width = 6),
-            infoBoxOutput("t_p2", width = 6),
-          ),
-          h2("CONTACT TRACING", align = "center"),
-          fluidRow(
-            infoBoxOutput("omega_h2", width = 3),
-            infoBoxOutput("t_hbox2", width = 3),
-            infoBoxOutput("omega_c2", width = 3),
-            infoBoxOutput("t_cbox2", width = 3)
-          )
+          conditionalPanel("input.scenario_b == false",
+                           h2("SURVEILLANCE AND ISOLATION", align = "center"),
+                           fluidRow(
+                             infoBoxOutput("prop_quar2", width = 6),
+                             infoBoxOutput("t_p2", width = 6),
+                           ),
+                           h2("CONTACT TRACING", align = "center"),
+                           fluidRow(
+                             infoBoxOutput("omega_h2", width = 3),
+                             infoBoxOutput("t_hbox2", width = 3),
+                             infoBoxOutput("omega_c2", width = 3),
+                             infoBoxOutput("t_cbox2", width = 3)
+                           )
           ),
           conditionalPanel("input.scenario_b == true",
                            fluidRow(
-                           box(width = 6, status = "primary",
-                               h2("SCENARIO A"),
-                               h2("SURVEILLANCE AND ISOLATION", align = "center"),
+                             box(width = 6, status = "primary",
+                                 h2("SCENARIO A"),
+                                 h2("SURVEILLANCE AND ISOLATION", align = "center"),
                                  infoBoxOutput("prop_quar2a", width = NULL),
                                  infoBoxOutput("t_p2a", width = NULL),
-                               h2("CONTACT TRACING", align = "center"),
+                                 h2("CONTACT TRACING", align = "center"),
                                  infoBoxOutput("omega_h2a", width = NULL),
                                  infoBoxOutput("t_hbox2a", width = NULL),
                                  infoBoxOutput("omega_c2a", width = NULL),
                                  infoBoxOutput("t_cbox2a", width = NULL)
-                               ),
-                           box(width = 6, status = "primary",
-                               h2("SCENARIO B"),
-                               h2("SURVEILLANCE AND ISOLATION", align = "center"),
+                             ),
+                             box(width = 6, status = "primary",
+                                 h2("SCENARIO B"),
+                                 h2("SURVEILLANCE AND ISOLATION", align = "center"),
                                  infoBoxOutput("prop_isol_not_quar_b", width = NULL),
                                  infoBoxOutput("t_p_b", width = NULL),
-                               h2("CONTACT TRACING", align = "center"),
+                                 h2("CONTACT TRACING", align = "center"),
                                  infoBoxOutput("omega_h_b_out", width = NULL),
                                  infoBoxOutput("t_hbox_b", width = NULL),
                                  infoBoxOutput("omega_c_b_out", width = NULL),
                                  infoBoxOutput("t_cbox_b", width = NULL)
-                               )
+                             )
                            )
           )
         ),
@@ -1034,11 +1035,11 @@ function(request) {
           fluidRow(
             box(
               sliderInput("alpha", "Percent with asymptomatic infection (people infected who never develop symptoms)", 1, 100, 20),
-            conditionalPanel("input.scenario_b == true",
-                             h3("Scenario B:"),
-                             sliderInput("alpha_b", "Percent with asymptomatic infection (people infected who never develop symptoms) (Scenario B)", 1, 100, 20)
+              conditionalPanel("input.scenario_b == true",
+                               h3("Scenario B:"),
+                               sliderInput("alpha_b", "Percent with asymptomatic infection (people infected who never develop symptoms) (Scenario B)", 1, 100, 20)
+              )
             )
-                             )
           ),
           br(),
           hr(),
@@ -1051,7 +1052,7 @@ function(request) {
           fluidRow(
             box(
               sliderInput("mult", "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases",
-                min = 0, max = 1, value = 0.5
+                          min = 0, max = 1, value = 0.5
               ),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
@@ -1102,14 +1103,14 @@ function(request) {
                 0.5
               ),
               conditionalPanel("input.scenario_b == true",
-                              h3("Scenario B:"),
-                              sliderInput(
-                                "kappa_b",
-                                "Relative transmissibility of an asymptomatic individual (person infected who never develops symptoms) vs symptomatic (Scenario B)",
-                                0,
-                                1,
-                                0.5
-                              ))
+                               h3("Scenario B:"),
+                               sliderInput(
+                                 "kappa_b",
+                                 "Relative transmissibility of an asymptomatic individual (person infected who never develops symptoms) vs symptomatic (Scenario B)",
+                                 0,
+                                 1,
+                                 0.5
+                               ))
             ),
             box(
               radioButtons(
@@ -1123,17 +1124,17 @@ function(request) {
                 selected = "3"
               ),
               conditionalPanel("input.scenario_b == true",
-                              h3("Scenario B:"),
-                              radioButtons(
-                                "generation_b",
-                                "Disease generation time (Scenario B)",
-                                choices = c(
-                                  "Short (median of 5.4 days)" = "2.12",
-                                  "Medium (median of 6.7 days)" = "3",
-                                  "Long (median of 8.1 days)" = "4"
-                                ),
-                                selected = "3"
-                              ))
+                               h3("Scenario B:"),
+                               radioButtons(
+                                 "generation_b",
+                                 "Disease generation time (Scenario B)",
+                                 choices = c(
+                                   "Short (median of 5.4 days)" = "2.12",
+                                   "Medium (median of 6.7 days)" = "3",
+                                   "Long (median of 8.1 days)" = "4"
+                                 ),
+                                 selected = "3"
+                               ))
             )
           ),
           br(),
@@ -1148,17 +1149,17 @@ function(request) {
             box(width = 6,
                 h3("Surveillance and Isolation (Asymptomatic)"),
 
-              sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate?",
-                              choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
-                              width = "100%"
-            ),
-            conditionalPanel("input.scenario_b == true",
-                             h3("Scenario B: Surveillance and Isolation (Asymptomatic)"),
+                sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate?",
+                                choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                width = "100%"
+                ),
+                conditionalPanel("input.scenario_b == true",
+                                 h3("Scenario B: Surveillance and Isolation (Asymptomatic)"),
 
-                             sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario B)",
-                                             choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
-                                             width = "100%"
-                             ))
+                                 sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario B)",
+                                                 choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                                 width = "100%"
+                                 ))
             )
           )
         ),

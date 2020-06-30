@@ -2563,19 +2563,23 @@ function(input, output, session) {
 
   report <- reactiveValues(
     type = "word_document",
-    filename = "report.docx",
+    filename = "contessa-report.docx",
     temp = "report-word.Rmd"
   )
 
-  observeEvent(input$word, {
+  listen_report <- reactive({
+    list(input$word, input$report_name)
+  })
+
+  observeEvent(listen_report(), {
     if (input$word == "word") {
       report$type <- "word_document"
-      report$filename <- "report.docx"
+      report$filename <- glue("{input$report_name}.docx")
       report$temp <- "report-word.Rmd"
     }
     if (input$word == "pdf") {
       report$type <- "pdf_document"
-      report$filename <- "report.pdf"
+      report$filename <- glue("{input$report_name}.pdf")
       report$temp <- "report-pdf.Rmd"
     }
   })
@@ -2587,6 +2591,7 @@ function(input, output, session) {
       report$filename
     },
     content <- function(file) {
+      withProgress(message = "Download in progress...", {
       tempReport <- file.path(tempdir(), report$temp)
 
       if (input$scenario_b) {
@@ -2670,6 +2675,7 @@ function(input, output, session) {
         params = params,
         envir = new.env(parent = globalenv())
       )
+      })
     }
   )
 }

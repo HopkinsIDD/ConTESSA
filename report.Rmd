@@ -301,6 +301,13 @@ This report provides estimates of the effectiveness of a specified contact traci
   
 ```
 
+
+```{r}
+if (shiny::isRunning())
+  shiny::setProgress(0.5) 
+```
+
+
 ```{r hh delay plot, fig.cap=cap, fig.width=6, fig.height=4}
 
   grid <- expand.grid(
@@ -473,4 +480,9 @@ This report provides estimates of the effectiveness of a specified contact traci
 We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been captured in surveillance (V), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
 
 Full details of this model can be found here.  An interactive application implementing this model to explore the effectiveness of contact tracing programs can be found [here](https://lucy.shinyapps.io/test-trace-isolate/).
+
+```{r}
+if (shiny::isRunning())
+  shiny::setProgress(1) 
+```
 
