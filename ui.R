@@ -1025,8 +1025,12 @@ function(request) {
           ),
           fluidRow(
             box(
-              sliderInput("alpha", "Percent with asymptomatic infection (people infected who never develop symptoms)", 1, 100, 20)
+              sliderInput("alpha", "Percent with asymptomatic infection (people infected who never develop symptoms)", 1, 100, 20),
+            conditionalPanel("input.scenario_b == true",
+                             h3("Scenario B:"),
+                             sliderInput("alpha_b", "Percent with asymptomatic infection (people infected who never develop symptoms) (Scenario B)", 1, 100, 20)
             )
+                             )
           ),
           br(),
           hr(),
@@ -1041,15 +1045,11 @@ function(request) {
               sliderInput("mult", "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases",
                 min = 0, max = 1, value = 0.5
               ),
-            ),
-            box(
-              sliderInput(
-                "omega_q",
-                "Among cases detected in quarantine, what percent of their contacts were traced and quarantined?",
-                0,
-                100,
-                50
-              )
+              conditionalPanel("input.scenario_b == true",
+                               h3("Scenario B:"),
+                               sliderInput("mult_b", "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases (Scenario B)",
+                                           min = 0, max = 1, value = 0.5
+                               ))
             )
           ),
           br(),
@@ -1062,7 +1062,10 @@ function(request) {
           ),
           fluidRow(
             box(
-              numericInput("R", "Reproductive number", 2.5, 0, 10)
+              numericInput("R", "Reproductive number", 2.5, 0, 10),
+              conditionalPanel("input.scenario_b == true",
+                               h3("Scenario B:"),
+                               numericInput("R_b", "Reproductive number (Scenario B)", 2.5, 0, 10))
             ),
             box(
               sliderInput(
@@ -1071,7 +1074,16 @@ function(request) {
                 1,
                 10,
                 4
-              )
+              ),
+              conditionalPanel("input.scenario_b == true",
+                               h3("Scenario B:"),
+                               sliderInput(
+                                 "nu_b",
+                                 "Relative risk of infection for a household contact vs community contact (Scenario B)",
+                                 1,
+                                 10,
+                                 4
+                               ))
             ),
             box(
               sliderInput(
@@ -1080,19 +1092,40 @@ function(request) {
                 0,
                 1,
                 0.5
-              )
+              ),
+              conditionalPanel("input.scenario_b == true",
+                              h3("Scenario B:"),
+                              sliderInput(
+                                "kappa_b",
+                                "Relative transmissibility of an asymptomatic individual (person infected who never develops symptoms) vs symptomatic (Scenario B)",
+                                0,
+                                1,
+                                0.5
+                              ))
             ),
             box(
               radioButtons(
                 "generation",
-                "Disease Generation time",
+                "Disease generation time",
                 choices = c(
                   "Short (median of 5.4 days)" = "2.12",
                   "Medium (median of 6.7 days)" = "3",
                   "Long (median of 8.1 days)" = "4"
                 ),
                 selected = "3"
-              )
+              ),
+              conditionalPanel("input.scenario_b == true",
+                              h3("Scenario B:"),
+                              radioButtons(
+                                "generation_b",
+                                "Disease generation time (Scenario B)",
+                                choices = c(
+                                  "Short (median of 5.4 days)" = "2.12",
+                                  "Medium (median of 6.7 days)" = "3",
+                                  "Long (median of 8.1 days)" = "4"
+                                ),
+                                selected = "3"
+                              ))
             )
           ),
           br(),
@@ -1110,20 +1143,15 @@ function(request) {
               sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate?",
                               choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                               width = "100%"
-            )
             ),
-          box(width = 6,
-              h3("Quarantined Individuals"),
+            conditionalPanel("input.scenario_b == true",
+                             h3("Scenario B: Surveillance and Isolation (Asymptomatic)"),
 
-            sliderTextInput("t_q",
-                            glue("Among contacts that have been notified ",
-                                 "and quarantined in the past four weeks that were exposed ",
-                                 "to a case already in quarantine, what is the average number of days ",
-                                 "between symptom onset of the case and when the ",
-                                 "contacts were quarantined?"),
-                            choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                             sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario B)",
+                                             choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                             width = "100%"
+                             ))
             )
-          )
           )
         ),
         ## About ----

@@ -23,7 +23,7 @@ function(input, output, session) {
     list(
       input$alpha, input$R, input$kappa, input$contact_c, input$contact_h,
       input$nu, input$t_pa, input$t_qca,
-      input$t_qha, input$t_q, input$omega_c, input$omega_h, input$omega_q,
+      input$t_qha, input$omega_c, input$omega_h,
       input$mult, input$n_deaths, input$n_detect, input$ifr, input$ifr_other
     )
   })
@@ -52,9 +52,7 @@ function(input, output, session) {
       "t_pa",
       "ifr",
       "mult",
-      "t_q",
       "nu",
-      "omega_q",
       "comm_quar",
       "pass_isol2",
       "pass_isol3",
@@ -123,15 +121,19 @@ function(input, output, session) {
     updateSliderTextInput(session, "comm_quar", selected = saved_inputs[["comm_quar"]])
     updateSliderTextInput(session, "comm_quar_b", selected = saved_inputs[["comm_quar_b"]])
     updateSliderInput(session, "mult", value = saved_inputs[["mult"]])
+    updateSliderInput(session, "mult_b", value = saved_inputs[["mult_b"]])
     updateSliderInput(session, "alpha", value = saved_inputs[["alpha"]])
+    updateSliderInput(session, "alpha_b", value = saved_inputs[["alpha_b"]])
     updateSliderInput(session, "kappa", value = saved_inputs[["kappa"]])
+    updateSliderInput(session, "kappa_b", value = saved_inputs[["kappa_b"]])
     updateNumericInput(session, "R", value = saved_inputs[["R"]])
+    updateNumericInput(session, "R_b", value = saved_inputs[["R_b"]])
     updateSliderInput(session, "nu", value = saved_inputs[["nu"]])
+    updateSliderInput(session, "nu_b", value = saved_inputs[["nu_b"]])
     updateRadioButtons(session, "generation", selected = saved_inputs[["generation"]])
-    updateSliderInput(session, "omega_q", value = saved_inputs[["omega_q"]])
+    updateRadioButtons(session, "generation_b", selected = saved_inputs[["generation_b"]])
     updateSliderTextInput(session, "t_pa", selected = saved_inputs[["t_pa"]])
-    updateSliderTextInput(session, "t_q", selected = saved_inputs[["t_q"]])
-
+    updateSliderTextInput(session, "t_pa_b", selected = saved_inputs[["t_pa_b"]])
   })
 
 
@@ -152,36 +154,74 @@ function(input, output, session) {
     input$alpha / 100
   })
 
+  alpha_b <- reactive({
+    input$alpha_b / 100
+  })
+
   omega_q <- reactive({
-    input$omega_q / 100
+    omega_h() * eta() + omega_c() * (1 - eta())
+  })
+
+  omega_q_b <- reactive({
+    omega_h_b() * eta_b() + omega_c_b() * (1 - eta_b())
   })
 
   t_ps <- reactive({
     text_to_time(input$pass_isol[2])
   })
 
+  t_ps_b <- reactive({
+    text_to_time(input$pass_isol_b)
+  })
+
   t_pa <- reactive({
     text_to_time(input$t_pa)
+  })
+
+  t_pa_b <- reactive({
+    text_to_time(input$t_pa_b)
   })
 
   t_qhs <- reactive({
     text_to_time(input$house_quar)
   })
 
+  t_qhs_b <- reactive({
+    text_to_time(input$house_quar_b)
+  })
+
   t_qha <- reactive({
     t_pa() + (t_qhs() - t_ps())
+  })
+
+  t_qha_b <- reactive({
+    t_pa_b() + (t_qhs_b() - t_ps_b())
   })
 
   t_qcs <- reactive({
     text_to_time(input$comm_quar)
   })
 
+  t_qcs_b <- reactive({
+    text_to_time(input$comm_quar_b)
+  })
+
   t_qca <- reactive({
     t_pa() + (t_qcs() - t_ps())
   })
 
+  t_qca_b <- reactive({
+    t_pa_b() + (t_qcs_b() - t_ps_b())
+  })
+
   t_q <- reactive({
-    text_to_time(input$t_q)
+    (t_qhs() * (1 - input$alpha) + t_qha() * input$alpha ) * eta() +
+      (t_qcs() * (1 - input$alpha) + t_qca() * input$alpha) * (1 - eta())
+  })
+
+  t_q_b <- reactive({
+    (t_qhs_b() * (1 - input$alpha_b) + t_qha_b() * input$alpha_b) * eta_b() +
+      (t_qcs_b() * (1 - input$alpha_b) + t_qca_b() * input$alpha_b) * (1 - eta_b())
   })
 
   ## Home page -----------------------------------------------------------------
@@ -538,6 +578,10 @@ function(input, output, session) {
     updateSliderTextInput(session, "t_pa", selected = input$pass_isol[2])
   })
 
+  observeEvent(input$pass_isol_b, {
+    updateSliderTextInput(session, "t_pa_b", selected = input$pass_isol_b)
+  })
+
 
   ## 3. Disclaimers ------------------------------------------------------------
 
@@ -671,10 +715,6 @@ function(input, output, session) {
     }
   })
 
-  observeEvent(input$house_quar, {
-    updateSliderTextInput(session, "t_qha", selected = input$house_quar)
-  })
-
   ## 3. Disclaimers ----
 
   observeEvent(input$advanced_tab2, {
@@ -798,17 +838,6 @@ function(input, output, session) {
     }
   })
 
-  observeEvent(input$comm_quar, {
-    updateSliderTextInput(session, "t_qca", selected = input$comm_quar)
-  })
-
-  observeEvent(input$omega_h, {
-    updateSliderInput(session, "omega_q", value = input$omega_h)
-  })
-
-  observeEvent(input$house_quar, {
-    updateSliderTextInput(session, "t_q", selected = input$house_quar)
-  })
 
   ## 3. Disclaimers ----
 
@@ -1206,7 +1235,7 @@ function(input, output, session) {
   })
 
 
-  ## 2.2 Scenario B ----
+  ## 2.2 Info Boxes Scenario B ----
 
 
   output$prop_isol_not_quar_b <- renderInfoBox({
@@ -1219,15 +1248,10 @@ function(input, output, session) {
   })
 
   output$t_p_b <- renderInfoBox({
-    if (input$pass_isol_b == "Symptom onset of case") {
-      t_p <- 0
-    } else if (input$pass_isol_b == "Day 14+") {
-      t_p <- 14
-    } else {
-      t_p <- as.numeric(gsub("Day", "", input$pass_isol_b))
-    }
+    time <- t_ps_b() * (1 - alpha_b()) + t_pa_b() * (alpha_b())
+
     infoBox(
-      value = t_p,
+      value = time,
       title = "Delay of",
       subtitle = glue("days, on average, from symptom onset to isolation of surveillance detected infections"),
       icon = icon("calendar-check-o")
@@ -1244,20 +1268,15 @@ function(input, output, session) {
   })
   output$omega_c_b_out <- renderInfoBox({
     infoBox(
-      value = glue("{round(input$omega_c)}%"),
+      value = glue("{round(input$omega_c_b)}%"),
       title = "Quarantined",
       subtitle = glue("of community contacts"),
       icon = icon("users")
     )
   })
   output$t_hbox_b <- renderInfoBox({
-    if (input$house_quar_b == "Symptom onset of case") {
-      time <- 0
-    } else if (input$house_quar_b == "Day 14+") {
-      time <- 14
-    } else {
-      time <- as.numeric(gsub("Day", "", input$house_quar_b))
-    }
+    time <- t_qhs_b() * (1 - alpha_b()) + t_qha_b() * (alpha_b())
+
     infoBox(
       value = time,
       title = "Delay of",
@@ -1266,13 +1285,8 @@ function(input, output, session) {
     )
   })
   output$t_cbox_b <- renderInfoBox({
-    if (input$comm_quar_b == "Symptom onset of case") {
-      time <- 0
-    } else if (input$comm_quar_b == "Day 14+") {
-      time <- 14
-    } else {
-      time <- as.numeric(gsub("Day", "", input$comm_quar_b))
-    }
+    time <- t_qcs_b() * (1 - alpha_b()) + t_qca_b() * (alpha_b())
+
     infoBox(
       value = time,
       title = "Delay of",
@@ -1473,26 +1487,27 @@ function(input, output, session) {
 
   pqc_b <- reactive({
     val_b()
+    print(t_h_b())
 
     get_pqc_equilibrium(
-      alpha = alpha(),
+      alpha = alpha_b(),
       omega_c = omega_c_b(),
       omega_h = omega_h_b(),
-      omega_q = omega_q(),
+      omega_q = omega_q_b(),
       rho_s = rho_s_b(),
       rho_a = rho_a_b(),
-      R = input$R,
-      kappa = input$kappa,
+      R = input$R_b,
+      kappa = input$kappa_b,
       eta = eta_b(),
-      nu = input$nu,
-      t_ps = t_p_b(),
-      t_pa = t_p_b(),
-      t_qcs = t_c_b(),
-      t_qca = t_c_b(),
-      t_qhs = t_h_b(),
-      t_qha = t_h_b(),
-      t_q = t_q(),
-      shape = as.numeric(input$generation)
+      nu = input$nu_b,
+      t_ps = t_ps_b(),
+      t_pa = t_pa_b(),
+      t_qcs = t_qcs_b(),
+      t_qca = t_qca_b(),
+      t_qhs = t_qhs_b(),
+      t_qha = t_qha_b(),
+      t_q = t_q_b(),
+      shape = as.numeric(input$generation_b)
     )
   })
 
@@ -1524,25 +1539,25 @@ function(input, output, session) {
 
   r_eff_b <- reactive({
     val_b()
-
     get_r_effective(pqc_b(),
-      alpha = alpha(),
-      R = input$R,
-      kappa = input$kappa,
+      alpha = alpha_b(),
+      R = input$R_b,
+      kappa = input$kappa_b,
       eta = eta_b(),
-      nu = input$nu,
-      t_ps = t_p_b(),
-      t_pa = t_p_b(),
-      t_qcs = t_c_b(),
-      t_qca = t_c_b(),
-      t_qhs = t_h_b(),
-      t_qha = t_h_b(),
-      t_q = t_q(),
-      shape = as.numeric(input$generation)
+      nu = input$nu_b,
+      t_ps = t_ps_b(),
+      t_pa = t_pa_b(),
+      t_qcs = t_qcs_b(),
+      t_qca = t_qca_b(),
+      t_qhs = t_qhs_b(),
+      t_qha = t_qha_b(),
+      t_q = t_q_b(),
+      shape = as.numeric(input$generation_b)
     )
   })
 
   output$r_eff_b <- renderUI({
+    print(r_eff_b())
     p(glue("{round(r_eff_b(), 1)}"), class = "r-val")
   })
 
@@ -1562,25 +1577,25 @@ function(input, output, session) {
       val_b()
 
       grid_b <- expand.grid(
-        alpha = alpha(),
-        R = input$R,
-        kappa = input$kappa,
+        alpha = alpha_b(),
+        R = input$R_b,
+        kappa = input$kappa_b,
         eta = eta_b(),
-        nu = input$nu,
-        t_ps = t_p_b(),
-        t_pa = t_p_b(),
-        t_qcs = t_c_b(),
-        t_qca = t_c_b(),
-        t_qhs = t_h_b(),
-        t_qha = t_h_b(),
-        t_q = t_q(),
+        nu = input$nu_b,
+        t_ps = t_ps_b(),
+        t_pa = t_pa_b(),
+        t_qcs = t_qcs_b(),
+        t_qca = t_qca_b(),
+        t_qhs = t_qhs_b(),
+        t_qha = t_qha_b(),
+        t_q = t_q_b(),
         omega_c = omega_c_b(),
         omega_h = omega_h_b(),
-        omega_q = omega_q(),
+        omega_q = omega_q_b(),
         rho_s = seq(0, 1, 0.01),
         rho_a = 1,
-        offset = 2.31,
-        shape = as.numeric(input$generation),
+        offset = - 2.31,
+        shape = as.numeric(input$generation_b),
         rate = 0.69
       )
 
@@ -1619,7 +1634,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = seq(0, 1, 0.01),
       rho_a = 1,
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(input$generation),
       rate = 0.69
     )
@@ -1708,38 +1723,50 @@ function(input, output, session) {
     if (input$scenario_b) {
       val_b()
 
+      diff <- t_pa_b() - t_ps_b()
+
+      if (t_ps_b() <= t_pa_b()) {
+        t_ps_b <- 0:14
+      } else {
+        t_ps_b <- (t_ps_b() - t_pa_b()):(14 + (t_ps_b() - t_pa_b()))
+      }
+
       grid_b <- expand.grid(
-        alpha = alpha(),
-        R = input$R,
-        kappa = input$kappa,
+        alpha = alpha_b(),
+        R = input$R_b,
+        kappa = input$kappa_b,
         eta = eta_b(),
-        nu = input$nu,
-        t_ps = 0:14,
+        nu = input$nu_b,
+        t_ps = t_ps_b,
         t_pa = 1,
-        t_qcs = t_c_b(),
-        t_qca = t_c_b(),
-        t_qhs = t_h_b(),
-        t_qha = t_h_b(),
-        t_q = t_q(),
+        t_qcs = t_qcs_b(),
+        t_qca = t_qca_b(),
+        t_qhs = t_qhs_b(),
+        t_qha = t_qha_b(),
+        t_q = t_q_b(),
         omega_c = omega_c_b(),
         omega_h = omega_h_b(),
         omega_q = omega_q(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = 2.31,
-        shape = as.numeric(input$generation),
+        offset = - 2.31,
+        shape = as.numeric(input$generation_b),
         rate = 0.69
       )
 
       grid_b <- grid_b %>%
         mutate(
-          t_pa = t_ps
+          t_pa = t_ps + diff
         )
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
 
+
+      d_b <- d_b %>%
+        mutate(t = t_ps * (1 - alpha) + t_pa * alpha)
+
       b_p <- tibble(
-        x = t_p_b(),
+        x = t_ps_b() * (1 - alpha_b()) + t_pa_b() * alpha_b(),
         y = r_eff_b(),
         name = "Scenario B"
       )
@@ -1771,7 +1798,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(input$generation),
       rate = 0.69
     )
@@ -1842,7 +1869,7 @@ function(input, output, session) {
         ) %>%
         hc_add_series(d_b,
           type = "line",
-          hcaes(x = t_pa, y = r_effective),
+          hcaes(x = t, y = r_effective),
           color = "green"
         )
       r$value <- TRUE
@@ -1865,25 +1892,25 @@ function(input, output, session) {
       val_b()
 
       grid_b <- expand.grid(
-        alpha = alpha(),
-        R = input$R,
-        kappa = input$kappa,
+        alpha = alpha_b(),
+        R = input$R_b,
+        kappa = input$kappa_b,
         eta = eta_b(),
-        nu = input$nu,
-        t_ps = t_p_b(),
-        t_pa = t_p_b(),
-        t_qcs = t_c_b(),
-        t_qca = t_c_b(),
-        t_qhs = t_h_b(),
-        t_qha = t_h_b(),
-        t_q = t_q(),
+        nu = input$nu_b,
+        t_ps = t_ps_b(),
+        t_pa = t_pa_b(),
+        t_qcs = t_qcs_b(),
+        t_qca = t_qca_b(),
+        t_qhs = t_qhs_b(),
+        t_qha = t_qha_b(),
+        t_q = t_q_b(),
         omega_c = omega_c_b(),
         omega_h = seq(0, 1, 0.1),
-        omega_q = omega_q(),
+        omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = 2.31,
-        shape = as.numeric(input$generation),
+        offset = - 2.31,
+        shape = as.numeric(input$generation_b),
         rate = 0.69
       )
 
@@ -1917,7 +1944,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(input$generation),
       rate = 0.69
     )
@@ -2001,36 +2028,49 @@ function(input, output, session) {
     if (input$scenario_b) {
       val_b()
 
+      diff <- t_qha_b() - t_qhs_b()
+
+      if (t_qhs_b() <= t_qha_b()) {
+        t_qhs_b <- 0:14
+      } else {
+        t_qhs_b <- (t_qhs_b() - t_qha_b()):(14 + (t_qhs_b() - t_qha_b()))
+      }
+
       grid_b <- expand.grid(
-        alpha = alpha(),
-        R = input$R,
-        kappa = input$kappa,
+        alpha = alpha_b(),
+        R = input$R_b,
+        kappa = input$kappa_b,
         eta = eta_b(),
-        nu = input$nu,
-        t_ps = t_p_b(),
-        t_pa = t_p_b(),
-        t_qcs = t_c_b(),
-        t_qca = t_c_b(),
-        t_qhs = 0:14,
+        nu = input$nu_b,
+        t_ps = t_ps_b(),
+        t_pa = t_pa_b(),
+        t_qcs = t_qcs_b(),
+        t_qca = t_qca_b(),
+        t_qhs = t_qhs_b,
         t_qha = 1,
         t_q = t_q(),
         omega_c = omega_c_b(),
         omega_h = omega_h_b(),
-        omega_q = omega_q(),
+        omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = 2.31,
-        shape = as.numeric(input$generation),
+        offset = - 2.31,
+        shape = as.numeric(input$generation_b),
         rate = 0.69
       )
+
+      grid_b <- grid_b %>%
+        mutate(
+          t_qha = t_qhs + diff
+        )
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
 
       d_b <- d_b %>%
-        mutate(t_qha = t_qhs)
+        mutate(t = t_qhs * (1 - alpha) + t_qha * alpha)
 
       b_h <- tibble(
-        x = t_h_b(),
+        x = t_qhs_b() * (1 - alpha_b()) + t_qha_b() * alpha_b(),
         y = r_eff_b(),
         name = "Scenario B"
       )
@@ -2062,7 +2102,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(input$generation),
       rate = 0.69
     )
@@ -2134,7 +2174,7 @@ function(input, output, session) {
         ) %>%
         hc_add_series(d_b,
           type = "line",
-          hcaes(x = t_qha, y = r_effective),
+          hcaes(x = t, y = r_effective),
           color = "green"
         )
     }
@@ -2155,25 +2195,25 @@ function(input, output, session) {
       val_b()
 
       grid_b <- expand.grid(
-        alpha = alpha(),
-        R = input$R,
-        kappa = input$kappa,
+        alpha = alpha_b(),
+        R = input$R_b,
+        kappa = input$kappa_b,
         eta = eta_b(),
-        nu = input$nu,
-        t_ps = t_p_b(),
-        t_pa = t_p_b(),
-        t_qcs = t_c_b(),
-        t_qca = t_c_b(),
-        t_qhs = t_h_b(),
-        t_qha = t_h_b(),
-        t_q = t_q(),
+        nu = input$nu_b,
+        t_ps = t_ps_b(),
+        t_pa = t_pa_b(),
+        t_qcs = t_qcs_b(),
+        t_qca = t_qca_b(),
+        t_qhs = t_qhs_b(),
+        t_qha = t_qha_b(),
+        t_q = t_q_b(),
         omega_c = seq(0, 1, 0.1),
         omega_h = omega_h_b(),
-        omega_q = omega_q(),
+        omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = 2.31,
-        shape = as.numeric(input$generation),
+        offset = - 2.31,
+        shape = as.numeric(input$generation_b),
         rate = 0.69
       )
 
@@ -2209,7 +2249,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(input$generation),
       rate = 0.69
     )
@@ -2291,36 +2331,47 @@ function(input, output, session) {
     if (input$scenario_b) {
       val_b()
 
+      diff <- t_qca_b() - t_qcs_b()
+
+      if (t_qcs_b() <= t_qca_b()) {
+        t_qcs_b <- 0:14
+      } else {
+        t_qcs_b <- (t_qcs_b() - t_qca_b()):(14 + (t_qcs_b() - t_qca_b()))
+      }
+
       grid_b <- expand.grid(
-        alpha = alpha(),
-        R = input$R,
-        kappa = input$kappa,
+        alpha = alpha_b(),
+        R = input$R_b,
+        kappa = input$kappa_b,
         eta = eta_b(),
-        nu = input$nu,
+        nu = input$nu_b,
         t_ps = t_p_b(),
         t_pa = t_p_b(),
-        t_qcs = 0:14,
+        t_qcs = t_qcs_b,
         t_qca = 1,
-        t_qhs = t_h_b(),
-        t_qha = t_h_b(),
-        t_q = t_q(),
+        t_qhs = t_qhs_b(),
+        t_qha = t_qha_b(),
+        t_q = t_q_b(),
         omega_c = omega_c_b(),
         omega_h = omega_h_b(),
-        omega_q = omega_q(),
+        omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = 2.31,
-        shape = as.numeric(input$generation),
+        offset = - 2.31,
+        shape = as.numeric(input$generation_b),
         rate = 0.69
       )
+
+      grid_b <- grid_b %>%
+        mutate(t_qca = t_qcs + diff)
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
 
       d_b <- d_b %>%
-        mutate(t_qca = t_qcs)
+        mutate(t = t_qcs * (1 - alpha) + t_qca * alpha)
 
       b_c <- tibble(
-        x = t_c_b(),
+        x = t_qcs_b() * (1 - alpha_b()) + t_qca_b() * alpha_b(),
         y = r_eff_b(),
         name = "Scenario B"
       )
@@ -2352,7 +2403,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(input$generation),
       rate = 0.69
     )
@@ -2423,7 +2474,7 @@ function(input, output, session) {
         ) %>%
         hc_add_series(d_b,
           type = "line",
-          hcaes(x = t_qca, y = r_effective),
+          hcaes(x = t, y = r_effective),
           color = "green"
         )
     }
@@ -2464,10 +2515,7 @@ function(input, output, session) {
       "in the 'Household Contact Tracing' and 'Community Contact Tracing' tabs:</span> ",
       "The percent of household contacts that are traced and quarantined ",
       "is <span class='assumption'>{input$omega_h}%</span> and of community contacts is ",
-      "<span class='assumption'>{input$omega_c}%</span>.</p>",
-      "<p><span style='font-weight:bold;'>The output presented in this application assumes: </span>",
-      "The percent of contacts traced and quarantined of cases already ",
-      "in quarantine is <span class='assumption'>{input$omega_q}%</span>.</p>"
+      "<span class='assumption'>{input$omega_c}%</span>.</p>"
     ))
   })
 
