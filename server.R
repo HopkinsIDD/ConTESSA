@@ -207,13 +207,13 @@ function(input, output, session) {
   })
 
   t_q <- reactive({
-    (t_qhs() * (1 - input$alpha) + t_qha() * input$alpha ) * eta() +
-      (t_qcs() * (1 - input$alpha) + t_qca() * input$alpha) * (1 - eta())
+    (t_qhs() * (1 - alpha()) + t_qha() * alpha() ) * eta() +
+      (t_qcs() * (1 - alpha()) + t_qca() * alpha()) * (1 - eta())
   })
 
   t_q_b <- reactive({
-    (t_qhs_b() * (1 - input$alpha_b) + t_qha_b() * input$alpha_b) * eta_b() +
-      (t_qcs_b() * (1 - input$alpha_b) + t_qca_b() * input$alpha_b) * (1 - eta_b())
+    (t_qhs_b() * (1 - alpha_b()) + t_qha_b() * alpha_b()) * eta_b() +
+      (t_qcs_b() * (1 - alpha_b()) + t_qca_b() * alpha_b()) * (1 - eta_b())
   })
 
   ## Home page -----------------------------------------------------------------
