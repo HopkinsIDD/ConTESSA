@@ -25,6 +25,7 @@ params:
 
 ```{r, include = FALSE}
   knitr::opts_chunk$set(echo = FALSE)
+  knitr::opts_knit$set(eval.after = 'fig.cap')
 
   fig_counter <- 1
   p <- params
@@ -79,7 +80,7 @@ params:
 
 ## `r glue("Contact Tracing Program Evaluation: ", "{p$name}")`
 
-*Report automatically generated from the [ConTESSA application](https://lucy.shinyapps.io/test-trace-isolate/) on `r Sys.Date()`*
+*Report automatically generated from the [ConTESSA application](https://iddynamics.jhsph.edu/apps/connect/contessa/) on `r Sys.Date()`*
 
 This report provides estimates of the effectiveness of a specified contact tracing program, based on key indicators for the timing and completeness of contact tracing.
 
