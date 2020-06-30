@@ -1648,7 +1648,7 @@ function(input, output, session) {
       d, "line",
       hcaes(x = prop_detect, y = r_effective)
     ) %>%
-      hc_title(text = "Impact of the percent of infections isolated who were not already in quarantine on the reproductive number") %>%
+      hc_title(text = "Impact of the percent of infections isolated who were not identified during contact tracing on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
         type = "scatter",
@@ -1680,7 +1680,7 @@ function(input, output, session) {
         min = min(1, min(d$r_effective)),
         max = max(max(d$r_effective), input$R)
       ) %>%
-      hc_xAxis(title = list(text = "Percent of infections isolated who were not already in quarantine")) %>%
+      hc_xAxis(title = list(text = "Percent of infections isolated who were not identified during contact tracing")) %>%
       hc_tooltip(
         valueDecimals = 2,
         pointFormat = "R: {point.y}<br>Percent Isolated: {point.x:.0f}%"

@@ -276,7 +276,7 @@ function(request) {
                 ## S4 ----
                 numericInput(
                   "n_detect_quar",
-                  "S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were contacts of known cases and already in quarantine or that were identified during contact tracing?",
+                  "S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were not already in quarantine or detected through follow-up with contacts?",
                   0,
                   0,
                   1e10
@@ -733,7 +733,7 @@ function(request) {
                     ),
                     numericInput(
                       "n_detect_quar_a",
-                      "S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were contacts of known cases and already in quarantine or that were identified during contact tracing? (Scenario A)",
+                      "S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were not already in quarantine or detected through follow-up with contacts? (Scenario A)",
                       0,
                       0,
                       1e10
@@ -850,7 +850,7 @@ function(request) {
                     uiOutput("n_isolate_warning_b"),
                     numericInput(
                       "n_detect_quar_b",
-                      "S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were contacts of known cases and already in quarantine or that were identified during contact tracing? (Scenario B)",
+                      "S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were not already in quarantine or detected through follow-up with contacts? (Scenario B)",
                       0,
                       0,
                       1e10
