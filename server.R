@@ -19,14 +19,6 @@ function(input, output, session) {
   )
 
   ## Bookmark inputs in URL ---------------------------------------------------
-  something_changed <- reactive({
-    list(
-      input$alpha, input$R, input$kappa, input$contact_c, input$contact_h,
-      input$nu, input$t_pa, input$t_qca,
-      input$t_qha, input$omega_c, input$omega_h,
-      input$mult, input$n_deaths, input$n_detect, input$ifr, input$ifr_other
-    )
-  })
 
   observe({
     reactiveValuesToList(input)
@@ -1487,7 +1479,6 @@ function(input, output, session) {
 
   pqc_b <- reactive({
     val_b()
-    print(t_h_b())
 
     get_pqc_equilibrium(
       alpha = alpha_b(),
@@ -1557,7 +1548,6 @@ function(input, output, session) {
   })
 
   output$r_eff_b <- renderUI({
-    print(r_eff_b())
     p(glue("{round(r_eff_b(), 1)}"), class = "r-val")
   })
 
