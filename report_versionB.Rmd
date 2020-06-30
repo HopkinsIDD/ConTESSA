@@ -11,9 +11,10 @@ params:
   rho_s: NA
   rho_a: NA
   R: NA
+  kappa: NA
   eta: NA
   nu: NA
-  kappa: NA
+  generation: NA
   t_ps: NA
   t_pa: NA
   t_qcs: NA
@@ -22,15 +23,24 @@ params:
   t_qha: NA
   t_q: NA
   mult_b: NA
+  alpha_b: NA
   omega_c_b: NA
   omega_h_b: NA
+  omega_q_b: NA
   rho_s_b: NA
   rho_a_b: NA
+  R_b: NA
+  kappa_b: NA
   eta_b: NA
-  t_p_b: NA
-  t_qh_b: NA
-  t_qc_b: NA
-  generation: NA
+  nu_b: NA
+  t_ps_b: NA
+  t_pa_b: NA
+  t_qcs_b: NA
+  t_qca_b: NA
+  t_qhs_b: NA
+  t_qha_b: NA
+  t_q_b: NA
+  generation_b: NA
 ---
 
 ```{r, include=FALSE}
@@ -40,26 +50,17 @@ params:
   fig_counter <- 1
   
   p <- params[-grep("_b", names(params))]
+  p <- p[-1] # removing name
   p$t_p <- p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha
   p$t_qh <- p$t_qhs * (1 - p$alpha) + p$t_qha * p$alpha
   p$t_qc <- p$t_qcs * (1 - p$alpha) + p$t_qca * p$alpha
   
-  pB <- params[-grep("_b", names(params))]
-  pB$mult <- params$mult_b
-  pB$rho_a <- params$rho_a_b
-  pB$rho_s <- params$rho_s_b
-  pB$omega_c <- params$omega_c_b
-  pB$omega_h <- params$omega_h_b
-  pB$eta <- params$eta_b
-  pB$t_p <- params$t_p_b
-  pB$t_ps <- params$t_p_b
-  pB$t_pa <- params$t_p_b
-  pB$t_qh <- params$t_qh_b
-  pB$t_qhs <- params$t_qh_b
-  pB$t_qha <- params$t_qh_b
-  pB$t_qc <- params$t_qc_b
-  pB$t_qcs <- params$t_qc_b
-  pB$t_qca <- params$t_qc_b
+  pB <- params[grep("_b", names(params))]
+  pB <- pB[-1] # removing "generated_by"
+  names(pB) <- gsub("_b", "", names(pB))
+  pB$t_p <- pB$t_ps * (1 - pB$alpha) + pB$t_pa * pB$alpha
+  pB$t_qh <- pB$t_qhs * (1 - pB$alpha) + pB$t_qha * pB$alpha
+  pB$t_qc <- pB$t_qcs * (1 - pB$alpha) + pB$t_qca * pB$alpha
   
   pqc <- function(input=p){
     return(
@@ -105,9 +106,9 @@ params:
 
 ```
 
-## `r if(p$name == "") "Contact Tracing Program Evaluation" else {glue("Contact Tracing Program Evaluation: ", "{p$name}")}`
+## `r if(params$name == "") "Contact Tracing Program Evaluation" else {glue("Contact Tracing Program Evaluation: ", "{params$name}")}`
 
-### `r if (!(p$prepared_by == "")) {glue("Prepared by: {p$prepared_by}")}`
+### `r if (!(params$prepared_by == "")) {glue("Prepared by: {params$prepared_by}")}`
 
 *Report automatically generated from the [ConTESSA application](https://iddynamics.jhsph.edu/apps/connect/contessa/) on `r Sys.Date()`*
 
