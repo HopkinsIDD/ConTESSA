@@ -2605,6 +2605,7 @@ function(input, output, session) {
 
         params <- list(
           name = input$name,
+          prepared_by = input$prepared_by,
           mult = mult(),
           alpha = alpha(),
           omega_c = omega_c(),
@@ -2624,21 +2625,31 @@ function(input, output, session) {
           t_qhs = t_qhs(),
           t_qha = t_qha(),
           t_q = t_q(),
+          alpha_b = alpha_b(),
           mult_b = mult_b(),
           omega_c_b = omega_c_b(),
           omega_h_b = omega_h_b(),
           rho_s_b = rho_s_b(),
           rho_a_b = rho_a_b(),
+          R_b = input$R_b,
+          kappa_b = input$kappa_b,
           eta_b = eta_b(),
-          t_p_b = t_p_b(),
-          t_qh_b = t_h_b(),
-          t_qc_b = t_c_b()
+          nu_b = input$nu_b,
+          t_ps_b = t_ps_b(),
+          t_pa_b = t_pa_b(),
+          t_qcs_b = t_qcs_b(),
+          t_qca_b = t_qca_b(),
+          t_qhs_b = t_qhs_b(),
+          t_qha_b = t_qha_b(),
+          t_q_b = t_q_b(),
+          generation_b = as.numeric(input$generation_b)
         )
       } else {
         file.copy("report.Rmd", tempReport, overwrite = TRUE)
 
         params <- list(
           name = input$name,
+          prepared_by = input$prepared_by,
           mult = mult(),
           alpha = alpha(),
           omega_c = omega_c(),

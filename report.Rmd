@@ -2,6 +2,7 @@
 title: ''
 params:
   name: NA
+  prepared_by: NA
   mult: NA
   alpha: NA
   omega_c: NA
@@ -78,7 +79,9 @@ params:
 
 ```
 
-## `r glue("Contact Tracing Program Evaluation: ", "{p$name}")`
+## `r if(p$name == "") "Contact Tracing Program Evaluation" else {glue("Contact Tracing Program Evaluation: ", "{p$name}")}`
+
+### `r if (!(p$prepared_by == "")) {glue("Prepared by: {p$prepared_by}")}`
 
 *Report automatically generated from the [ConTESSA application](https://iddynamics.jhsph.edu/apps/connect/contessa/) on `r Sys.Date()`*
 
