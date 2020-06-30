@@ -282,7 +282,7 @@ function(request) {
                   0,
                   1e10
                 ),
-                "If you do not have this number, leave it as 0.",
+                "If you do not have this number, leave it as the same as S3.",
                 uiOutput("n_quar_warning")
               )
             ),

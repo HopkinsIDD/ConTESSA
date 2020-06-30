@@ -344,12 +344,12 @@ function(input, output, session) {
 
 
   prop_detect_isol_passive <- reactive({
-    max(input$n_isolate - input$n_detect_quar, 0) / (n_infect() - input$n_detect_quar)
+   (input$n_detect_quar) / (n_infect() - (input$n_isolate - input$n_detect_quar))
   })
 
 
   prop_detect_isol_passive_b <- reactive({
-    max(input$n_isolate_b - input$n_detect_quar_b, 0) / (n_infect_b() - input$n_detect_quar_b)
+    input$n_detect_quar_b / (n_infect_b() - (input$n_isolate_b - input$n_detect_quar_b))
   })
 
   rho_a <- reactive({
@@ -538,6 +538,10 @@ function(input, output, session) {
     } else {
       js$bkg_col("n_isolate", "#fff")
     }
+  })
+
+  observeEvent(input$n_isolate, {
+    updateNumericInput(session, "n_detect_quar", value = input$n_isolate)
   })
 
   output$n_quar_warning <- renderUI({
@@ -951,6 +955,10 @@ function(input, output, session) {
     if (!input$scenario_b) {
       updateNumericInput(session, "n_isolate_b", value = input$n_isolate)
     }
+  })
+
+  observeEvent(input$n_isolate_b, {
+    updateNumericInput(session, "n_detect_quar_b", value = input$n_isolate_b)
   })
 
   observeEvent(input$n_detect_quar, {
