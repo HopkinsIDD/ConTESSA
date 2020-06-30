@@ -759,7 +759,7 @@ function(request) {
                     ),
                     sliderInput(
                       "omega_c_a",
-                      "C2. Among cases detected in the past four weeks, what percdnt of their community contacts were traced and quarantined? (Scenario A)",
+                      "C2. Among cases detected in the past four weeks, what percent of their community contacts were traced and quarantined? (Scenario A)",
                       0,
                       100,
                       50
@@ -878,7 +878,7 @@ function(request) {
                     ),
                     sliderInput(
                       "omega_c_b",
-                      "C2. Among cases detected in the past four weeks, what percdnt of their community contacts were traced and quarantined? (Scenario B)",
+                      "C2. Among cases detected in the past four weeks, what percent of their community contacts were traced and quarantined? (Scenario B)",
                       0,
                       100,
                       50
