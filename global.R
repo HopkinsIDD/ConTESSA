@@ -192,9 +192,9 @@ idd_hc_gauge <- hc_theme_merge(
 )
 
 hc_gauge <- function(x, stops = list(
-                       list(.25, "#ffcccb"),
-                       list(.50, "#ffff99"),
-                       list(.75, "#90ee90")
+                       list(.25, "#68ace5"),
+                       list(.50, "#68ace5"),
+                       list(.75, "#68ace5")
                      ), title, name) {
   highchart() %>%
     hc_add_theme(idd_hc_gauge) %>%
@@ -217,7 +217,7 @@ hc_gauge <- function(x, stops = list(
       name = name,
       data = c(x),
       dataLabels = list(
-        format = '<div style="text-align:center"><span style="font-size:32px; color:#444;">{y}</span><span style="font-size:32px;color:#68ace5;">%</span></div>',
+        format = '<div style="text-align:center"><span style="font-size:32px; color:#444;">{y}%</span></div>',
         borderWidth = 0
       ),
       tooltip = list(valueSuffix = "%")
