@@ -89,7 +89,7 @@ function(request) {
         tags$link(
           href = "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
           rel = "stylesheet"
-        ),
+        )
       ),
       includeCSS("www/custom.css"),
       use_sever(),
