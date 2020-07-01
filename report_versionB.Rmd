@@ -54,6 +54,8 @@ params:
   p$t_p <- p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha
   p$t_qh <- p$t_qhs * (1 - p$alpha) + p$t_qha * p$alpha
   p$t_qc <- p$t_qcs * (1 - p$alpha) + p$t_qca * p$alpha
+  p$offset <- -2.31
+  p$rate <- 0.69
   
   pB <- params[grep("_b", names(params))]
   pB <- pB[-1] # removing "generated_by"
@@ -61,6 +63,8 @@ params:
   pB$t_p <- pB$t_ps * (1 - pB$alpha) + pB$t_pa * pB$alpha
   pB$t_qh <- pB$t_qhs * (1 - pB$alpha) + pB$t_qha * pB$alpha
   pB$t_qc <- pB$t_qcs * (1 - pB$alpha) + pB$t_qca * pB$alpha
+  pB$offset <- -2.31
+  pB$rate <- 0.69
   
   pqc <- function(input=p){
     return(
@@ -184,9 +188,9 @@ This report provides estimates of the effectiveness of two specified contact tra
         omega_q = p$omega_q,
         rho_s = seq(0, 1, 0.01),
         rho_a = 1,
-        offset = 2.31,
+        offset = p$offset,
         shape = as.numeric(p$generation),
-        rate = 0.69
+        rate = p$rate
       )
 
   grid <- grid %>%
@@ -224,9 +228,9 @@ This report provides estimates of the effectiveness of two specified contact tra
         omega_q = pB$omega_q,
         rho_s = seq(0, 1, 0.01),
         rho_a = 1,
-        offset = 2.31,
+        offset = pB$offset,
         shape = as.numeric(p$generation),
-        rate = 0.69
+        rate = pB$rate
       )
   grid_b <- grid_b %>%
       mutate(rho_a = rho_s * pB$mult)
@@ -289,9 +293,9 @@ This report provides estimates of the effectiveness of two specified contact tra
         omega_q = p$omega_q,
         rho_s = p$rho_s,
         rho_a = p$rho_a,
-        offset = 2.31,
+        offset = p$offset,
         shape = as.numeric(p$generation),
-        rate = 0.69
+        rate = p$rate
       )
 
   grid <- grid %>%
@@ -328,9 +332,9 @@ This report provides estimates of the effectiveness of two specified contact tra
         omega_q = pB$omega_q,
         rho_s = pB$rho_s,
         rho_a = pB$rho_a,
-        offset = 2.31,
+        offset = pB$offset,
         shape = as.numeric(p$generation),
-        rate = 0.69
+        rate = pB$rate
       )
   grid_b <- grid_b %>%
       mutate(t_pa = t_ps)
@@ -394,9 +398,9 @@ This report provides estimates of the effectiveness of two specified contact tra
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = p$rate
     )
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
@@ -426,9 +430,9 @@ This report provides estimates of the effectiveness of two specified contact tra
       omega_q = pB$omega_q,
       rho_s = pB$rho_s,
       rho_a = pB$rho_a,
-      offset = 2.31,
+      offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = pB$rate
     )
   
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
@@ -489,9 +493,9 @@ if (shiny::isRunning())
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = p$offset
     )
   grid <- grid %>%
           mutate(t_qha = t_qhs)
@@ -526,9 +530,9 @@ if (shiny::isRunning())
       omega_q = pB$omega_q,
       rho_s = pB$rho_s,
       rho_a = pB$rho_a,
-      offset = 2.31,
+      offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = pB$rate
     )
   grid_b <- grid_b %>%
           mutate(t_qha = t_qhs)
@@ -592,9 +596,9 @@ if (shiny::isRunning())
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = p$rate
     )
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
@@ -624,9 +628,9 @@ if (shiny::isRunning())
       omega_q = pB$omega_q,
       rho_s = pB$rho_s,
       rho_a = pB$rho_a,
-      offset = 2.31,
+      offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = pB$rate
     )
   
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
@@ -681,9 +685,9 @@ if (shiny::isRunning())
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = p$rate
     )
   grid <- grid %>%
           mutate(t_qca = t_qcs)
@@ -718,9 +722,9 @@ if (shiny::isRunning())
       omega_q = pB$omega_q,
       rho_s = pB$rho_s,
       rho_a = pB$rho_a,
-      offset = 2.31,
+      offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = pB$rate
     )
   grid_b <- grid_b %>%
           mutate(t_qca = t_qcs)
