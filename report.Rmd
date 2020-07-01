@@ -144,7 +144,7 @@ This report provides estimates of the effectiveness of a specified contact traci
         omega_q = p$omega_q,
         rho_s = seq(0, 1, 0.01),
         rho_a = 1,
-        offset = 2.31,
+        offset = - 2.31,
         shape = as.numeric(p$generation),
         rate = 0.69
       )
@@ -206,7 +206,7 @@ This report provides estimates of the effectiveness of a specified contact traci
         omega_q = p$omega_q,
         rho_s = p$rho_s,
         rho_a = p$rho_a,
-        offset = 2.31,
+        offset = - 2.31,
         shape = as.numeric(p$generation),
         rate = 0.69
       )
@@ -266,7 +266,7 @@ This report provides estimates of the effectiveness of a specified contact traci
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(p$generation),
       rate = 0.69
     )
@@ -328,7 +328,7 @@ if (shiny::isRunning())
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(p$generation),
       rate = 0.69
     )
@@ -385,7 +385,7 @@ if (shiny::isRunning())
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(p$generation),
       rate = 0.69
     )
@@ -440,7 +440,7 @@ if (shiny::isRunning())
       omega_q = p$omega_q,
       rho_s = p$rho_s,
       rho_a = p$rho_a,
-      offset = 2.31,
+      offset = - 2.31,
       shape = as.numeric(p$generation),
       rate = 0.69
     )
