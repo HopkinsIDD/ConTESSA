@@ -2639,7 +2639,7 @@ function(input, output, session) {
       "surveillance is <span class='assumption'>{t_pa()}</span> days. The time ",
       "delay from symptom onset of the case to quarantine",
       " of a person infected by a symptomatic household ",
-      "contact is <span class='assumption'>{t_qch()}</span>. The ",
+      "contact is <span class='assumption'>{t_qhs()}</span>. The ",
       "time delay from symptom onset of the case ",
       "to quarantine of a person infected by a symptomatic ",
       "community contact is <span class='assumption'>{t_qcs()}</span>. ",
