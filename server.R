@@ -629,7 +629,9 @@ function(input, output, session) {
   })
 
   observeEvent(input$n_isolate, {
+    if (input$tabs == "passive") {
     updateNumericInput(session, "n_detect_quar", value = input$n_isolate)
+    }
   })
 
   output$n_quar_warning <- renderUI({
@@ -950,7 +952,7 @@ function(input, output, session) {
     r$value <- TRUE
   })
 
-  observeEvent(input$tabs, {
+  observe({
     val()
     val_b()
     if (input$tabs == "dash" & !isTRUE(r$value)) {
