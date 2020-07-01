@@ -1153,14 +1153,14 @@ function(request) {
             box(width = 6,
                 h3("Surveillance and Isolation (Asymptomatic)"),
 
-                sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (same as number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate?",
+                sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate?",
                                 choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                 width = "100%"
                 ),
                 conditionalPanel("input.scenario_b == true",
                                  h3("Scenario B: Surveillance and Isolation (Asymptomatic)"),
 
-                                 sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (same as number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate? (Scenario B)",
+                                 sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate? (Scenario B)",
                                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                                  width = "100%"
                                  ))
