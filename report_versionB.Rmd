@@ -495,7 +495,7 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = p$offset
+      rate = p$rate
     )
   grid <- grid %>%
           mutate(t_qha = t_qhs)
