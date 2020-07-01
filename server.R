@@ -946,6 +946,10 @@ function(input, output, session) {
     value = FALSE
   )
 
+  observeEvent(input$load, {
+    r$value <- TRUE
+  })
+
   observeEvent(input$tabs, {
     val()
     val_b()
