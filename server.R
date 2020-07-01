@@ -95,16 +95,73 @@ function(input, output, session) {
         "UPLOAD FAILED. Input file must be a .yaml \nfile previously downloaded from this application."
       )
     )
-    saved_inputs <- yaml.load(read_yaml(input$load$datapath))
+    saved$saved_inputs <- yaml.load(read_yaml(input$load$datapath))
     validate(
       need(
-        all(inputs %in% names(saved_inputs)),
+        all(inputs %in% names(saved$saved_inputs)),
         "UPLOAD FAILED. Input file must be a .yaml \nfile previously downloaded from this application."
       )
     )
-    saved$saved_inputs <- saved_inputs
   })
   observeEvent(saved$saved_inputs, {
+    inputs <- c(
+      "scenario_b",
+      "name",
+      "prepared_by",
+      "n_detect",
+      "n_detect_b",
+      "n_infect_calc",
+      "n_infect_calc_b",
+      "n_deaths",
+      "n_deaths_b",
+      "ifr",
+      "ifr_b",
+      "ifr_other",
+      "ifr_other_b",
+      "prop_detect",
+      "prop_detect_b",
+      "n_isolate",
+      "n_isolate_b",
+      "n_detect_quar",
+      "n_detect_quar_b",
+      "pass_test",
+      "pass_isol",
+      "pass_isol_b",
+      "pass_isol2",
+      "pass_isol3",
+      "contact_h",
+      "contact_h_b",
+      "omega_h",
+      "omega_h_b",
+      "house_quar",
+      "house_quar_b",
+      "contact_c",
+      "contact_c_b",
+      "omega_c",
+      "omega_c_b",
+      "comm_quar",
+      "comm_quar_b",
+      "mult",
+      "mult_b",
+      "alpha",
+      "alpha_b",
+      "kappa",
+      "kappa_b",
+      "R",
+      "R_b",
+      "nu",
+      "nu_b",
+      "generation",
+      "generation_b",
+      "t_pa",
+      "t_pa_b"
+    )
+    validate(
+      need(
+        all(inputs %in% names(saved$saved_inputs)),
+        "UPLOAD FAILED. Input file must be a .yaml \nfile previously downloaded from this application."
+      )
+    )
     saved_inputs <- saved$saved_inputs
 
     updateCheckboxInput(session, "scenario_b", value = saved_inputs[["scenario_b"]])
