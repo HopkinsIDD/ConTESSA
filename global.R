@@ -14,6 +14,7 @@ library(tools)
 library(tippy)
 library(yaml)
 library(V8)
+library(shinycssloaders)
 
 ## Helper functions ----
 

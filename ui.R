@@ -585,7 +585,7 @@ function(request) {
                 ),
                 box(
                   width = 5, status = "primary",
-                  uiOutput("r_eff")
+                  uiOutput("r_eff") %>% withSpinner(color = "#f1c400")
                 )
               ),
               box(
@@ -593,7 +593,8 @@ function(request) {
                 p("Your program is identifying",
                   class = "subtitle"
                 ),
-                highchartOutput("prop_q", height = 200),
+                highchartOutput("prop_q", height = 200) %>%
+                  withSpinner(color = "#f1c400"),
                 h4("of the infections in your community", style = "color: #444;"),
               )
             ),
@@ -613,14 +614,15 @@ function(request) {
                 ),
                 box(
                   width = 5, status = "primary",
-                  uiOutput("r_eff_a")
+                  uiOutput("r_eff_a") %>% withSpinner(color = "#f1c400")
                 ),
                 box(
                   width = 12, status = "primary",
                   p("Your program is identifying",
                     class = "subtitle"
                   ),
-                  highchartOutput("prop_q_a", height = 200),
+                  highchartOutput("prop_q_a", height = 200) %>%
+                    withSpinner(color = "#f1c400"),
                   h4("of the infections in your community", style = "color: #444;"),
                 )
               ),
@@ -638,14 +640,15 @@ function(request) {
                 ),
                 box(
                   width = 5, status = "primary",
-                  uiOutput("r_eff_b")
+                  uiOutput("r_eff_b") %>% withSpinner(color = "#f1c400")
                 ),
                 box(
                   width = 12, status = "primary",
                   p("Your program is identifying",
                     class = "subtitle"
                   ),
-                  highchartOutput("prop_q_b", height = 200),
+                  highchartOutput("prop_q_b", height = 200) %>%
+                    withSpinner(color = "#f1c400"),
                   h4("of the infections in your community", style = "color: #444;"),
                 )
               )
@@ -919,18 +922,24 @@ function(request) {
                   width = 12,
                   tabPanel(
                     "Surveillance",
-                    highchartOutput("pass_plot"),
-                    highchartOutput("pass_plot_delay")
+                    highchartOutput("pass_plot") %>%
+                      withSpinner(color = "#f1c400"),
+                    highchartOutput("pass_plot_delay") %>%
+                      withSpinner(color = "#f1c400")
                   ),
                   tabPanel(
                     "Household",
-                    highchartOutput("house_plot"),
-                    highchartOutput("house_plot_delay")
+                    highchartOutput("house_plot") %>%
+                      withSpinner(color = "#f1c400"),
+                    highchartOutput("house_plot_delay") %>%
+                      withSpinner(color = "#f1c400")
                   ),
                   tabPanel(
                     "Community",
-                    highchartOutput("comm_plot"),
-                    highchartOutput("comm_plot_delay")
+                    highchartOutput("comm_plot") %>%
+                      withSpinner(color = "#f1c400"),
+                    highchartOutput("comm_plot_delay") %>%
+                      withSpinner(color = "#f1c400")
                   )
                 )
               )
