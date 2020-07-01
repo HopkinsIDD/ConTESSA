@@ -278,7 +278,7 @@ function(request) {
                   "n_detect_quar",
                   text_q("S4. Over the past 4 weeks, what is the average weekly number of newly isolated cases (from S3) that were not already in quarantine or detected through follow-up with contacts?",
                          "help/s4.md"),
-                  0,
+                  5000,
                   0,
                   1e10
                 ),
