@@ -124,31 +124,26 @@
 .nav-tabs-custom>.nav-tabs>li.active>a {
   color: #002d72;
   background-color: #F8F7F6;
-  z-index: 1000;
 }
 
 .nav-tabs-custom>.nav-tabs>li>a {
   color: #ccc;
   background-color: #fcfcfc;
-  z-index: 1000;
 }
 
 .nav-tabs-custom>.nav-tabs>li.active>a:hover,
 .nav-tabs-custom>.nav-tabs>li>a:hover {
   color: #002d72;
   background-color: #F8F7F6;
-  z-index: 1000;
 }
 
 
 .nav-tabs-custom>.nav-tabs {
   background-color: #fcfcfc;
-  z-index: 1000;
 }
 
 .nav-tabs-custom>.tab-content{
   background-color: #F8F7F6;
-  z-index: 1000;
 }
 
 .irs-min, .irs-max {

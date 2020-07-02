@@ -940,9 +940,9 @@ function(request) {
                       withSpinner(color = "#f1c400"),
                     highchartOutput("comm_plot_delay") %>%
                       withSpinner(color = "#f1c400")
-                  )
-                ),
-                checkboxInput("log_scale", "I'd like to view the y-axis on the log scale")
+                  ),
+                  checkboxInput("log_scale", "I'd like to view the y-axis on the log scale")
+                )
               )
             )
           ),
