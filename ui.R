@@ -941,7 +941,8 @@ function(request) {
                     highchartOutput("comm_plot_delay") %>%
                       withSpinner(color = "#f1c400")
                   )
-                )
+                ),
+                checkboxInput("log_scale", "I'd like to view the y-axis on the log scale")
               )
             )
           ),
@@ -1095,7 +1096,8 @@ function(request) {
                 "Relative risk of infection for a household contact vs community contact",
                 1,
                 10,
-                4
+                4,
+                step = 0.1
               ),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
@@ -1104,7 +1106,8 @@ function(request) {
                                  "Relative risk of infection for a household contact vs community contact (Scenario B)",
                                  1,
                                  10,
-                                 4
+                                 4,
+                                 step = 0.1
                                ))
             ),
             box(

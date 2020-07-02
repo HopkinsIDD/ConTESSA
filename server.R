@@ -271,11 +271,11 @@ function(input, output, session) {
   })
 
   t_qha <- reactive({
-    t_pa() + (t_qhs() - t_ps())
+    max(t_pa() + (t_qhs() - t_ps()), 0)
   })
 
   t_qha_b <- reactive({
-    t_pa_b() + (t_qhs_b() - t_ps_b())
+    max(t_pa_b() + (t_qhs_b() - t_ps_b()), 0)
   })
 
   t_qcs <- reactive({
@@ -287,11 +287,11 @@ function(input, output, session) {
   })
 
   t_qca <- reactive({
-    t_pa() + (t_qcs() - t_ps())
+    max(t_pa() + (t_qcs() - t_ps()), 0)
   })
 
   t_qca_b <- reactive({
-    t_pa_b() + (t_qcs_b() - t_ps_b())
+    max(t_pa_b() + (t_qcs_b() - t_ps_b()), 0)
   })
 
   t_q <- reactive({
@@ -1792,18 +1792,20 @@ function(input, output, session) {
         hc_add_series(b_p,
           type = "scatter",
           hcaes(x = x, y = y, group = name),
-          color = "green",
+          color = "#5dc863",
           showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
           type = "line",
           hcaes(x = prop_detect, y = r_effective),
-          color = "green"
+          color = "#5dc863"
         )
-      r$value <- TRUE
-      return(p)
     }
     r$value <- TRUE
+    if (input$log_scale) {
+    p <- p %>%
+      hc_yAxis(type = "logarithmic")
+    }
     p
   })
 
@@ -1956,18 +1958,20 @@ function(input, output, session) {
         hc_add_series(b_p,
           type = "scatter",
           hcaes(x = x, y = y, group = name),
-          color = "green",
+          color = "#5dc863",
           showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
           type = "line",
           hcaes(x = t, y = r_effective),
-          color = "green"
+          color = "#5dc863"
         )
-      r$value <- TRUE
-      return(p)
     }
     r$value <- TRUE
+    if (input$log_scale) {
+      p <- p %>%
+        hc_yAxis(type = "logarithmic")
+    }
     p
   })
 
@@ -2097,16 +2101,20 @@ function(input, output, session) {
         hc_add_series(b_h,
           type = "scatter",
           hcaes(x = x, y = y, group = name),
-          color = "green",
+          color = "#5dc863",
           showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
           type = "line",
           hcaes(x = omega_h, y = r_effective),
-          color = "green"
+          color = "#5dc863"
         )
     }
     r$value <- TRUE
+    if (input$log_scale) {
+      p <- p %>%
+        hc_yAxis(type = "logarithmic")
+    }
     p
   })
 
@@ -2261,16 +2269,20 @@ function(input, output, session) {
         hc_add_series(b_h,
           type = "scatter",
           hcaes(x = x, y = y, group = name),
-          color = "green",
+          color = "#5dc863",
           showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
           type = "line",
           hcaes(x = t, y = r_effective),
-          color = "green"
+          color = "#5dc863"
         )
     }
     r$value <- TRUE
+    if (input$log_scale) {
+      p <- p %>%
+        hc_yAxis(type = "logarithmic")
+    }
     p
   })
 
@@ -2401,16 +2413,20 @@ function(input, output, session) {
         hc_add_series(b_c,
           type = "scatter",
           hcaes(x = x, y = y, group = name),
-          color = "green",
+          color = "#5dc863",
           showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
           type = "line",
           hcaes(x = omega_c, y = r_effective),
-          color = "green"
+          color = "#5dc863"
         )
     }
     r$value <- TRUE
+    if (input$log_scale) {
+      p <- p %>%
+        hc_yAxis(type = "logarithmic")
+    }
     p
   })
 
@@ -2561,16 +2577,20 @@ function(input, output, session) {
         hc_add_series(b_c,
           type = "scatter",
           hcaes(x = x, y = y, group = name),
-          color = "green",
+          color = "#5dc863",
           showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
           type = "line",
           hcaes(x = t, y = r_effective),
-          color = "green"
+          color = "#5dc863"
         )
     }
     r$value <- TRUE
+    if (input$log_scale) {
+      p <- p %>%
+        hc_yAxis(type = "logarithmic")
+    }
     p
   })
 
