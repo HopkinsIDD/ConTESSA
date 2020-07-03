@@ -245,4 +245,4 @@ theme_hc <- function() {
 }
 ## Storage ---------------------------------------------------------------------
 
-enableBookmarking("url")
+enableBookmarking("server")

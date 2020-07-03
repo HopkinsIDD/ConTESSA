@@ -21,8 +21,10 @@ function(input, output, session) {
   ## Bookmark inputs in URL ---------------------------------------------------
 
   observe({
+    if (input$save_server > 0) {
     reactiveValuesToList(input)
     session$doBookmark()
+    }
   })
   onBookmarked(function(url) {
     updateQueryString(url)

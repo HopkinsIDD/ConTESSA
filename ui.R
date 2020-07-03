@@ -72,8 +72,16 @@ function(request) {
             style = "font-size: 14px; margin-left: 15px; margin-right: 6px;"),
         actionButton("save_name", "Save inputs"),
         conditionalPanel("input.save_name > 0",
+                         radioButtons("save_local", "", choiceNames = list("I'd like to save my inputs locally",
+                                                                     text_q("I'd like to temporarily save my inputs on the server", "help/save.md")),
+                                      choiceValues = c("local", "server")),
+                         conditionalPanel("input.save_local == 'local'",
                          textInput("file_name", "File name:", value = "contessa-inputs"),
                          customdownloadButton("save", "Save")
+                         ),
+                         conditionalPanel("input.save_local == 'server'",
+                         actionButton("save_server", "Save")
+                         )
         ),
         actionButton("return", "Load inputs"),
         conditionalPanel(
