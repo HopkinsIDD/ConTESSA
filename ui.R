@@ -62,26 +62,20 @@ function(request) {
           textInput("report_name", "File name:", value = "contessa-report"),
           customdownloadButton("report", "Generate report")
         ),
-        div(tagList("This application does not save any data ",
+        div(tagList("Please use the 'Save Inputs' button to ",
                     br(),
-                    "inputs. Please be sure to use the ",
+                    "save a file with your data inputs locally ",
                     br(),
-                    "'Save Inputs' button if you want to come",
+                    "to your device. You can use this file to ",
                     br(),
-                    " back to your scenarios at a later time."),
+                    "come back to your scenarios at a later ",
+                    br(),
+                    "time by using the 'Load Inputs' button."),
             style = "font-size: 14px; margin-left: 15px; margin-right: 6px;"),
         actionButton("save_name", "Save inputs"),
         conditionalPanel("input.save_name > 0",
-                         radioButtons("save_local", "", choiceNames = list("I'd like to save my inputs locally",
-                                                                     text_q("I'd like to temporarily save my inputs on the server", "help/save.md")),
-                                      choiceValues = c("local", "server")),
-                         conditionalPanel("input.save_local == 'local'",
                          textInput("file_name", "File name:", value = "contessa-inputs"),
                          customdownloadButton("save", "Save")
-                         ),
-                         conditionalPanel("input.save_local == 'server'",
-                         actionButton("save_server", "Save")
-                         )
         ),
         actionButton("return", "Load inputs"),
         conditionalPanel(
@@ -164,6 +158,10 @@ function(request) {
             )
           ),
           fluidRow(
+            box(width = 12, status = "primary",
+            checkboxInput("save_server",
+                          "Please check this box to save your inputs temporarily on the server. Checking this option may enhance your user experience with this application. Data will be accessible only to maintainers of this application and will be delete automatically once every 48 hours.")
+            ),
             actionButton("surv", "GET STARTED",
                          style = "background-color: #f1c400;"
             )

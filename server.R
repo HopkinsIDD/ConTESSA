@@ -21,7 +21,7 @@ function(input, output, session) {
   ## Bookmark inputs in URL ---------------------------------------------------
 
   observe({
-    if (input$save_server > 0) {
+    if (input$save_server == TRUE) {
     reactiveValuesToList(input)
     session$doBookmark()
     }
