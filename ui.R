@@ -591,7 +591,7 @@ function(request) {
                 ),
                 box(
                   width = 5, status = "primary",
-                  uiOutput("r_eff") %>% withSpinner(color = "#f1c400")
+                  uiOutput("r_eff")
                 )
               ),
               box(
@@ -620,7 +620,7 @@ function(request) {
                 ),
                 box(
                   width = 5, status = "primary",
-                  uiOutput("r_eff_a") %>% withSpinner(color = "#f1c400")
+                  uiOutput("r_eff_a")
                 ),
                 box(
                   width = 12, status = "primary",
@@ -646,7 +646,7 @@ function(request) {
                 ),
                 box(
                   width = 5, status = "primary",
-                  uiOutput("r_eff_b") %>% withSpinner(color = "#f1c400")
+                  uiOutput("r_eff_b")
                 ),
                 box(
                   width = 12, status = "primary",
