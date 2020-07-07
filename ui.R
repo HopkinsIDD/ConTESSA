@@ -160,7 +160,7 @@ function(request) {
           fluidRow(
             box(width = 12, status = "primary",
             checkboxInput("save_server",
-                          "Please check this box to save your inputs temporarily on the server. Checking this option may enhance your user experience with this application. Data will be accessible only to maintainers of this application and will be delete automatically once every 48 hours.")
+                          "Please check this box to save your inputs temporarily on the server. Checking this option may enhance your user experience with this application. Data will be accessible only to maintainers of this application and will be deleted automatically once every 48 hours.")
             ),
             actionButton("surv", "GET STARTED",
                          style = "background-color: #f1c400;"
