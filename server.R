@@ -423,12 +423,40 @@ function(input, output, session) {
     }
   })
 
+  output$mult_warning <- renderUI({
+    constraint <- (prop_detect_isol_passive() - (1 - alpha())) / alpha()
+    if (constraint > input$mult) {
+    p(glue("Based on S2, S3, and S4 in the 'Surveillance and Isolation' tab, you ",
+         "are isolating {round(prop_detect_isol_passive() * 100)}% of infections ",
+         "who were not identified during contact tracing. Based on the advanced ",
+         "options (above), {input$alpha}% of infections are asymptomatic. Therefore, ",
+         "the minimum value possible for this slider is ",
+         "{round(constraint, 2)}, the value ",
+         "you have input is currently being ignored, the model is using {round(constraint, 2)}."),
+    style = "background-color: #f1c400;")
+    }
+  })
+
   mult_b <- reactive({
     constraint <- (prop_detect_isol_passive_b() - (1 - alpha_b())) / alpha_b()
     if (constraint < input$mult_b) {
       return(input$mult_b)
     } else {
       return(constraint)
+    }
+  })
+
+  output$mult_b_warning <- renderUI({
+    constraint <- (prop_detect_isol_passive_b() - (1 - alpha_b())) / alpha_b()
+    if (constraint > input$mult_b) {
+      p(glue("Based on your 'Scenario B' inputs, you ",
+             "are isolating {round(prop_detect_isol_passive_b() * 100)}% of infections ",
+             "who were not identified during contact tracing. Based on the advanced ",
+             "options (above), {input$alpha_b}% of infections are asymptomatic. Therefore, ",
+             "the minimum value possible for this slider is ",
+             "{round(constraint, 2)}, the value ",
+             "you have input is currently being ignored, the model is using {round(constraint, 2)}."),
+        style = "background-color: #f1c400;")
     }
   })
 

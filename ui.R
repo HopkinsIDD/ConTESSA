@@ -1074,11 +1074,14 @@ function(request) {
               sliderInput("mult", "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases",
                           min = 0, max = 1, value = 0.5
               ),
+              uiOutput("mult_warning"),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
                                sliderInput("mult_b", "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases (Scenario B)",
                                            min = 0, max = 1, value = 0.5
-                               ))
+                               ),
+                               uiOutput("mult_b_warning"),
+              )
             )
           ),
           br(),
