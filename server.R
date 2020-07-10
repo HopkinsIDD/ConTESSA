@@ -1032,6 +1032,48 @@ function(input, output, session) {
 
   ## 1.1 Update inputs to initially match Scenario A ----
 
+  observeEvent(input$alpha, {
+    if (!input$scenario_b) {
+      updateSliderInput(session, "alpha_b", value = input$alpha)
+    }
+  })
+
+  observeEvent(input$mult, {
+    if (!input$scenario_b) {
+      updateSliderInput(session, "mult_b", value = input$mult)
+    }
+  })
+
+  observeEvent(input$R, {
+    if (!input$scenario_b) {
+      updateNumericInput(session, "R_b", value = input$R)
+    }
+  })
+
+  observeEvent(input$nu, {
+    if (!input$scenario_b) {
+      updateSliderInput(session, "nu_b", value = input$nu)
+    }
+  })
+
+  observeEvent(input$kappa, {
+    if (!input$scenario_b) {
+      updateSliderInput(session, "kappa_b", value = input$kappa)
+    }
+  })
+
+  observeEvent(input$generation, {
+    if (!input$scenario_b) {
+      updateRadioButtons(session, "generation_b", selected = input$generation)
+    }
+  })
+
+  observeEvent(input$t_pa, {
+    if (!input$scenario_b) {
+      updateSliderTextInput(session, "t_pa_b", selected = input$t_pa)
+    }
+  })
+
   observeEvent(input$n_detect, {
     updateNumericInput(session, "n_detect_a", value = input$n_detect)
     if (!input$scenario_b) {
@@ -1653,7 +1695,7 @@ function(input, output, session) {
   })
 
   output$r_b <- renderUI({
-    p(glue("{round(input$R, 1)}"), class = "r-val")
+    p(glue("{round(input$R_b, 1)}"), class = "r-val")
   })
 
   output$r_a <- renderUI({
