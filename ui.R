@@ -1071,7 +1071,9 @@ function(request) {
           ),
           fluidRow(
             box(
-              sliderInput("mult", "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases",
+              sliderInput("mult", text_q(
+                "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases",
+                "help/mult.md"),
                           min = 0, max = 1, value = 0.5
               ),
               uiOutput("mult_warning"),
