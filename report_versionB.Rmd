@@ -278,13 +278,21 @@ This report provides estimates of the effectiveness of two specified contact tra
 
 ```{r surv delay plot, fig.cap = cap, fig.width=6, fig.height=5}
 
+  diff <- p$t_pa - p$t_ps 
+  
+  if (p$t_ps <= p$t_pa) { 
+     t_ps <- seq(0, 14, 0.5) 
+  } else { 
+     t_ps <- seq((p$t_ps - p$t_pa), (14 + (p$t_ps - p$t_pa)), 0.5) 
+  }
+
   grid <- expand.grid(
         alpha = p$alpha,
         R = p$R,
         kappa = p$kappa,
         eta = p$eta,
         nu = p$nu,
-        t_ps = seq(0,14,0.1),
+        t_ps = t_ps,
         t_pa = 1,
         t_qcs = p$t_qcs,
         t_qca = p$t_qca,
@@ -302,7 +310,7 @@ This report provides estimates of the effectiveness of two specified contact tra
       )
 
   grid <- grid %>%
-      mutate(t_pa = t_ps)
+      mutate(t_pa = t_ps + diff)
     
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
@@ -315,7 +323,15 @@ This report provides estimates of the effectiveness of two specified contact tra
       y = r_eff(p),
       name = "You are here"
     )
+  
     
+  diff_b <- pB$t_pa - pB$t_ps
+  
+  if (pB$t_ps <= pB$t_pa) { 
+     t_ps_b <- seq(0, 14, 0.5) 
+  } else { 
+     t_ps_b <- seq((pB$t_ps - pB$t_pa), (14 + (pB$t_ps - pB$t_pa)), 0.5) 
+  }
   
   grid_b <- expand.grid(
         alpha = pB$alpha,
@@ -323,7 +339,7 @@ This report provides estimates of the effectiveness of two specified contact tra
         kappa = pB$kappa,
         eta = pB$eta,
         nu = pB$nu,
-        t_ps = seq(0,14,0.1),
+        t_ps = t_ps_b,
         t_pa = 1,
         t_qcs = pB$t_qcs,
         t_qca = pB$t_qca,
@@ -340,7 +356,7 @@ This report provides estimates of the effectiveness of two specified contact tra
         rate = pB$rate
       )
   grid_b <- grid_b %>%
-      mutate(t_pa = t_ps)
+      mutate(t_pa = t_ps + diff_b)
     
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
   d_b <- d_b %>%
@@ -478,6 +494,14 @@ if (shiny::isRunning())
 
 ```{r hh delay plot, fig.cap=cap, fig.width=6, fig.height=5}
 
+  diff <- p$t_qha - p$t_qhs
+
+  if (p$t_qhs <= p$t_qha) {
+    t_qhs <- seq(0, 14, 0.5)
+  } else {
+    t_qhs <- seq(p$t_qhs - p$t_qha, 14 + (p$t_qhs - p$t_qha), 0.5)
+  }
+
   grid <- expand.grid(
       alpha = p$alpha,
       R = p$R,
@@ -488,7 +512,7 @@ if (shiny::isRunning())
       t_pa = p$t_pa,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
-      t_qhs = seq(0,14,0.1),
+      t_qhs = t_qhs,
       t_qha = 1,
       t_q = p$t_q,
       omega_c = p$omega_c,
@@ -501,7 +525,7 @@ if (shiny::isRunning())
       rate = p$rate
     )
   grid <- grid %>%
-          mutate(t_qha = t_qhs)
+          mutate(t_qha = t_qhs + diff)
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
@@ -515,6 +539,15 @@ if (shiny::isRunning())
       name = "You are here"
     )
   
+  
+  diff_b <- pB$t_qha - pB$t_qhs
+
+  if (pB$t_qhs <= pB$t_qha) {
+    t_qhs_b <- seq(0, 14, 0.5)
+  } else {
+    t_qhs_b <- seq(pB$t_qhs - pB$t_qha, 14 + (pB$t_qhs - pB$t_qha), 0.5)
+  }
+    
   grid_b <- expand.grid(
       alpha = pB$alpha,
       R = pB$R,
@@ -525,7 +558,7 @@ if (shiny::isRunning())
       t_pa = pB$t_pa,
       t_qcs = pB$t_qcs,
       t_qca = pB$t_qca,
-      t_qhs = seq(0,14,0.1),
+      t_qhs = t_qhs_b,
       t_qha = 1,
       t_q = pB$t_q,
       omega_c = pB$omega_c,
@@ -538,7 +571,7 @@ if (shiny::isRunning())
       rate = pB$rate
     )
   grid_b <- grid_b %>%
-          mutate(t_qha = t_qhs)
+          mutate(t_qha = t_qhs + diff_b)
   
 
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
@@ -670,6 +703,14 @@ if (shiny::isRunning())
 
 ```{r c delay plot, fig.cap=cap, fig.width=6, fig.height=5}
 
+  diff <- p$t_qca - p$t_qcs
+
+  if (p$t_qcs <= p$t_qca) {
+    t_qcs <- seq(0, 14, 0.5)
+  } else {
+    t_qcs <- seq(p$t_qcs - p$t_qca, 14 + (p$t_qcs - p$t_qca), 0.5)
+  }
+
   grid <- expand.grid(
       alpha = p$alpha,
       R = p$R,
@@ -678,7 +719,7 @@ if (shiny::isRunning())
       nu = p$nu,
       t_ps = p$t_ps,
       t_pa = p$t_pa,
-      t_qcs = seq(0,14,0.1),
+      t_qcs = t_qcs,
       t_qca = 1,
       t_qhs = p$t_qhs,
       t_qha = p$t_qha,
@@ -693,7 +734,7 @@ if (shiny::isRunning())
       rate = p$rate
     )
   grid <- grid %>%
-          mutate(t_qca = t_qcs)
+          mutate(t_qca = t_qcs + diff)
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
@@ -707,6 +748,14 @@ if (shiny::isRunning())
       name = "You are here"
     )
   
+  diff_b <- pB$t_qca - pB$t_qcs
+
+  if (pB$t_qcs <= pB$t_qca) {
+    t_qcs_b <- seq(0, 14, 0.5)
+  } else {
+    t_qcs_b <- seq(pB$t_qcs - pB$t_qca, 14 + (pB$t_qcs - pB$t_qca), 0.5)
+  }
+    
   grid_b <- expand.grid(
       alpha = pB$alpha,
       R = pB$R,
@@ -715,7 +764,7 @@ if (shiny::isRunning())
       nu = pB$nu,
       t_ps = pB$t_ps,
       t_pa = pB$t_pa,
-      t_qcs = seq(0,14,0.1),
+      t_qcs = t_qcs_b,
       t_qca = 1,
       t_qhs = pB$t_qhs,
       t_qha = pB$t_qha,
@@ -730,7 +779,7 @@ if (shiny::isRunning())
       rate = pB$rate
     )
   grid_b <- grid_b %>%
-          mutate(t_qca = t_qcs)
+          mutate(t_qca = t_qcs + diff_b)
   
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
   d_b <- d_b %>%

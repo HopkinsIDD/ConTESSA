@@ -191,13 +191,21 @@ This report provides estimates of the effectiveness of a specified contact traci
 
 ```{r detection delay plot, fig.cap = cap, fig.width=6, fig.height=4}
 
+  diff <- p$t_pa - p$t_ps 
+  
+  if (p$t_ps <= p$t_pa) { 
+     t_ps <- seq(0, 14, 0.5) 
+  } else { 
+     t_ps <- seq((p$t_ps - p$t_pa), (14 + (p$t_ps - p$t_pa)), 0.5) 
+  } 
+
   grid <- expand.grid(
         alpha = p$alpha,
         R = p$R,
         kappa = p$kappa,
         eta = p$eta,
         nu = p$nu,
-        t_ps = seq(0, 14, 0.1),
+        t_ps = t_ps,
         t_pa = 1,
         t_qcs = p$t_qcs,
         t_qca = p$t_qca,
@@ -215,7 +223,7 @@ This report provides estimates of the effectiveness of a specified contact traci
       )
 
   grid <- grid %>%
-      mutate(t_pa = t_ps)
+      mutate(t_pa = t_ps + diff)
     
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
@@ -313,6 +321,14 @@ if (shiny::isRunning())
 
 ```{r hh delay plot, fig.cap=cap, fig.width=6, fig.height=4}
 
+  diff <- p$t_qha - p$t_qhs
+
+  if (p$t_qhs <= p$t_qha) {
+    t_qhs <- seq(0, 14, 0.5)
+  } else {
+    t_qhs <- seq(p$t_qhs - p$t_qha, 14 + (p$t_qhs - p$t_qha), 0.5)
+  }
+
   grid <- expand.grid(
       alpha = p$alpha,
       R = p$R,
@@ -323,7 +339,7 @@ if (shiny::isRunning())
       t_pa = p$t_pa,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
-      t_qhs = seq(0,14,0.1),
+      t_qhs = t_qhs,
       t_qha = 1,
       t_q = p$t_q,
       omega_c = p$omega_c,
@@ -336,7 +352,7 @@ if (shiny::isRunning())
       rate = 0.69
     )
   grid <- grid %>%
-       mutate(t_qha = t_qhs)
+       mutate(t_qha = t_qhs + diff)
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
@@ -425,6 +441,15 @@ if (shiny::isRunning())
 ```
 
 ```{r c delay plot, fig.cap=cap, fig.width=6, fig.height=4}
+
+  diff <- p$t_qca - p$t_qcs
+
+  if (p$t_qcs <= p$t_qca) {
+    t_qcs <- seq(0, 14, 0.5)
+  } else {
+    t_qcs <- seq(p$t_qcs - p$t_qca, 14 + (p$t_qcs - p$t_qca), 0.5)
+  }
+
   grid <- expand.grid(
       alpha = p$alpha,
       R = p$R,
@@ -433,7 +458,7 @@ if (shiny::isRunning())
       nu = p$nu,
       t_ps = p$t_ps,
       t_pa = p$t_pa,
-      t_qcs = seq(0,14,0.1),
+      t_qcs = t_qcs,
       t_qca = 1,
       t_qhs = p$t_qhs,
       t_qha = p$t_qha,
@@ -448,7 +473,7 @@ if (shiny::isRunning())
       rate = 0.69
     )
   grid <- grid %>%
-          mutate(t_qca = t_qcs)
+          mutate(t_qca = t_qcs + diff)
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
