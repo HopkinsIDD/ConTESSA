@@ -1893,7 +1893,7 @@ function(input, output, session) {
       if (t_ps_b() <= t_pa_b()) {
         t_ps_b <- seq(0, 14, 0.5)
       } else {
-        t_ps_b <- (t_ps_b() - t_pa_b()):(14 + (t_ps_b() - t_pa_b()))
+        t_ps_b <- seq(t_ps_b() - t_pa_b(), (14 + (t_ps_b() - t_pa_b())), 0.5)
       }
 
       grid_b <- expand.grid(
@@ -1942,7 +1942,7 @@ function(input, output, session) {
     if (t_ps() <= t_pa()) {
       t_ps <- seq(0, 14, 0.5)
     } else {
-      t_ps <- (t_ps() - t_pa()):(14 + (t_ps() - t_pa()))
+      t_ps <- seq(t_ps() - t_pa(), (14 + (t_ps() - t_pa())), 0.5)
     }
 
     grid <- expand.grid(
@@ -2204,7 +2204,7 @@ function(input, output, session) {
       if (t_qhs_b() <= t_qha_b()) {
         t_qhs_b <- seq(0, 14, 0.5)
       } else {
-        t_qhs_b <- (t_qhs_b() - t_qha_b()):(14 + (t_qhs_b() - t_qha_b()))
+        t_qhs_b <- seq(t_qhs_b() - t_qha_b(), (14 + (t_qhs_b() - t_qha_b())), 0.5)
       }
 
       grid_b <- expand.grid(
@@ -2252,7 +2252,7 @@ function(input, output, session) {
     if (t_qhs() <= t_qha()) {
       t_qhs <- seq(0, 14, 0.5)
     } else {
-      t_qhs <- (t_qhs() - t_qha()):(14 + (t_qhs() - t_qha()))
+      t_qhs <- seq(t_qhs() - t_qha(), (14 + (t_qhs() - t_qha())), 0.5)
     }
 
     grid <- expand.grid(
@@ -2515,7 +2515,7 @@ function(input, output, session) {
       if (t_qcs_b() <= t_qca_b()) {
         t_qcs_b <- seq(0, 14, 0.5)
       } else {
-        t_qcs_b <- (t_qcs_b() - t_qca_b()):(14 + (t_qcs_b() - t_qca_b()))
+        t_qcs_b <- seq(t_qcs_b() - t_qca_b(), (14 + (t_qcs_b() - t_qca_b())), 0.5)
       }
 
       grid_b <- expand.grid(
@@ -2561,7 +2561,7 @@ function(input, output, session) {
     if (t_qcs() <= t_qca()) {
       t_qcs <- seq(0, 14, 0.5)
     } else {
-      t_qcs <- (t_qcs() - t_qca()):(14 + (t_qcs() - t_qca()))
+      t_qcs <- seq(t_qcs() - t_qca(), (14 + (t_qcs() - t_qca())), 0.5)
     }
 
     grid <- expand.grid(
