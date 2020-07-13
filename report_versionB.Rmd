@@ -1,5 +1,8 @@
 ---
 title: ""
+header-includes:
+- \usepackage{caption}
+- \captionsetup[figure]{labelformat=empty}
 params:
   name: NA
   prepared_by: NA
