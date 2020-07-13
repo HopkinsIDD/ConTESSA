@@ -1888,11 +1888,10 @@ function(input, output, session) {
 
     if (input$scenario_b) {
       val_b()
-
       diff <- t_pa_b() - t_ps_b()
 
       if (t_ps_b() <= t_pa_b()) {
-        t_ps_b <- 0:14
+        t_ps_b <- seq(0, 14, 0.5)
       } else {
         t_ps_b <- (t_ps_b() - t_pa_b()):(14 + (t_ps_b() - t_pa_b()))
       }
@@ -1941,7 +1940,7 @@ function(input, output, session) {
     diff <- t_pa() - t_ps()
 
     if (t_ps() <= t_pa()) {
-      t_ps <- 0:14
+      t_ps <- seq(0, 14, 0.5)
     } else {
       t_ps <- (t_ps() - t_pa()):(14 + (t_ps() - t_pa()))
     }
@@ -2203,7 +2202,7 @@ function(input, output, session) {
       diff <- t_qha_b() - t_qhs_b()
 
       if (t_qhs_b() <= t_qha_b()) {
-        t_qhs_b <- 0:14
+        t_qhs_b <- seq(0, 14, 0.5)
       } else {
         t_qhs_b <- (t_qhs_b() - t_qha_b()):(14 + (t_qhs_b() - t_qha_b()))
       }
@@ -2251,7 +2250,7 @@ function(input, output, session) {
     diff <- t_qha() - t_qhs()
 
     if (t_qhs() <= t_qha()) {
-      t_qhs <- 0:14
+      t_qhs <- seq(0, 14, 0.5)
     } else {
       t_qhs <- (t_qhs() - t_qha()):(14 + (t_qhs() - t_qha()))
     }
@@ -2514,7 +2513,7 @@ function(input, output, session) {
       diff <- t_qca_b() - t_qcs_b()
 
       if (t_qcs_b() <= t_qca_b()) {
-        t_qcs_b <- 0:14
+        t_qcs_b <- seq(0, 14, 0.5)
       } else {
         t_qcs_b <- (t_qcs_b() - t_qca_b()):(14 + (t_qcs_b() - t_qca_b()))
       }
@@ -2560,7 +2559,7 @@ function(input, output, session) {
     diff <- t_qca() - t_qcs()
 
     if (t_qcs() <= t_qca()) {
-      t_qcs <- 0:14
+      t_qcs <- seq(0, 14, 0.5)
     } else {
       t_qcs <- (t_qcs() - t_qca()):(14 + (t_qcs() - t_qca()))
     }
