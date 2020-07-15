@@ -308,7 +308,7 @@ function(request) {
                   style = "margin: auto; width: 92%",
                   sliderTextInput("pass_test", text_q("S5. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and having a sample collected for testing?",
                                                       "help/s5.md"),
-                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"),
+                                  choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"),
                                   "Day 2", width = "100%"
                   ),
 
@@ -323,7 +323,7 @@ function(request) {
                   uiOutput("pass_test_out"),
                   sliderTextInput("pass_isol", text_q("S6. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate?",
                                                       "help/s6.md"),
-                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
+                                  choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
                                   from_fixed = TRUE, width = "100%"
                   ),
                   div(
@@ -428,7 +428,7 @@ function(request) {
                   div(
                     style = "margin-top: -30px",
                     sliderTextInput("pass_isol2", "",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
                                     from_fixed = TRUE, to_fixed = TRUE, width = "100%"
                     ),
                     uiOutput("pass_isol2_out"),
@@ -437,7 +437,7 @@ function(request) {
                 div(
                   style = "padding-left: 20px; padding-right: 20px; padding-bottom: 10px;",
                   sliderTextInput("house_quar", "",
-                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                  choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
                   ),
                   uiOutput("house_quar_explain")
                 )
@@ -533,7 +533,7 @@ function(request) {
                   div(
                     style = "margin-top: -30px",
                     sliderTextInput("pass_isol3", "",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 2", "Day 5"),
                                     from_fixed = TRUE, to_fixed = TRUE, width = "100%"
                     ),
                     uiOutput("pass_isol3_out"),
@@ -542,7 +542,7 @@ function(request) {
                 div(
                   style = "padding-left: 20px; padding-right: 20px; padding-bottom: 10px;",
                   sliderTextInput("comm_quar", "",
-                                  choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                  choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
                   ),
                   uiOutput("comm_quar_explain")
                 )
@@ -752,7 +752,7 @@ function(request) {
                       1e10
                     ),
                     sliderTextInput("pass_isol_a", "S6. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario A)",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                     width = "100%"
                     ),
                     numericInput(
@@ -770,7 +770,7 @@ function(request) {
                       50
                     ),
                     sliderTextInput("house_quar_a", "H3. Among household contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the household contacts were quarantined? (Scenario A)",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
                     ),
                     numericInput(
                       "contact_c_a",
@@ -787,7 +787,7 @@ function(request) {
                       50
                     ),
                     sliderTextInput("comm_quar_a", "C3. Among community contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the community contacts were quarantined? (Scenario A)",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
 
                     )
                   ),
@@ -870,7 +870,7 @@ function(request) {
                     ),
                     uiOutput("n_quar_warning_b"),
                     sliderTextInput("pass_isol_b", "S6. Among cases detected in the past four weeks, what is the average number of days between symptom onset of a case and when they are told to isolate? (Scenario B)",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                     width = "100%"
                     ),
                     numericInput(
@@ -888,7 +888,7 @@ function(request) {
                       50
                     ),
                     sliderTextInput("house_quar_b", "H3. Among household contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the household contacts were quarantined? (Scenario B)",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), "Day 6", width = "100%"
 
                     ),
                     numericInput(
@@ -906,7 +906,7 @@ function(request) {
                       50
                     ),
                     sliderTextInput("comm_quar_b", "C3. Among community contacts that have been notified and quarantined in the past four weeks, what is the average number of days between symptom onset of the case and when the community contacts were quarantined? (Scenario B)",
-                                    choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), selected = "Day 6", width = "100%"
+                                    choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), selected = "Day 6", width = "100%"
                     )
                   )
                 )
@@ -1177,14 +1177,14 @@ function(request) {
                 h3("Surveillance and Isolation (Asymptomatic)"),
 
                 sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate?",
-                                choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                 width = "100%"
                 ),
                 conditionalPanel("input.scenario_b == true",
                                  h3("Scenario B: Surveillance and Isolation (Asymptomatic)"),
 
                                  sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate? (Scenario B)",
-                                                 choices = c("Symptom onset of case", glue("Day {seq(1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
+                                                 choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                                  width = "100%"
                                  ))
             )
