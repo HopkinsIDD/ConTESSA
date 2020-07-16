@@ -95,8 +95,8 @@ This report provides estimates of the effectiveness of a specified contact traci
 | Parameter                  | Value                    | 
 |:---------------------------|:-------------------------|
 | **Surveillance**           |                           |
-| Percent of all symptomatic infections (not previously quarantined) that are isolated | `r glue("{round(p$rho_s*100, 1)}", "%")`     |
-| Percent of all asymptomatic infections (not previously quarantined) that are isolated | `r glue("{round(p$rho_a*100, 1)}", "%")`     |
+| Percent of all symptomatic infections (not previously quarantining due to contact tracing) that are isolated | `r glue("{round(p$rho_s*100, 1)}", "%")`     |
+| Percent of all asymptomatic infections (not previously quarantining due to contact tracing) that are isolated | `r glue("{round(p$rho_a*100, 1)}", "%")`     |
 | Average number of days between symptom onset and isolation of a detected case | `r glue("{p$t_p}")`     |
 | **Household Contact Tracing**            |                           |
 | Percent of household contacts traced and quarantined | `r glue("{round(p$omega_h*100, 1)}", "%")`     |
@@ -170,19 +170,19 @@ This report provides estimates of the effectiveness of a specified contact traci
       name = "You are here"
     )
     
-  pSurv <- ggplot(d, aes(x = prop_detect, y = r_effective)) +
+  pSurv <- ggplot(d, aes(x = prop_detect*100, y = r_effective)) +
       geom_line(color="#4278cf") +
       geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of case isolation \non the reproductive number") +
       scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
-      scale_x_continuous(name = "Proportion cases identified by surveillance and isolated") +
+      scale_x_continuous(name = "Percent of new infections isolated (not already quarantining due to contact tracing)") +
       theme_hc() + theme(legend.position = "none")
       
   pSurv
       
-  cap <- paste0("**Figure ", fig_counter, "**: Impact of completeness of case isolation, as the proportion of cases identified by surveillance and isolated, on the reproductive number, assuming that infections are isolated on average ", round(p$t_p, 1), " days after symptom onset. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the proportion of infections identified and isolated is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
+  cap <- paste0("**Figure ", fig_counter, "**: Impact of completeness of case isolation, as the percent of cases which were not already in quarantine that are identified by surveillance and isolated, on the reproductive number, assuming that infections are isolated on average ", round(p$t_p, 1), " days after symptom onset. The red dot represents the reproductive number for the user-supplied scenario described above. The line represents the reproductive number if the proportion of infections identified and isolated is changed, while all other assumptions described above remain constant. The solid black line represents the reproductive number if there were no contact tracing program, and the dashed black line represents a reproductive number of 1, below which an epidemic would be expected to no longer grow.")
   fig_counter <- fig_counter + 1
 
 ```
