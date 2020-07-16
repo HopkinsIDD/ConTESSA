@@ -2022,7 +2022,7 @@ function(input, output, session) {
       hc_xAxis(title = list(text = "Days from symptom onset to isolation")) %>%
       hc_tooltip(
         valueDecimals = 2,
-        pointFormat = "R: {point.y}<br>{point.x:.0f} days"
+        pointFormat = "R: {point.y}<br>{point.x:.1f} days"
       )
     if (input$scenario_b) {
       p <- p %>%
