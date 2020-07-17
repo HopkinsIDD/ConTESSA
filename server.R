@@ -2682,7 +2682,7 @@ function(input, output, session) {
     HTML(glue(
       "<p><span style='font-weight:bold;'>You input the following information ",
       "on the 'Surveillance and Isolation' page: </span>The percent of infections isolated that ",
-      "are not already in quarantine is <span class='assumption'>{round(prop_detect_isol_passive() * 100)}%</span>. ",
+      "were not detected through contact tracing is <span class='assumption'>{round(prop_detect_isol_passive() * 100)}%</span>. ",
       "The output presented in this application has default assumptions about the disease dynamics of",
       " asymptomatic and symptomatic cases.</p>",
       "<p><span style='font-weight:bold;'>The output presented in this application assumes: </span>",
