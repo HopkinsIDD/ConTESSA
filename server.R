@@ -1822,7 +1822,7 @@ function(input, output, session) {
       d, "line",
       hcaes(x = prop_detect, y = r_effective)
     ) %>%
-      hc_title(text = "Impact of the percent of new infections isolated (not already quarantining due to contact tracing) on the reproductive number") %>%
+      hc_title(text = "Impact of the percent of infections isolated who were not identified during contact tracing on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
         type = "scatter",
@@ -1854,7 +1854,7 @@ function(input, output, session) {
         min = min(1, min(d$r_effective)),
         max = max(max(d$r_effective), input$R)
       ) %>%
-      hc_xAxis(title = list(text = "Percent of new infections isolated (not already quarantining due to contact tracing)")) %>%
+      hc_xAxis(title = list(text = "Percent of infections isolated who were not identified during contact tracing")) %>%
       hc_tooltip(
         valueDecimals = 2,
         pointFormat = "R: {point.y}<br>Percent Isolated: {point.x:.0f}%"
@@ -2682,7 +2682,7 @@ function(input, output, session) {
     HTML(glue(
       "<p><span style='font-weight:bold;'>You input the following information ",
       "on the 'Surveillance and Isolation' page: </span>The percent of infections isolated that ",
-      "are not already in quarantine is <span class='assumption'>{round(prop_detect_isol_passive() * 100)}%</span>. ",
+      "were not detected through contact tracing is <span class='assumption'>{round(prop_detect_isol_passive() * 100)}%</span>. ",
       "The output presented in this application has default assumptions about the disease dynamics of",
       " asymptomatic and symptomatic cases.</p>",
       "<p><span style='font-weight:bold;'>The output presented in this application assumes: </span>",
