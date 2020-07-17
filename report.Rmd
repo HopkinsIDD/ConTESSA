@@ -28,8 +28,9 @@ params:
 ---
 
 ```{r, include = FALSE}
-  knitr::opts_chunk$set(echo = FALSE)
-  knitr::opts_knit$set(eval.after = 'fig.cap')
+  knitr::opts_chunk$set(echo = FALSE, dev = "png", 
+                       dev.args = list(type = "cairo-png"))
+  knitr::opts_knit$set(eval.after = "fig.cap")
 
   fig_counter <- 1
   p <- params
