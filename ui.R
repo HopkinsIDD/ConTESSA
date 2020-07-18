@@ -930,6 +930,8 @@ function(request) {
                     "Surveillance",
                     highchartOutput("pass_plot") %>%
                       withSpinner(color = "#f1c400"),
+                    text_q("Learn more about the axis above", "help/x-axis.md"),
+                    br(), br(),
                     highchartOutput("pass_plot_delay") %>%
                       withSpinner(color = "#f1c400")
                   ),
