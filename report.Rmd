@@ -150,7 +150,7 @@ This report provides estimates of the effectiveness of a specified contact traci
         rho_a = 1,
         offset = - 2.31,
         shape = as.numeric(p$generation),
-        rate = 0.69
+        rate = 0.5
       )
 
   grid <- grid %>%
@@ -218,7 +218,7 @@ This report provides estimates of the effectiveness of a specified contact traci
         rho_a = p$rho_a,
         offset = - 2.31,
         shape = as.numeric(p$generation),
-        rate = 0.69
+        rate = 0.5
       )
 
   grid <- grid %>%
@@ -278,7 +278,7 @@ This report provides estimates of the effectiveness of a specified contact traci
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = 0.5
     )
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
@@ -349,7 +349,7 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = 0.5
     )
   grid <- grid %>%
        mutate(t_qha = t_qhs + diff)
@@ -406,7 +406,7 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = 0.5
     )
   grid <- grid
   
@@ -471,7 +471,7 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.69
+      rate = 0.5
     )
   grid <- grid %>%
           mutate(t_qca = t_qcs + diff)

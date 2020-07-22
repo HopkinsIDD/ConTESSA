@@ -59,7 +59,7 @@ params:
   p$t_qh <- p$t_qhs * (1 - p$alpha) + p$t_qha * p$alpha
   p$t_qc <- p$t_qcs * (1 - p$alpha) + p$t_qca * p$alpha
   p$offset <- -2.31
-  p$rate <- 0.69
+  p$rate <- 0.5
   
   pB <- params[grep("_b", names(params))]
   pB <- pB[-1] # removing "generated_by"
@@ -68,7 +68,7 @@ params:
   pB$t_qh <- pB$t_qhs * (1 - pB$alpha) + pB$t_qha * pB$alpha
   pB$t_qc <- pB$t_qcs * (1 - pB$alpha) + pB$t_qca * pB$alpha
   pB$offset <- -2.31
-  pB$rate <- 0.69
+  pB$rate <- 0.5
   
   pqc <- function(input=p){
     return(
