@@ -1146,11 +1146,11 @@ function(request) {
                 "generation",
                 "Disease generation time",
                 choices = c(
-                  "Short (median of 5.4 days)" = "2.12",
-                  "Medium (median of 6.7 days)" = "3",
-                  "Long (median of 8.1 days)" = "4"
+                  "Short (mean of 5 days)" = "0.9",
+                  "Medium (mean of 6.5 days)" = "1.65",
+                  "Long (mean of 8 days)" = "2.4"
                 ),
-                selected = "3"
+                selected = "1.65"
               ),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
@@ -1158,11 +1158,11 @@ function(request) {
                                  "generation_b",
                                  "Disease generation time (Scenario B)",
                                  choices = c(
-                                   "Short (median of 5.4 days)" = "2.12",
-                                   "Medium (median of 6.7 days)" = "3",
-                                   "Long (median of 8.1 days)" = "4"
+                                   "Short (mean of 5 days)" = "0.9",
+                                   "Medium (mean of 6.5 days)" = "1.65",
+                                   "Long (mean of 8 days)" = "2.4"
                                  ),
-                                 selected = "3"
+                                 selected = "1.65"
                                ))
             )
           ),
