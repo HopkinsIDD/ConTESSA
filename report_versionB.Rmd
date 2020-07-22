@@ -604,7 +604,7 @@ if (shiny::isRunning())
               geom_hline(yintercept=p$R, lwd=0.5) +
               ggtitle("Impact of the delay in quarantine of household contacts \non the reproductive number") +
               scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
-              scale_x_continuous(name = "Delay from case's symptom onset to quarantine of household contacts") +
+              scale_x_continuous(name = "Days from case symptom onset to quarantine of household contacts") +
               theme_hc() 
   pHDelay
  
@@ -813,7 +813,7 @@ if (shiny::isRunning())
               geom_hline(yintercept=p$R, lwd=0.5) +
               ggtitle("Impact of the delay in quarantine of community contacts \non the reproductive number") +
               scale_y_continuous(name = "R", limits = c(min(c(1, d$r_effective)), max(c(d$r_effective, p$R)))) +
-              scale_x_continuous(name = "Delay from case's symptom onset to quarantine of community contacts") +
+              scale_x_continuous(name = "Days from case symptom onset to quarantine of community contacts") +
               theme_hc() 
   pHDelay
  

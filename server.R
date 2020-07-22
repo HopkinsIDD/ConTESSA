@@ -2334,7 +2334,7 @@ function(input, output, session) {
         min = min(1, min(d$r_effective)),
         max = max(max(d$r_effective), input$R)
       ) %>%
-      hc_xAxis(title = list(text = "Delay in quarantine of household contacts")) %>%
+      hc_xAxis(title = list(text = "Days from case symptom onset to quarantine of household contacts")) %>%
       hc_tooltip(
         valueDecimals = 2,
         pointFormat = "R: {point.y}<br>{point.x} days"
@@ -2642,7 +2642,7 @@ function(input, output, session) {
         min = min(1, min(d$r_effective)),
         max = max(max(d$r_effective), input$R)
       ) %>%
-      hc_xAxis(title = list(text = "Delay in quarantine of community contacts")) %>%
+      hc_xAxis(title = list(text = "Days from case symptom onset to quarantine of community contacts")) %>%
       hc_tooltip(
         valueDecimals = 2,
         pointFormat = "R: {point.y}<br>{point.x} days"
