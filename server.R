@@ -1609,7 +1609,9 @@ function(input, output, session) {
       t_qhs = t_qhs(),
       t_qha = t_qha(),
       t_q = t_q(),
-      shape = as.numeric(input$generation)
+      offset = - 2.31,
+      shape = as.numeric(input$generation),
+      rate = 0.5
     )
   })
 
@@ -1672,7 +1674,9 @@ function(input, output, session) {
       t_qhs = t_qhs_b(),
       t_qha = t_qha_b(),
       t_q = t_q_b(),
-      shape = as.numeric(input$generation_b)
+      offset = - 2.31,
+      shape = as.numeric(input$generation_b),
+      rate = 0.5
     )
   })
 
@@ -1760,7 +1764,7 @@ function(input, output, session) {
         rho_a = 1,
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.69
+        rate = 0.5
       )
 
       grid_b <- grid_b %>%
@@ -1800,7 +1804,7 @@ function(input, output, session) {
       rho_a = 1,
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.69
+      rate = 0.5
     )
 
     grid <- grid %>%
@@ -1916,7 +1920,7 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.69
+        rate = 0.5
       )
 
       grid_b <- grid_b %>%
@@ -1965,7 +1969,7 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.69
+      rate = 0.5
     )
 
     grid <- grid %>%
@@ -2078,7 +2082,7 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.69
+        rate = 0.5
       )
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
@@ -2113,7 +2117,7 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.69
+      rate = 0.5
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
 
@@ -2227,7 +2231,7 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.69
+        rate = 0.5
       )
 
       grid_b <- grid_b %>%
@@ -2275,7 +2279,7 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.69
+      rate = 0.5
     )
 
     grid <- grid %>%
@@ -2389,7 +2393,7 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.69
+        rate = 0.5
       )
 
 
@@ -2426,7 +2430,7 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.69
+      rate = 0.5
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
     d <- d %>%
@@ -2538,7 +2542,7 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.69
+        rate = 0.5
       )
 
       grid_b <- grid_b %>%
@@ -2584,7 +2588,7 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.69
+      rate = 0.5
     )
     grid <- grid %>%
       mutate(
