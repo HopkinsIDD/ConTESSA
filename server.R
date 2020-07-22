@@ -2223,7 +2223,7 @@ function(input, output, session) {
         t_qca = t_qca_b(),
         t_qhs = t_qhs_b,
         t_qha = 1,
-        t_q = t_q(),
+        t_q = t_q_b(),
         omega_c = omega_c_b(),
         omega_h = omega_h_b(),
         omega_q = omega_q_b(),
