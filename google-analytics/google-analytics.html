@@ -5,6 +5,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
+  $(document).on('shiny:inputchanged', function(event) {
+    if (event.name === "get_report") {
+      console.log("report generated")
+     ga('send', 'event', 'button', 'generate report');
+    }
+  });
   gtag('config', 'UA-170291313-1');
+
 </script>
 
