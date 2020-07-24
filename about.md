@@ -1,10 +1,9 @@
-We have developed a course that presents the key features of SARS-CoV-2 transmission, the key metrics of contact tracing program impact, and step-by-step instructions for using this application. This course is [available free-of-charge here](link).
+We have developed a course that presents the key features of SARS-CoV-2 transmission, the key metrics of contact tracing program impact, and step-by-step instructions for using this application. This course is [available free-of-charge here](https://coursera.org/share/23994d39b121158bafd9b2203947fcc6).
 
 ### Key Resources for Contact Tracing:
 
 1. US Centers for Disease Control and Prevention: Interim Guidance on Developing a COVID-19 Case Investigation & Contact Tracing Plan [[link](https://www.cdc.gov/coronavirus/2019-ncov/php/contact-tracing/contact-tracing-plan/overview.html)]
 2. Vital Strategies Contact Tracing Playbook [[link](https://contacttracingplaybook.resolvetosavelives.org/)]
-3. Johns Hopkins Bloomberg School of Public Health [[link](page with link to app)]
 
 ### Infection Fatality Ratio:
 
@@ -45,7 +44,7 @@ for the mitigation of COVID-19: a modelling study. Lancet Infect Dis (2020). htt
 
 This application was built by Lucy D'Agostino McGowan, based on a model developed by Kyra Grantz, Emily Gurley, Elizabeth C. Lee, Lucy D'Agostino McGowan, Justin Lessler, and C. Jessica Metcalf. 
 
-* More [details on the model can be found here](link).
+<!--* More [details on the model can be found here](link).-->
 * More information about [Johns Hopkins Infectious Disease Dynamics](http://www.iddynamics.jhsph.edu)
 
 ### Bug Reports:
