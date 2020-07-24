@@ -4,7 +4,7 @@ We have developed a course that presents the key features of SARS-CoV-2 transmis
 
 1. US Centers for Disease Control and Prevention: Interim Guidance on Developing a COVID-19 Case Investigation & Contact Tracing Plan [[link](https://www.cdc.gov/coronavirus/2019-ncov/php/contact-tracing/contact-tracing-plan/overview.html)]
 2. Vital Strategies Contact Tracing Playbook [[link](https://contacttracingplaybook.resolvetosavelives.org/)]
-3. Johns Hopkins Bloomberg School of Public Health [[link](page with link to app)]
+3. Johns Hopkins Bloomberg School of Public Health COVID-19 Resources [[link](https://www.jhsph.edu/practice/covid-19-resources)]
 
 ### Infection Fatality Ratio:
 
