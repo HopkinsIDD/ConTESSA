@@ -2786,6 +2786,7 @@ function(input, output, session) {
       report$filename
     },
     content <- function(file) {
+      print("Report Downloaded")
       withProgress(message = "Download in progress...", {
       tempReport <- file.path(tempdir(), report$temp)
 
