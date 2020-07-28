@@ -160,7 +160,8 @@ function(request) {
           fluidRow(
             box(width = 12, status = "primary",
             checkboxInput("save_server",
-                          "Please check this box to save your inputs temporarily on the server. Checking this option may enhance your user experience with this application. Data will be accessible only to maintainers of this application and will be deleted automatically once every 48 hours.")
+                          tagList("Please check this box to save your inputs temporarily in your browser. Checking this option may enhance your user experience with this application. If you don't check this box, you could lose your work if you lose internet connectivity or disconnect from the server for other reasons. This information will not be used by our team nor shared with anyone else.",
+ br(), br(), "Regardless of whether you check this box, you should regularly save your inputs locally by clicking 'Save Inputs' in the Navigation pane."))
             ),
             actionButton("surv", "GET STARTED",
                          style = "background-color: #f1c400;"
