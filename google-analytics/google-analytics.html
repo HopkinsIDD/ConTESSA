@@ -8,7 +8,10 @@
   $(document).on('shiny:inputchanged', function(event) {
     if (event.name === "get_report") {
       console.log("report generated")
-     ga('send', 'event', 'button', 'generate report');
+      gtag('event', "event", {
+           'event_category': "button",
+           'event_label': "generate report"
+      });    
     }
   });
 
