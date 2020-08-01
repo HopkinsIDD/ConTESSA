@@ -1,0 +1,1 @@
+This slider updates the relative rate of isolation of asymptomatic cases compared to symptomatic cases. For example, if set at 0.5, symptomatic cases are twice as likely to be isolated compared to asymptomatic cases. This *does not* change the percent that are isolated, as set by S2, S3, and S4 in the 'Surveillance and Isolation' tab.
