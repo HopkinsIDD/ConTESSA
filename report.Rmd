@@ -87,7 +87,7 @@ params:
 
 ### `r if (!(p$prepared_by == "")) {glue("Prepared by: {p$prepared_by}")}`
 
-*Report automatically generated from the [ConTESSA application](https://iddynamicsjhu.shinyapps.io/contessa/) on `r Sys.Date()`*
+*Report automatically generated from the [ConTESSA application](https://iddynamics.jhsph.edu/apps/connect/contessa/) on `r Sys.Date()`*
 
 This report provides estimates of the effectiveness of a specified contact tracing program, based on key indicators for the timing and completeness of contact tracing.
 
@@ -508,7 +508,7 @@ if (shiny::isRunning())
 
 We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been captured in surveillance (V), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
 
-Full details of this model can be found here.  An interactive application implementing this model to explore the effectiveness of contact tracing programs can be found [here](https://iddynamicsjhu.shinyapps.io/contessa/).
+Full details of this model can be found here.  An interactive application implementing this model to explore the effectiveness of contact tracing programs can be found [here](https://docs.google.com/document/d/e/2PACX-1vQaNPfDKAa9RcQi-ckAq8BZ_f0A0zistlJ9pH1FQSu5rMdbU2qD7JXaeOyIa1IkbRUFqlADRu00iL1r/pub).
 
 ```{r}
 if (shiny::isRunning())
