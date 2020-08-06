@@ -164,9 +164,9 @@ This report provides estimates of the effectiveness of two specified contact tra
                     glue("Scenario B therefore represents a further ", "{round((redB - redA)*100, 1)}", "% reduction in the reproductive number, compared to Scenario A."))
 ```
 
-**The contact tracing program following the assumptions listed above for Scenario A would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valA,1)}")`. This program is identifying `r glue("{round(percQ_A*100, 1)}", "%")` of infections in the community.**
+**The contact tracing program following the assumptions listed above for Scenario A would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valA,1)}")`. This program is quarantining or isolating `r glue("{round(percQ_A*100, 1)}", "%")` of infections in the community.**
 
-**The contact tracing program following the assumptions listed above for Scenario B would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valB,1)}")`. This program is identifying `r glue("{round(percQ_B*100, 1)}", "%")` of infections in the community.**
+**The contact tracing program following the assumptions listed above for Scenario B would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valB,1)}")`. This program is quarantining or isolating `r glue("{round(percQ_B*100, 1)}", "%")` of infections in the community.**
 
 **`r glue("{red_str}")`**
 

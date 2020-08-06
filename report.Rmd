@@ -123,7 +123,7 @@ This report provides estimates of the effectiveness of a specified contact traci
   
 ```
 
-**The contact tracing program following the assumptions listed above would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valA,1)}")`. This program is identifying `r glue("{round(percQ_A*100, 1)}", "%")` of infections in the community.**
+**The contact tracing program following the assumptions listed above would be expected to reduce the reproductive number, $R$, from `r glue("{round(p$R,1)}")` to `r glue("{round(valA,1)}")`. This program is quarantining or isolating `r glue("{round(percQ_A*100, 1)}", "%")` of infections in the community.**
 
 
 ### Surveillance
