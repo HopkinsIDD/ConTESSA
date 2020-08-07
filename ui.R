@@ -597,12 +597,12 @@ function(request) {
               ),
               box(
                 width = 6, status = "primary",
-                p("Your program is identifying",
+                p("Your program will isolate or quarantine",
                   class = "subtitle"
                 ),
                 highchartOutput("prop_q", height = 200) %>%
                   withSpinner(color = "#f1c400"),
-                h4("of the infections in your community", style = "color: #444;"),
+                h4("of infected people in your community", style = "color: #444;"),
               )
             ),
             conditionalPanel(
@@ -625,12 +625,12 @@ function(request) {
                 ),
                 box(
                   width = 12, status = "primary",
-                  p("Your program is identifying",
+                  p("Your program will isolate or quarantine",
                     class = "subtitle"
                   ),
                   highchartOutput("prop_q_a", height = 200) %>%
                     withSpinner(color = "#f1c400"),
-                  h4("of the infections in your community", style = "color: #444;"),
+                  h4("of infected people in your community", style = "color: #444;"),
                 )
               ),
               box(
@@ -651,12 +651,12 @@ function(request) {
                 ),
                 box(
                   width = 12, status = "primary",
-                  p("Your program is identifying",
+                  p("Your program will isolate or quarantine",
                     class = "subtitle"
                   ),
                   highchartOutput("prop_q_b", height = 200) %>%
                     withSpinner(color = "#f1c400"),
-                  h4("of the infections in your community", style = "color: #444;"),
+                  h4("of infected people in your community", style = "color: #444;"),
                 )
               )
             )

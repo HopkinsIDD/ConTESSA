@@ -1622,7 +1622,7 @@ function(input, output, session) {
   output$prop_q <- renderHighchart({
     hc_gauge(perc_q(),
       title = "",
-      name = "percent of infections identified"
+      name = "percent of infections isolated or quarantined"
     )
   })
 
@@ -1687,14 +1687,14 @@ function(input, output, session) {
   output$prop_q_b <- renderHighchart({
     hc_gauge(perc_q_b(),
       title = "",
-      name = "percent of infections identified"
+      name = "percent of infections isolated or quarantined"
     )
   })
 
   output$prop_q_a <- renderHighchart({
     hc_gauge(perc_q(),
       title = "",
-      name = "percent of infections identified"
+      name = "percent of infections isolated or quarantined"
     )
   })
 
