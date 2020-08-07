@@ -93,7 +93,7 @@ function(input, output, session) {
     }
     validate(
       need(
-        tolower(file_ext(file$name)) == "yaml",
+        tolower(file_ext(file$name)) %in% c("yaml", "yml"),
         "UPLOAD FAILED. Input file must be a .yaml \nfile previously downloaded from this application."
       )
     )
