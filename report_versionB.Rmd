@@ -124,7 +124,7 @@ This report provides estimates of the effectiveness of two specified contact tra
 
 ### Program Assumptions
 
-| Parameter                  | Value                    |  Value: Scenario B       |
+| Parameter                  | Value: Scenario A        |  Value: Scenario B       |
 |:---------------------------|:-------------------------|:-------------------------|
 | **Surveillance**           |                          |                          |
 | Percent of symptomatic infections isolated who were not identified during contact tracing | `r glue("{round(p$rho_s*100, 1)}", "%")`     | `r ifelse(p$rho_s == pB$rho_s, glue("-"), glue("{round(pB$rho_s*100, 1)}", "%"))`  |

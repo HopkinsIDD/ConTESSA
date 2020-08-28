@@ -171,7 +171,7 @@ This report provides estimates of the effectiveness of a specified contact traci
     
   pSurv <- ggplot(d, aes(x = pct_detect, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of case isolation \non the reproductive number") +
@@ -238,7 +238,7 @@ This report provides estimates of the effectiveness of a specified contact traci
     
   pSurvDelay <- ggplot(d, aes(x = t, y = r_effective)) +
                   geom_line(color="#4278cf") +
-                  geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+                  geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
                   geom_hline(yintercept=1, lty=2) +
                   geom_hline(yintercept=p$R, lwd=0.5) +
                   ggtitle("Impact of the delay from symptom onset to isolation \non the reproductive number") +
@@ -298,7 +298,7 @@ This report provides estimates of the effectiveness of a specified contact traci
         
   pH <- ggplot(d, aes(x = omega_h_pct, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of household contact quarantine \non the reproductive number") +
@@ -369,7 +369,7 @@ if (shiny::isRunning())
         
   pHDelay <- ggplot(d, aes(x = t, y = r_effective)) +
               geom_line(color="#4278cf") +
-              geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+              geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
               geom_hline(yintercept=1, lty=2) +
               geom_hline(yintercept=p$R, lwd=0.5) +
               ggtitle("Impact of the delay in quarantine of household contacts \non the reproductive number") +
@@ -427,7 +427,7 @@ if (shiny::isRunning())
     
   pC <- ggplot(d, aes(x = omega_c_pct, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"))  +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5)  +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of community contact quarantine \non the reproductive number") +
@@ -491,7 +491,7 @@ if (shiny::isRunning())
 
   pCDelay <- ggplot(d, aes(x = t, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"))  +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5)  +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) + 
       ggtitle("Impact of the delay in quarantine of community contacts \non the reproductive number") +
