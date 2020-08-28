@@ -18,8 +18,8 @@ params:
   eta: NA
   nu: NA
   generation: NA
-  t_ps: NA
-  t_pa: NA
+  t_ds: NA
+  t_da: NA
   t_qcs: NA
   t_qca: NA
   t_qhs: NA
@@ -36,8 +36,8 @@ params:
   kappa_b: NA
   eta_b: NA
   nu_b: NA
-  t_ps_b: NA
-  t_pa_b: NA
+  t_ds_b: NA
+  t_da_b: NA
   t_qcs_b: NA
   t_qca_b: NA
   t_qhs_b: NA
@@ -55,7 +55,7 @@ params:
   
   p <- params[-grep("_b", names(params))]
   p <- p[-1] # removing name
-  p$t_p <- p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha
+  p$t_p <- p$t_ds * (1 - p$alpha) + p$t_da * p$alpha
   p$t_qh <- p$t_qhs * (1 - p$alpha) + p$t_qha * p$alpha
   p$t_qc <- p$t_qcs * (1 - p$alpha) + p$t_qca * p$alpha
   p$offset <- -2.31
@@ -64,15 +64,15 @@ params:
   pB <- params[grep("_b", names(params))]
   pB <- pB[-1] # removing "generated_by"
   names(pB) <- gsub("_b", "", names(pB))
-  pB$t_p <- pB$t_ps * (1 - pB$alpha) + pB$t_pa * pB$alpha
+  pB$t_p <- pB$t_ds * (1 - pB$alpha) + pB$t_da * pB$alpha
   pB$t_qh <- pB$t_qhs * (1 - pB$alpha) + pB$t_qha * pB$alpha
   pB$t_qc <- pB$t_qcs * (1 - pB$alpha) + pB$t_qca * pB$alpha
   pB$offset <- -2.31
   pB$rate <- 0.5
   
-  pqc <- function(input=p){
+  dqc <- function(input=p){
     return(
-    get_pqc_equilibrium(
+    get_dqc_equilibrium(
       alpha = input$alpha,
       omega_c = input$omega_c,
       omega_h = input$omega_h,
@@ -83,8 +83,8 @@ params:
       kappa = input$kappa,
       eta = input$eta,
       nu = input$nu,
-      t_ps = input$t_ps,
-      t_pa = input$t_pa,
+      t_ds = input$t_ds,
+      t_da = input$t_da,
       t_qcs = input$t_qcs,
       t_qca = input$t_qca,
       t_qhs = input$t_qhs,
@@ -95,14 +95,14 @@ params:
   }
   
   r_eff <-function(input=p){
-    return(get_r_effective(pqc(input),
+    return(get_r_effective(dqc(input),
             alpha = input$alpha,
             R = input$R,
             kappa = input$kappa,
             eta = input$eta,
             nu = input$nu,
-            t_ps = input$t_ps,
-            t_pa = input$t_pa,
+            t_ds = input$t_ds,
+            t_da = input$t_da,
             t_qcs = input$t_qcs,
             t_qca = input$t_qca,
             t_qhs = input$t_qhs,
@@ -150,11 +150,11 @@ This report provides estimates of the effectiveness of two specified contact tra
 ```{r reductions}
   valA <- r_eff(input=p)
   redA <- (p$R - valA)/p$R
-  percQ_A <- get_prop_identified(pqc(input=p))
+  percQ_A <- get_prop_identified(dqc(input=p))
   
   valB <- r_eff(input=pB)
   redB <- (p$R - valB)/p$R
-  percQ_B <- get_prop_identified(pqc(input=pB))
+  percQ_B <- get_prop_identified(dqc(input=pB))
   
   redA_refB <- (valB - valA)/valB
   redB_refA <- (valA - valB)/valA
@@ -180,8 +180,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         kappa = p$kappa,
         eta = p$eta,
         nu = p$nu,
-        t_ps = p$t_ps,
-        t_pa = p$t_pa,
+        t_ds = p$t_ds,
+        t_da = p$t_da,
         t_qcs = p$t_qcs,
         t_qca = p$t_qca,
         t_qhs = p$t_qhs,
@@ -204,7 +204,7 @@ This report provides estimates of the effectiveness of two specified contact tra
   d <- d %>%
       mutate(
         pct_detect = (rho_s * (1 - alpha) + rho_a * alpha)*100,
-        t = t_ps * (1 - alpha) + t_pa * alpha
+        t = t_ds * (1 - alpha) + t_da * alpha
       )
 
   you_are_here <- tibble(
@@ -220,8 +220,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         kappa = pB$kappa,
         eta = pB$eta,
         nu = pB$nu,
-        t_ps = pB$t_ps,
-        t_pa = pB$t_pa,
+        t_ds = pB$t_ds,
+        t_da = pB$t_da,
         t_qcs = pB$t_qcs,
         t_qca = pB$t_qca,
         t_qhs = pB$t_qhs,
@@ -243,7 +243,7 @@ This report provides estimates of the effectiveness of two specified contact tra
   d_b <- d_b %>%
       mutate(
         pct_detect = (rho_s * (1 - alpha) + rho_a * alpha)*100,
-        t = t_ps * (1 - alpha) + t_pa * alpha
+        t = t_ds * (1 - alpha) + t_da * alpha
       )
 
   you_are_here_b <- tibble(
@@ -279,12 +279,12 @@ This report provides estimates of the effectiveness of two specified contact tra
 
 ```{r surv delay plot, fig.cap = cap, fig.width=6, fig.height=5}
 
-  diff <- p$t_pa - p$t_ps 
+  diff <- p$t_da - p$t_ds 
   
-  if (p$t_ps <= p$t_pa) { 
-     t_ps <- seq(0, 14, 0.5) 
+  if (p$t_ds <= p$t_da) { 
+     t_ds <- seq(0, 14, 0.5) 
   } else { 
-     t_ps <- seq((p$t_ps - p$t_pa), (14 + (p$t_ps - p$t_pa)), 0.5) 
+     t_ds <- seq((p$t_ds - p$t_da), (14 + (p$t_ds - p$t_da)), 0.5) 
   }
 
   grid <- expand.grid(
@@ -293,8 +293,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         kappa = p$kappa,
         eta = p$eta,
         nu = p$nu,
-        t_ps = t_ps,
-        t_pa = 1,
+        t_ds = t_ds,
+        t_da = 1,
         t_qcs = p$t_qcs,
         t_qca = p$t_qca,
         t_qhs = p$t_qhs,
@@ -311,27 +311,27 @@ This report provides estimates of the effectiveness of two specified contact tra
       )
 
   grid <- grid %>%
-      mutate(t_pa = t_ps + diff)
+      mutate(t_da = t_ds + diff)
     
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
       mutate(
-        t = t_ps * (1 - alpha) + t_pa * alpha
+        t = t_ds * (1 - alpha) + t_da * alpha
       )
 
   you_are_here <- tibble(
-      x = p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha,
+      x = p$t_ds * (1 - p$alpha) + p$t_da * p$alpha,
       y = r_eff(p),
       name = "You are here"
     )
   
     
-  diff_b <- pB$t_pa - pB$t_ps
+  diff_b <- pB$t_da - pB$t_ds
   
-  if (pB$t_ps <= pB$t_pa) { 
-     t_ps_b <- seq(0, 14, 0.5) 
+  if (pB$t_ds <= pB$t_da) { 
+     t_ds_b <- seq(0, 14, 0.5) 
   } else { 
-     t_ps_b <- seq((pB$t_ps - pB$t_pa), (14 + (pB$t_ps - pB$t_pa)), 0.5) 
+     t_ds_b <- seq((pB$t_ds - pB$t_da), (14 + (pB$t_ds - pB$t_da)), 0.5) 
   }
   
   grid_b <- expand.grid(
@@ -340,8 +340,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         kappa = pB$kappa,
         eta = pB$eta,
         nu = pB$nu,
-        t_ps = t_ps_b,
-        t_pa = 1,
+        t_ds = t_ds_b,
+        t_da = 1,
         t_qcs = pB$t_qcs,
         t_qca = pB$t_qca,
         t_qhs = pB$t_qhs,
@@ -357,16 +357,16 @@ This report provides estimates of the effectiveness of two specified contact tra
         rate = pB$rate
       )
   grid_b <- grid_b %>%
-      mutate(t_pa = t_ps + diff_b)
+      mutate(t_da = t_ds + diff_b)
     
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
   d_b <- d_b %>%
       mutate(
-        t = t_ps * (1 - alpha) + t_pa * alpha
+        t = t_ds * (1 - alpha) + t_da * alpha
       )
 
   you_are_here_b <- tibble(
-      x = pB$t_ps * (1 - pB$alpha) + pB$t_pa * pB$alpha,
+      x = pB$t_ds * (1 - pB$alpha) + pB$t_da * pB$alpha,
       y = r_eff(pB),
       name = "You are here"
     )
@@ -406,8 +406,8 @@ This report provides estimates of the effectiveness of two specified contact tra
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
       t_qhs = p$t_qhs,
@@ -439,8 +439,8 @@ This report provides estimates of the effectiveness of two specified contact tra
       kappa = pB$kappa,
       eta = pB$eta,
       nu = pB$nu,
-      t_ps = pB$t_ps,
-      t_pa = pB$t_pa,
+      t_ds = pB$t_ds,
+      t_da = pB$t_da,
       t_qcs = pB$t_qcs,
       t_qca = pB$t_qca,
       t_qhs = pB$t_qhs,
@@ -511,8 +511,8 @@ if (shiny::isRunning())
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
       t_qhs = t_qhs,
@@ -557,8 +557,8 @@ if (shiny::isRunning())
       kappa = pB$kappa,
       eta = pB$eta,
       nu = pB$nu,
-      t_ps = pB$t_ps,
-      t_pa = pB$t_pa,
+      t_ds = pB$t_ds,
+      t_da = pB$t_da,
       t_qcs = pB$t_qcs,
       t_qca = pB$t_qca,
       t_qhs = t_qhs_b,
@@ -623,8 +623,8 @@ if (shiny::isRunning())
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
       t_qhs = p$t_qhs,
@@ -656,8 +656,8 @@ if (shiny::isRunning())
       kappa = pB$kappa,
       eta = pB$eta,
       nu = pB$nu,
-      t_ps = pB$t_ps,
-      t_pa = pB$t_pa,
+      t_ds = pB$t_ds,
+      t_da = pB$t_da,
       t_qcs = pB$t_qcs,
       t_qca = pB$t_qca,
       t_qhs = pB$t_qhs,
@@ -722,8 +722,8 @@ if (shiny::isRunning())
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = t_qcs,
       t_qca = 1,
       t_qhs = p$t_qhs,
@@ -767,8 +767,8 @@ if (shiny::isRunning())
       kappa = pB$kappa,
       eta = pB$eta,
       nu = pB$nu,
-      t_ps = pB$t_ps,
-      t_pa = pB$t_pa,
+      t_ds = pB$t_ds,
+      t_da = pB$t_da,
       t_qcs = t_qcs_b,
       t_qca = 1,
       t_qhs = pB$t_qhs,
@@ -824,7 +824,7 @@ if (shiny::isRunning())
 
 ### Technical Details
 
-We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been captured in surveillance (V), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
+We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been detected and isolated through community testing (D), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
 
 Full details of this model can be found here.  An interactive application implementing this model to explore the effectiveness of contact tracing programs can be found [here](https://docs.google.com/document/d/e/2PACX-1vQaNPfDKAa9RcQi-ckAq8BZ_f0A0zistlJ9pH1FQSu5rMdbU2qD7JXaeOyIa1IkbRUFqlADRu00iL1r/pub).
 
