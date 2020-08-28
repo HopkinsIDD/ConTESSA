@@ -85,8 +85,8 @@ function(input, output, session) {
       "nu_b",
       "generation",
       "generation_b",
-      "t_pa",
-      "t_pa_b"
+      "t_da",
+      "t_da_b"
     )
     if (is.null(file)) {
       return(NULL)
@@ -155,8 +155,8 @@ function(input, output, session) {
       "nu_b",
       "generation",
       "generation_b",
-      "t_pa",
-      "t_pa_b"
+      "t_da",
+      "t_da_b"
     )
     validate(
       need(
@@ -214,8 +214,8 @@ function(input, output, session) {
     updateSliderInput(session, "nu_b", value = saved_inputs[["nu_b"]])
     updateRadioButtons(session, "generation", selected = saved_inputs[["generation"]])
     updateRadioButtons(session, "generation_b", selected = saved_inputs[["generation_b"]])
-    updateSliderTextInput(session, "t_pa", selected = saved_inputs[["t_pa"]])
-    updateSliderTextInput(session, "t_pa_b", selected = saved_inputs[["t_pa_b"]])
+    updateSliderTextInput(session, "t_da", selected = saved_inputs[["t_da"]])
+    updateSliderTextInput(session, "t_da_b", selected = saved_inputs[["t_da_b"]])
   })
 
 
@@ -248,20 +248,20 @@ function(input, output, session) {
     omega_h_b() * eta_b() + omega_c_b() * (1 - eta_b())
   })
 
-  t_ps <- reactive({
+  t_ds <- reactive({
     text_to_time(input$pass_isol[2])
   })
 
-  t_ps_b <- reactive({
+  t_ds_b <- reactive({
     text_to_time(input$pass_isol_b)
   })
 
-  t_pa <- reactive({
-    text_to_time(input$t_pa)
+  t_da <- reactive({
+    text_to_time(input$t_da)
   })
 
-  t_pa_b <- reactive({
-    text_to_time(input$t_pa_b)
+  t_da_b <- reactive({
+    text_to_time(input$t_da_b)
   })
 
   t_qhs <- reactive({
@@ -273,11 +273,11 @@ function(input, output, session) {
   })
 
   t_qha <- reactive({
-    max(t_pa() + (t_qhs() - t_ps()), 0)
+    max(t_da() + (t_qhs() - t_ds()), 0)
   })
 
   t_qha_b <- reactive({
-    max(t_pa_b() + (t_qhs_b() - t_ps_b()), 0)
+    max(t_da_b() + (t_qhs_b() - t_ds_b()), 0)
   })
 
   t_qcs <- reactive({
@@ -289,11 +289,11 @@ function(input, output, session) {
   })
 
   t_qca <- reactive({
-    max(t_pa() + (t_qcs() - t_ps()), 0)
+    max(t_da() + (t_qcs() - t_ds()), 0)
   })
 
   t_qca_b <- reactive({
-    max(t_pa_b() + (t_qcs_b() - t_ps_b()), 0)
+    max(t_da_b() + (t_qcs_b() - t_ds_b()), 0)
   })
 
   t_q <- reactive({
@@ -609,16 +609,16 @@ function(input, output, session) {
   })
 
   listen_tp <- reactive({
-    list(input$pass_isol, input$t_pa)
+    list(input$pass_isol, input$t_da)
   })
 
   changed_tp <- eventReactive(listen_tp(), {
-    time <- t_ps() * (1 - alpha()) + t_pa() * (alpha())
+    time <- t_ds() * (1 - alpha()) + t_da() * (alpha())
     not_equal(time, pass_isol())
   })
 
-  t_p <- reactive({
-    time <- t_ps() * (1 - alpha()) + t_pa() * (alpha())
+  t_d <- reactive({
+    time <- t_ds() * (1 - alpha()) + t_da() * (alpha())
     disclaim <- ""
     if (changed_tp()) {
       disclaim <- "*"
@@ -631,8 +631,8 @@ function(input, output, session) {
     )
   })
 
-  output$t_p <- renderInfoBox({
-    t_p()
+  output$t_d <- renderInfoBox({
+    t_d()
   })
 
   ## 2. Update assumptions based on inputs -------------------------------------
@@ -691,11 +691,11 @@ function(input, output, session) {
   })
 
   observeEvent(input$pass_isol, {
-    updateSliderTextInput(session, "t_pa", selected = input$pass_isol[2])
+    updateSliderTextInput(session, "t_da", selected = input$pass_isol[2])
   })
 
   observeEvent(input$pass_isol_b, {
-    updateSliderTextInput(session, "t_pa_b", selected = input$pass_isol_b)
+    updateSliderTextInput(session, "t_da_b", selected = input$pass_isol_b)
   })
 
 
@@ -1068,9 +1068,9 @@ function(input, output, session) {
     }
   })
 
-  observeEvent(input$t_pa, {
+  observeEvent(input$t_da, {
     if (!input$scenario_b) {
-      updateSliderTextInput(session, "t_pa_b", selected = input$t_pa)
+      updateSliderTextInput(session, "t_da_b", selected = input$t_da)
     }
   })
 
@@ -1310,7 +1310,7 @@ function(input, output, session) {
     p_a_d * prop_detect_isol_passive_b() / alpha()
   })
 
-  t_p_b <- reactive({
+  t_d_b <- reactive({
     if (input$pass_isol_b == "Symptom onset of case") {
       return(0)
     } else if (input$pass_isol_b == "Day 14+") {
@@ -1354,8 +1354,8 @@ function(input, output, session) {
     prop_quar_box()
   })
 
-  output$t_p2 <- renderInfoBox({
-    t_p()
+  output$t_d2 <- renderInfoBox({
+    t_d()
   })
   output$omega_h2 <- renderInfoBox({
     omega_h_box()
@@ -1384,8 +1384,8 @@ function(input, output, session) {
     prop_quar_box()
   })
 
-  output$t_p2a <- renderInfoBox({
-    t_p()
+  output$t_d2a <- renderInfoBox({
+    t_d()
   })
   output$omega_h2a <- renderInfoBox({
     omega_h_box()
@@ -1413,8 +1413,8 @@ function(input, output, session) {
     )
   })
 
-  output$t_p_b <- renderInfoBox({
-    time <- t_ps_b() * (1 - alpha_b()) + t_pa_b() * (alpha_b())
+  output$t_d_b <- renderInfoBox({
+    time <- t_ds_b() * (1 - alpha_b()) + t_da_b() * (alpha_b())
 
     infoBox(
       value = time,
@@ -1588,10 +1588,10 @@ function(input, output, session) {
   ## 4. Calculate R ------------------------------------------------------------
 
   ## 4.1 Calculate R A -----
-  pqc <- reactive({
+  dqc <- reactive({
     val()
 
-    get_pqc_equilibrium(
+    get_dqc_equilibrium(
       alpha = alpha(),
       omega_c = omega_c(),
       omega_h = omega_h(),
@@ -1602,8 +1602,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs(),
@@ -1616,7 +1616,7 @@ function(input, output, session) {
   })
 
   perc_q <- reactive({
-    round(get_prop_identified(pqc()) * 100, 1)
+    round(get_prop_identified(dqc()) * 100, 1)
   })
 
   output$prop_q <- renderHighchart({
@@ -1631,14 +1631,14 @@ function(input, output, session) {
   })
 
   r_eff <- reactive({
-    get_r_effective(pqc(),
+    get_r_effective(dqc(),
       alpha = alpha(),
       R = input$R,
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs(),
@@ -1653,10 +1653,10 @@ function(input, output, session) {
 
   ## 4.2 Calculate R B ----
 
-  pqc_b <- reactive({
+  dqc_b <- reactive({
     val_b()
 
-    get_pqc_equilibrium(
+    get_dqc_equilibrium(
       alpha = alpha_b(),
       omega_c = omega_c_b(),
       omega_h = omega_h_b(),
@@ -1667,8 +1667,8 @@ function(input, output, session) {
       kappa = input$kappa_b,
       eta = eta_b(),
       nu = input$nu_b,
-      t_ps = t_ps_b(),
-      t_pa = t_pa_b(),
+      t_ds = t_ds_b(),
+      t_da = t_da_b(),
       t_qcs = t_qcs_b(),
       t_qca = t_qca_b(),
       t_qhs = t_qhs_b(),
@@ -1681,7 +1681,7 @@ function(input, output, session) {
   })
 
   perc_q_b <- reactive({
-    round(get_prop_identified(pqc_b()) * 100, 1)
+    round(get_prop_identified(dqc_b()) * 100, 1)
   })
 
   output$prop_q_b <- renderHighchart({
@@ -1708,14 +1708,14 @@ function(input, output, session) {
 
   r_eff_b <- reactive({
     val_b()
-    get_r_effective(pqc_b(),
+    get_r_effective(dqc_b(),
       alpha = alpha_b(),
       R = input$R_b,
       kappa = input$kappa_b,
       eta = eta_b(),
       nu = input$nu_b,
-      t_ps = t_ps_b(),
-      t_pa = t_pa_b(),
+      t_ds = t_ds_b(),
+      t_da = t_da_b(),
       t_qcs = t_qcs_b(),
       t_qca = t_qca_b(),
       t_qhs = t_qhs_b(),
@@ -1750,8 +1750,8 @@ function(input, output, session) {
         kappa = input$kappa_b,
         eta = eta_b(),
         nu = input$nu_b,
-        t_ps = t_ps_b(),
-        t_pa = t_pa_b(),
+        t_ds = t_ds_b(),
+        t_da = t_da_b(),
         t_qcs = t_qcs_b(),
         t_qca = t_qca_b(),
         t_qhs = t_qhs_b(),
@@ -1790,8 +1790,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs(),
@@ -1892,12 +1892,12 @@ function(input, output, session) {
 
     if (input$scenario_b) {
       val_b()
-      diff <- t_pa_b() - t_ps_b()
+      diff <- t_da_b() - t_ds_b()
 
-      if (t_ps_b() <= t_pa_b()) {
-        t_ps_b <- seq(0, 14, 0.5)
+      if (t_ds_b() <= t_da_b()) {
+        t_ds_b <- seq(0, 14, 0.5)
       } else {
-        t_ps_b <- seq(t_ps_b() - t_pa_b(), (14 + (t_ps_b() - t_pa_b())), 0.5)
+        t_ds_b <- seq(t_ds_b() - t_da_b(), (14 + (t_ds_b() - t_da_b())), 0.5)
       }
 
       grid_b <- expand.grid(
@@ -1906,8 +1906,8 @@ function(input, output, session) {
         kappa = input$kappa_b,
         eta = eta_b(),
         nu = input$nu_b,
-        t_ps = t_ps_b,
-        t_pa = 1,
+        t_ds = t_ds_b,
+        t_da = 1,
         t_qcs = t_qcs_b(),
         t_qca = t_qca_b(),
         t_qhs = t_qhs_b(),
@@ -1925,28 +1925,28 @@ function(input, output, session) {
 
       grid_b <- grid_b %>%
         mutate(
-          t_pa = t_ps + diff
+          t_da = t_ds + diff
         )
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
 
 
       d_b <- d_b %>%
-        mutate(t = t_ps * (1 - alpha) + t_pa * alpha)
+        mutate(t = t_ds * (1 - alpha) + t_da * alpha)
 
       b_p <- tibble(
-        x = t_ps_b() * (1 - alpha_b()) + t_pa_b() * alpha_b(),
+        x = t_ds_b() * (1 - alpha_b()) + t_da_b() * alpha_b(),
         y = r_eff_b(),
         name = "Scenario B"
       )
     }
 
-    diff <- t_pa() - t_ps()
+    diff <- t_da() - t_ds()
 
-    if (t_ps() <= t_pa()) {
-      t_ps <- seq(0, 14, 0.5)
+    if (t_ds() <= t_da()) {
+      t_ds <- seq(0, 14, 0.5)
     } else {
-      t_ps <- seq(t_ps() - t_pa(), (14 + (t_ps() - t_pa())), 0.5)
+      t_ds <- seq(t_ds() - t_da(), (14 + (t_ds() - t_da())), 0.5)
     }
 
     grid <- expand.grid(
@@ -1955,8 +1955,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps,
-      t_pa = 1,
+      t_ds = t_ds,
+      t_da = 1,
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs(),
@@ -1974,16 +1974,16 @@ function(input, output, session) {
 
     grid <- grid %>%
       mutate(
-        t_pa = t_ps + diff
+        t_da = t_ds + diff
       )
 
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
 
     d <- d %>%
-      mutate(t = t_ps * (1 - alpha) + t_pa * alpha)
+      mutate(t = t_ds * (1 - alpha) + t_da * alpha)
 
     you_are_here <- tibble(
-      x = t_ps() * (1 - alpha()) + t_pa() * alpha(),
+      x = t_ds() * (1 - alpha()) + t_da() * alpha(),
       y = r_eff(),
       name = "You are here"
     )
@@ -2068,8 +2068,8 @@ function(input, output, session) {
         kappa = input$kappa_b,
         eta = eta_b(),
         nu = input$nu_b,
-        t_ps = t_ps_b(),
-        t_pa = t_pa_b(),
+        t_ds = t_ds_b(),
+        t_da = t_da_b(),
         t_qcs = t_qcs_b(),
         t_qca = t_qca_b(),
         t_qhs = t_qhs_b(),
@@ -2103,8 +2103,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs(),
@@ -2217,8 +2217,8 @@ function(input, output, session) {
         kappa = input$kappa_b,
         eta = eta_b(),
         nu = input$nu_b,
-        t_ps = t_ps_b(),
-        t_pa = t_pa_b(),
+        t_ds = t_ds_b(),
+        t_da = t_da_b(),
         t_qcs = t_qcs_b(),
         t_qca = t_qca_b(),
         t_qhs = t_qhs_b,
@@ -2265,8 +2265,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs,
@@ -2379,8 +2379,8 @@ function(input, output, session) {
         kappa = input$kappa_b,
         eta = eta_b(),
         nu = input$nu_b,
-        t_ps = t_ps_b(),
-        t_pa = t_pa_b(),
+        t_ds = t_ds_b(),
+        t_da = t_da_b(),
         t_qcs = t_qcs_b(),
         t_qca = t_qca_b(),
         t_qhs = t_qhs_b(),
@@ -2416,8 +2416,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs(),
       t_qca = t_qca(),
       t_qhs = t_qhs(),
@@ -2528,8 +2528,8 @@ function(input, output, session) {
         kappa = input$kappa_b,
         eta = eta_b(),
         nu = input$nu_b,
-        t_ps = t_p_b(),
-        t_pa = t_p_b(),
+        t_ds = t_d_b(),
+        t_da = t_d_b(),
         t_qcs = t_qcs_b,
         t_qca = 1,
         t_qhs = t_qhs_b(),
@@ -2574,8 +2574,8 @@ function(input, output, session) {
       kappa = input$kappa,
       eta = eta(),
       nu = input$nu,
-      t_ps = t_ps(),
-      t_pa = t_pa(),
+      t_ds = t_ds(),
+      t_da = t_da(),
       t_qcs = t_qcs,
       t_qca = 1,
       t_qhs = t_qhs(),
@@ -2733,11 +2733,11 @@ function(input, output, session) {
       "in this application has default assumptions about the disease dynamics ",
       "of asymptomatic and symptomatic cases. ",
       "<p><span style='font-weight:bold;'>The output presented in this application assumes: </span>The time delay from symptom onset of the case to isolation of a symptomatic person ",
-      "detected via surveillance is <span class='assumption'>{t_ps()}</span> ",
+      "detected via surveillance is <span class='assumption'>{t_ds()}</span> ",
       "days. The time delay from when ",
       " symptom onset would have occured to isolation of an asymptomatic person (person infected who ",
       "never develops symptoms) detected via ",
-      "surveillance is <span class='assumption'>{t_pa()}</span> days. The time ",
+      "surveillance is <span class='assumption'>{t_da()}</span> days. The time ",
       "delay from symptom onset of the case to quarantine",
       " of a person infected by a symptomatic household ",
       "contact is <span class='assumption'>{t_qhs()}</span>. The ",
@@ -2809,8 +2809,8 @@ function(input, output, session) {
           eta = eta(),
           nu = input$nu,
           generation = as.numeric(input$generation),
-          t_ps = t_ps(),
-          t_pa = t_pa(),
+          t_ds = t_ds(),
+          t_da = t_da(),
           t_qcs = t_qcs(),
           t_qca = t_qca(),
           t_qhs = t_qhs(),
@@ -2827,8 +2827,8 @@ function(input, output, session) {
           kappa_b = input$kappa_b,
           eta_b = eta_b(),
           nu_b = input$nu_b,
-          t_ps_b = t_ps_b(),
-          t_pa_b = t_pa_b(),
+          t_ds_b = t_ds_b(),
+          t_da_b = t_da_b(),
           t_qcs_b = t_qcs_b(),
           t_qca_b = t_qca_b(),
           t_qhs_b = t_qhs_b(),
@@ -2854,8 +2854,8 @@ function(input, output, session) {
           eta = eta(),
           nu = input$nu,
           generation = as.numeric(input$generation),
-          t_ps = t_ps(),
-          t_pa = t_pa(),
+          t_ds = t_ds(),
+          t_da = t_da(),
           t_qcs = t_qcs(),
           t_qca = t_qca(),
           t_qhs = t_qhs(),

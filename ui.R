@@ -342,7 +342,7 @@ function(request) {
             ),
             column(
               width = 4,
-              infoBoxOutput("t_p", width = NULL)
+              infoBoxOutput("t_d", width = NULL)
             )
           ),
           fluidRow(
@@ -960,7 +960,7 @@ function(request) {
                            h2("SURVEILLANCE AND ISOLATION", align = "center"),
                            fluidRow(
                              infoBoxOutput("prop_quar2", width = 6),
-                             infoBoxOutput("t_p2", width = 6),
+                             infoBoxOutput("t_d2", width = 6),
                            ),
                            h2("CONTACT TRACING", align = "center"),
                            fluidRow(
@@ -976,7 +976,7 @@ function(request) {
                                  h2("SCENARIO A"),
                                  h2("SURVEILLANCE AND ISOLATION", align = "center"),
                                  infoBoxOutput("prop_quar2a", width = NULL),
-                                 infoBoxOutput("t_p2a", width = NULL),
+                                 infoBoxOutput("t_d2a", width = NULL),
                                  h2("CONTACT TRACING", align = "center"),
                                  infoBoxOutput("omega_h2a", width = NULL),
                                  infoBoxOutput("t_hbox2a", width = NULL),
@@ -987,7 +987,7 @@ function(request) {
                                  h2("SCENARIO B"),
                                  h2("SURVEILLANCE AND ISOLATION", align = "center"),
                                  infoBoxOutput("prop_isol_not_quar_b", width = NULL),
-                                 infoBoxOutput("t_p_b", width = NULL),
+                                 infoBoxOutput("t_d_b", width = NULL),
                                  h2("CONTACT TRACING", align = "center"),
                                  infoBoxOutput("omega_h_b_out", width = NULL),
                                  infoBoxOutput("t_hbox_b", width = NULL),
@@ -1179,14 +1179,14 @@ function(request) {
             box(width = 6,
                 h3("Surveillance and Isolation (Asymptomatic)"),
 
-                sliderTextInput("t_pa", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate?",
+                sliderTextInput("t_da", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate?",
                                 choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                 width = "100%"
                 ),
                 conditionalPanel("input.scenario_b == true",
                                  h3("Scenario B: Surveillance and Isolation (Asymptomatic)"),
 
-                                 sliderTextInput("t_pa_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate? (Scenario B)",
+                                 sliderTextInput("t_da_b", "Among asymptomatic cases detected in the past four weeks, what is the average number of days between when symptom onset of the asymptomatic case would have occurred (uses the same number of days between infection and symptom onset for symptomatic cases) and when they are told to isolate? (Scenario B)",
                                                  choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                                  width = "100%"
                                  ))
