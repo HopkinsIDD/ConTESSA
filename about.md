@@ -18,7 +18,7 @@ We have developed a course that presents the key features of SARS-CoV-2 transmis
 2. Du Z., Xu X., Wu Y., et al. Serial Interval of COVID-19 among Publicly Reported Confirmed Cases. Emerg Infect Dis 26(6), 1341-1343 (2020). https://dx.doi.org/10.3201/eid2606.200357.
 3. Nishiura H, Linton N.M., Akhmetzhanov A.R. Serial interval of novel coronavirus (COVID-19) infections. Int J Infect Dis 93, 284-286 (2020). https://doi.org/10.1016/j.ijid.2020.02.060.
 4. Zhang J., Litvinova M., Wang W., et al. Evolving epidemiology and transmission dynamics of
-coronavirus disease 2019 outside Hubei province, China: a descriptive and modelling study. Lancet Infect Dis (2020). https://doi.org/10.1016/S1473-3099(20)30264-4
+coronavirus disease 2019 outside Hubei province, China: a descriptive and modelling study. Lancet Infect Dis (2020). https://doi.org/10.1016/S1473-3099(20)30230-9
 
 ### Incubation Period:
 
