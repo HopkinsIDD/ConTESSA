@@ -17,8 +17,8 @@ params:
   eta: NA
   nu: NA
   kappa: NA
-  t_ps: NA
-  t_pa: NA
+  t_ds: NA
+  t_da: NA
   t_qcs: NA
   t_qca: NA
   t_qhs: NA
@@ -35,9 +35,9 @@ params:
   fig_counter <- 1
   p <- params
 
-  pqc <- function(input=p){
+  dqc <- function(input=p){
     return(
-    get_pqc_equilibrium(
+    get_dqc_equilibrium(
       alpha = input$alpha,
       omega_c = input$omega_c,
       omega_h = input$omega_h,
@@ -48,8 +48,8 @@ params:
       kappa = input$kappa,
       eta = input$eta,
       nu = input$nu,
-      t_ps = input$t_ps,
-      t_pa = input$t_pa,
+      t_ds = input$t_ds,
+      t_da = input$t_da,
       t_qcs = input$t_qcs,
       t_qca = input$t_qca,
       t_qhs = input$t_qhs,
@@ -60,14 +60,14 @@ params:
   }
   
   r_eff <-function(input=p){
-    return(get_r_effective(pqc(input),
+    return(get_r_effective(dqc(input),
             alpha = input$alpha,
             R = input$R,
             kappa = input$kappa,
             eta = input$eta,
             nu = input$nu,
-            t_ps = input$t_ps,
-            t_pa = input$t_pa,
+            t_ds = input$t_ds,
+            t_da = input$t_da,
             t_qcs = input$t_qcs,
             t_qca = input$t_qca,
             t_qhs = input$t_qhs,
@@ -77,7 +77,7 @@ params:
     )
     }
 
-  p$t_p <- p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha
+  p$t_p <- p$t_ds * (1 - p$alpha) + p$t_da * p$alpha
   p$t_qh <- p$t_qhs * (1 - p$alpha) + p$t_qha * p$alpha
   p$t_qc <- p$t_qcs * (1 - p$alpha) + p$t_qca * p$alpha
 
@@ -119,7 +119,7 @@ This report provides estimates of the effectiveness of a specified contact traci
 ```{r reductions}
   valA <- r_eff(input=p)
   redA <- (p$R - valA)/p$R
-  percQ_A <- get_prop_identified(pqc(input=p))
+  percQ_A <- get_prop_identified(dqc(input=p))
   
 ```
 
@@ -136,8 +136,8 @@ This report provides estimates of the effectiveness of a specified contact traci
         kappa = p$kappa,
         eta = p$eta,
         nu = p$nu,
-        t_ps = p$t_ps,
-        t_pa = p$t_pa,
+        t_ds = p$t_ds,
+        t_da = p$t_da,
         t_qcs = p$t_qcs,
         t_qca = p$t_qca,
         t_qhs = p$t_qhs,
@@ -160,7 +160,7 @@ This report provides estimates of the effectiveness of a specified contact traci
   d <- d %>%
       mutate(
         pct_detect = (rho_s * (1 - alpha) + rho_a * alpha)*100,
-        t = t_ps * (1 - alpha) + t_pa * alpha
+        t = t_ds * (1 - alpha) + t_da * alpha
       )
 
   you_are_here <- tibble(
@@ -171,7 +171,7 @@ This report provides estimates of the effectiveness of a specified contact traci
     
   pSurv <- ggplot(d, aes(x = pct_detect, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of case isolation \non the reproductive number") +
@@ -190,12 +190,12 @@ This report provides estimates of the effectiveness of a specified contact traci
 
 ```{r detection delay plot, fig.cap = cap, fig.width=6, fig.height=4}
 
-  diff <- p$t_pa - p$t_ps 
+  diff <- p$t_da - p$t_ds 
   
-  if (p$t_ps <= p$t_pa) { 
-     t_ps <- seq(0, 14, 0.5) 
+  if (p$t_ds <= p$t_da) { 
+     t_ds <- seq(0, 14, 0.5) 
   } else { 
-     t_ps <- seq((p$t_ps - p$t_pa), (14 + (p$t_ps - p$t_pa)), 0.5) 
+     t_ds <- seq((p$t_ds - p$t_da), (14 + (p$t_ds - p$t_da)), 0.5) 
   } 
 
   grid <- expand.grid(
@@ -204,8 +204,8 @@ This report provides estimates of the effectiveness of a specified contact traci
         kappa = p$kappa,
         eta = p$eta,
         nu = p$nu,
-        t_ps = t_ps,
-        t_pa = 1,
+        t_ds = t_ds,
+        t_da = 1,
         t_qcs = p$t_qcs,
         t_qca = p$t_qca,
         t_qhs = p$t_qhs,
@@ -222,23 +222,23 @@ This report provides estimates of the effectiveness of a specified contact traci
       )
 
   grid <- grid %>%
-      mutate(t_pa = t_ps + diff)
+      mutate(t_da = t_ds + diff)
     
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
   d <- d %>%
       mutate(
-        t = t_ps * (1 - alpha) + t_pa * alpha
+        t = t_ds * (1 - alpha) + t_da * alpha
       )
 
   you_are_here <- tibble(
-      x = p$t_ps * (1 - p$alpha) + p$t_pa * p$alpha,
+      x = p$t_ds * (1 - p$alpha) + p$t_da * p$alpha,
       y = r_eff(),
       name = "You are here"
     )
     
   pSurvDelay <- ggplot(d, aes(x = t, y = r_effective)) +
                   geom_line(color="#4278cf") +
-                  geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+                  geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
                   geom_hline(yintercept=1, lty=2) +
                   geom_hline(yintercept=p$R, lwd=0.5) +
                   ggtitle("Impact of the delay from symptom onset to isolation \non the reproductive number") +
@@ -264,8 +264,8 @@ This report provides estimates of the effectiveness of a specified contact traci
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
       t_qhs = p$t_qhs,
@@ -298,7 +298,7 @@ This report provides estimates of the effectiveness of a specified contact traci
         
   pH <- ggplot(d, aes(x = omega_h_pct, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of household contact quarantine \non the reproductive number") +
@@ -335,8 +335,8 @@ if (shiny::isRunning())
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
       t_qhs = t_qhs,
@@ -369,7 +369,7 @@ if (shiny::isRunning())
         
   pHDelay <- ggplot(d, aes(x = t, y = r_effective)) +
               geom_line(color="#4278cf") +
-              geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red")) +
+              geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5) +
               geom_hline(yintercept=1, lty=2) +
               geom_hline(yintercept=p$R, lwd=0.5) +
               ggtitle("Impact of the delay in quarantine of household contacts \non the reproductive number") +
@@ -392,8 +392,8 @@ if (shiny::isRunning())
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = p$t_qcs,
       t_qca = p$t_qca,
       t_qhs = p$t_qhs,
@@ -427,7 +427,7 @@ if (shiny::isRunning())
     
   pC <- ggplot(d, aes(x = omega_c_pct, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"))  +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5)  +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) +
       ggtitle("Impact of the completeness of community contact quarantine \non the reproductive number") +
@@ -457,8 +457,8 @@ if (shiny::isRunning())
       kappa = p$kappa,
       eta = p$eta,
       nu = p$nu,
-      t_ps = p$t_ps,
-      t_pa = p$t_pa,
+      t_ds = p$t_ds,
+      t_da = p$t_da,
       t_qcs = t_qcs,
       t_qca = 1,
       t_qhs = p$t_qhs,
@@ -491,7 +491,7 @@ if (shiny::isRunning())
 
   pCDelay <- ggplot(d, aes(x = t, y = r_effective)) +
       geom_line(color="#4278cf") +
-      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"))  +
+      geom_point(data=you_are_here, aes(x=x, y=y, group=name, color="red"), cex=1.5)  +
       geom_hline(yintercept=1, lty=2) +
       geom_hline(yintercept=p$R, lwd=0.5) + 
       ggtitle("Impact of the delay in quarantine of community contacts \non the reproductive number") +
@@ -506,7 +506,7 @@ if (shiny::isRunning())
 
 ### Technical Details
 
-We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been captured in surveillance (V), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
+We developed a mathematical model to estimate the impact of test-trace-isolate programs on onward disease transmission. We consider transmission in discrete generations from individuals who have been detected and isolated through community testing (D), effectively isolated or quarantined through test and trace efforts (Q), or who remain undetected in the community (C). We consider that, in each generation, some proportion of infections will be detected through a surveillance program. Onward transmission from those individuals ("index cases") is reduced by some factor, dependent on the timing from case identification to isolation and the assumed timing of infectiousness. The contacts of index cases are then able to be enumerated and potentially quarantined; similarly, onward transmission from infected contacts of index cases can be reduced, dependent on the time from index case identification and contact quarantine. We consider differences in the identification of asymptomatic and symptomatic index cases and quarantine of household and community contacts of index cases.
 
 Full details of this model can be found here.  An interactive application implementing this model to explore the effectiveness of contact tracing programs can be found [here](https://docs.google.com/document/d/e/2PACX-1vQaNPfDKAa9RcQi-ckAq8BZ_f0A0zistlJ9pH1FQSu5rMdbU2qD7JXaeOyIa1IkbRUFqlADRu00iL1r/pub).
 
