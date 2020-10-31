@@ -144,8 +144,8 @@ This report provides estimates of the effectiveness of two specified contact tra
 | Percent asymptomatic     | `r glue("{round(p$alpha*100,1)}", "%")`     |  `r ifelse(p$alpha == pB$alpha, glue("-"), glue("{pB$alpha}"))`                         |
 | Relative risk of transmission for an asymptomatic individual compared to a symptomatic individual |  `r glue("{round(p$kappa, 2)}")`     | `r ifelse(p$kappa == pB$kappa, glue("-"), glue("{pB$kappa}"))`                        |
 | Percent of all contacts that occur in the household |  `r glue("{round(p$eta*100, 1)}", "%")`     | `r ifelse(p$eta == pB$eta, glue("-"), glue("{round(pB$eta*100,1)}", "%"))`  |
-| Relative risk of infection for a household contact compared to a community contact |  `r glue("{p$nu}")`     | --                         |
-| `r glue("{if (p$quarantine_time < Inf) 'Quarantine Days'}")` | `r glue("{if (p$quarantine_time < Inf) p$quarantine_time}")` | `r ifelse(p$quarantine_time == pB$quarantine_time, glue(""), glue("{pB$quarantine_time}"))`
+| Relative risk of infection for a household contact compared to a community contact |  `r glue("{p$nu}")`     |      `r ifelse(p$nu == pB$nu, glue("-"), glue("{pB$nu}"))`                    |
+| `r glue("{if (p$quarantine_time < Inf) 'Quarantine Days'}")` | `r glue("{if (p$quarantine_time < Inf) p$quarantine_time}")` | `r if(p$quarantine_time < Inf) ifelse(p$quarantine_time == pB$quarantine_time, glue("-"), glue("{pB$quarantine_time}"))`
 
 *Note that Scenario B values are only shown where they differ from Scenario A. Natural History assumptions can be modified in the "Advanced Options" module of the interactive application.*
 
