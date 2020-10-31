@@ -45,7 +45,7 @@ for the mitigation of COVID-19: a modelling study. Lancet Infect Dis (2020). htt
 
 This application was built by Lucy D'Agostino McGowan, based on a model developed by Kyra Grantz, Emily Gurley, Elizabeth C. Lee, Lucy D'Agostino McGowan, Justin Lessler, and C. Jessica Metcalf. 
 
-* More [details on the model can be found here](https://docs.google.com/document/d/e/2PACX-1vQaNPfDKAa9RcQi-ckAq8BZ_f0A0zistlJ9pH1FQSu5rMdbU2qD7JXaeOyIa1IkbRUFqlADRu00iL1r/pub).
+* More [details on the model can be found here](https://doi.org/10.1101/2020.09.02.20186916).
 * More information about [Johns Hopkins Infectious Disease Dynamics](http://www.iddynamics.jhsph.edu)
 
 ### Bug Reports:
