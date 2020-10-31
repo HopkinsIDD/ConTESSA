@@ -688,7 +688,7 @@ if (shiny::isRunning())
     )
   
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)%>%
-        mutate(omega_c_pct = omega_h*100)
+        mutate(omega_c_pct = omega_c*100)
 
   you_are_here_b <- tibble(
       x = pB$omega_c*100,
