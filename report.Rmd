@@ -25,6 +25,7 @@ params:
   t_qha: NA
   t_q: NA
   generation: NA
+  quarantine_time: NA
 ---
 
 ```{r, include = FALSE}
@@ -55,7 +56,8 @@ params:
       t_qhs = input$t_qhs,
       t_qha = input$t_qha,
       t_q = input$t_q,
-      shape = input$generation
+      shape = input$generation,
+      quarantine_days = input$quarantine_time
     ))
   }
   
@@ -105,12 +107,13 @@ This report provides estimates of the effectiveness of a specified contact traci
 | **Community Contact Tracing**            |                           |
 | Percent of community contacts traced and quarantined | `r glue("{round(p$omega_c*100, 1)}", "%")`     |
 | Average number of days between symptom onset of a symptomatic index case and community contacts notified and quarantined | `r glue("{p$t_qcs}")`     |
-| **Natural History and Transmission**  |                           |
+| **Natural History, Transmission, and Tracing**  |                           |
 | Basic reproductive number $R_0$                       | `r glue("{p$R}")`     |
 | Percent asymptomatic     | `r glue("{round(p$alpha*100,1)}", "%")`     |
 | Relative risk of transmission for an asymptomatic individual compared to a symptomatic individual |  `r glue("{round(p$kappa, 2)}")`     |
 | Percent of all contacts that occur in the household |  `r glue("{round(p$eta*100, 1)}", "%")`     |
 | Relative risk of infection for a household contact compared to a community contact |  `r glue("{p$nu}")`     |
+| `r glue("{if (p$quarantine_time < Inf) 'Quarantine Days'}")` | `r glue("{if (p$quarantine_time < Inf) p$quarantine_time}")`
 
 *Note that Natural History assumptions can be modified in the "Advanced Options" module of the interactive application.*
 
@@ -150,7 +153,8 @@ This report provides estimates of the effectiveness of a specified contact traci
         rho_a = 1,
         offset = - 2.31,
         shape = as.numeric(p$generation),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = p$quarantine_time
       )
 
   grid <- grid %>%
@@ -218,7 +222,8 @@ This report provides estimates of the effectiveness of a specified contact traci
         rho_a = p$rho_a,
         offset = - 2.31,
         shape = as.numeric(p$generation),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = p$quarantine_time
       )
 
   grid <- grid %>%
@@ -278,7 +283,8 @@ This report provides estimates of the effectiveness of a specified contact traci
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = p$quarantine_time
     )
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)
@@ -349,7 +355,8 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = p$quarantine_time
     )
   grid <- grid %>%
        mutate(t_qha = t_qhs + diff)
@@ -406,7 +413,8 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = p$quarantine_time
     )
   grid <- grid
   
@@ -471,7 +479,8 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = - 2.31,
       shape = as.numeric(p$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = p$quarantine_time
     )
   grid <- grid %>%
           mutate(t_qca = t_qcs + diff)
