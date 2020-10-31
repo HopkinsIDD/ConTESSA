@@ -25,6 +25,7 @@ params:
   t_qhs: NA
   t_qha: NA
   t_q: NA
+  quarantine_time: NA
   mult_b: NA
   alpha_b: NA
   omega_c_b: NA
@@ -44,6 +45,7 @@ params:
   t_qha_b: NA
   t_q_b: NA
   generation_b: NA
+  quarantine_time_b: NA
 ---
 
 ```{r, include=FALSE}
@@ -90,7 +92,8 @@ params:
       t_qhs = input$t_qhs,
       t_qha = input$t_qha,
       t_q = input$t_q,
-      shape = as.numeric(input$generation)
+      shape = as.numeric(input$generation),
+      quarantine_days = input$quarantine_time
     ))
   }
   
@@ -136,12 +139,13 @@ This report provides estimates of the effectiveness of two specified contact tra
 | **Community Contact Tracing**            |                           |                           |
 | Percent of community contacts traced and quarantined | `r glue("{round(p$omega_c*100, 1)}", "%")`     |   `r ifelse(p$omega_c == pB$omega_c, glue("-"), glue("{round(pB$omega_c*100, 1)}", "%"))`  |
 | Average number of days between symptom onset of a symptomatic index case and community contacts notified and quarantined | `r glue("{p$t_qcs}")`     | `r ifelse(p$t_qc == pB$t_qc, glue("-"), glue("{pB$t_qc}"))`  |
-| **Natural History and Transmission**  |                           |                           |
-| Basic reproductive number $R_0$       | `r glue("{p$R}")`     |  --                         |
-| Percent asymptomatic     | `r glue("{round(p$alpha*100,1)}", "%")`     |  --                         |
-| Relative risk of transmission for an asymptomatic individual compared to a symptomatic individual |  `r glue("{round(p$kappa, 2)}")`     | --                         |
+| **Natural History, Transmission, and Tracing**  |                           |                           |
+| Basic reproductive number $R_0$       | `r glue("{p$R}")`     | `r ifelse(p$R == pB$R, glue("-"), glue("{pB$R}"))`                   |
+| Percent asymptomatic     | `r glue("{round(p$alpha*100,1)}", "%")`     |  `r ifelse(p$alpha == pB$alpha, glue("-"), glue("{pB$alpha}"))`                         |
+| Relative risk of transmission for an asymptomatic individual compared to a symptomatic individual |  `r glue("{round(p$kappa, 2)}")`     | `r ifelse(p$kappa == pB$kappa, glue("-"), glue("{pB$kappa}"))`                        |
 | Percent of all contacts that occur in the household |  `r glue("{round(p$eta*100, 1)}", "%")`     | `r ifelse(p$eta == pB$eta, glue("-"), glue("{round(pB$eta*100,1)}", "%"))`  |
-| Relative risk of infection for a household contact compared to a community contact |  `r glue("{p$nu}")`     | --                         |
+| Relative risk of infection for a household contact compared to a community contact |  `r glue("{p$nu}")`     |      `r ifelse(p$nu == pB$nu, glue("-"), glue("{pB$nu}"))`                    |
+| `r glue("{if (p$quarantine_time < Inf) 'Quarantine Days'}")` | `r glue("{if (p$quarantine_time < Inf) p$quarantine_time}")` | `r if(p$quarantine_time < Inf) ifelse(p$quarantine_time == pB$quarantine_time, glue("-"), glue("{pB$quarantine_time}"))`
 
 *Note that Scenario B values are only shown where they differ from Scenario A. Natural History assumptions can be modified in the "Advanced Options" module of the interactive application.*
 
@@ -194,7 +198,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         rho_a = 1,
         offset = p$offset,
         shape = as.numeric(p$generation),
-        rate = p$rate
+        rate = p$rate,
+        quarantine_days = p$quarantine_time
       )
 
   grid <- grid %>%
@@ -234,7 +239,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         rho_a = 1,
         offset = pB$offset,
         shape = as.numeric(p$generation),
-        rate = pB$rate
+        rate = pB$rate,
+        quarantine_days = pB$quarantine_time
       )
   grid_b <- grid_b %>%
       mutate(rho_a = rho_s * pB$mult)
@@ -307,7 +313,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         rho_a = p$rho_a,
         offset = p$offset,
         shape = as.numeric(p$generation),
-        rate = p$rate
+        rate = p$rate,
+        quarantine_days = p$quarantine_time
       )
 
   grid <- grid %>%
@@ -354,7 +361,8 @@ This report provides estimates of the effectiveness of two specified contact tra
         rho_a = pB$rho_a,
         offset = pB$offset,
         shape = as.numeric(p$generation),
-        rate = pB$rate
+        rate = pB$rate,
+        quarantine_days = pB$quarantine_time
       )
   grid_b <- grid_b %>%
       mutate(t_da = t_ds + diff_b)
@@ -420,7 +428,8 @@ This report provides estimates of the effectiveness of two specified contact tra
       rho_a = p$rho_a,
       offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = p$rate
+      rate = p$rate,
+      quarantine_days = p$quarantine_time
     )
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one) %>%
@@ -453,7 +462,8 @@ This report provides estimates of the effectiveness of two specified contact tra
       rho_a = pB$rho_a,
       offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = pB$rate
+      rate = pB$rate,
+      quarantine_days = pB$quarantine_time
     )
   
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one) %>%
@@ -525,7 +535,8 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = p$rate
+      rate = p$rate,
+      quarantine_days = p$quarantine_time
     )
   grid <- grid %>%
           mutate(t_qha = t_qhs + diff)
@@ -571,7 +582,8 @@ if (shiny::isRunning())
       rho_a = pB$rho_a,
       offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = pB$rate
+      rate = pB$rate,
+      quarantine_days = pB$quarantine_time
     )
   grid_b <- grid_b %>%
           mutate(t_qha = t_qhs + diff_b)
@@ -637,7 +649,8 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = p$rate
+      rate = p$rate,
+      quarantine_days = p$quarantine_time
     )
   
   d <- pmap_df(grid, tti:::get_r_effective_df_one)%>%
@@ -670,11 +683,12 @@ if (shiny::isRunning())
       rho_a = pB$rho_a,
       offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = pB$rate
+      rate = pB$rate,
+      quarantine_days = pB$quarantine_time
     )
   
   d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)%>%
-        mutate(omega_c_pct = omega_h*100)
+        mutate(omega_c_pct = omega_c*100)
 
   you_are_here_b <- tibble(
       x = pB$omega_c*100,
@@ -736,7 +750,8 @@ if (shiny::isRunning())
       rho_a = p$rho_a,
       offset = p$offset,
       shape = as.numeric(p$generation),
-      rate = p$rate
+      rate = p$rate,
+      quarantine_days = p$quarantine_time
     )
   grid <- grid %>%
           mutate(t_qca = t_qcs + diff)
@@ -781,7 +796,8 @@ if (shiny::isRunning())
       rho_a = pB$rho_a,
       offset = pB$offset,
       shape = as.numeric(p$generation),
-      rate = pB$rate
+      rate = pB$rate,
+      quarantine_days = pB$quarantine_time
     )
   grid_b <- grid_b %>%
           mutate(t_qca = t_qcs + diff_b)

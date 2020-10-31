@@ -116,7 +116,8 @@ function(request) {
       params = shinyjs.getParams(params, defaultParams);
       var el = $("#" + params.id);
       el.css("background-color", params.col);
-                    }'),
+                    }',
+      functions = "bkg_col"),
       tags$script(HTML("$('body').addClass('fixed');")),
       tabItems(
         ## Home --------------------------------------------------------------------
@@ -1190,7 +1191,19 @@ function(request) {
                                                  choices = c("Symptom onset of case", glue("Day {seq(0.1, 13.9, by = 0.1)}"), "Day 14+"), c("Day 5"),
                                                  width = "100%"
                                  ))
+            ),
+            box(width = 6,
+                h3("Quarantine Days"),
+                checkboxInput("update_quar", "I would like to examine the impact of quarantine time."),
+                conditionalPanel("input.update_quar == true",
+                numericInput("quarantine_time", "How many days are contacts told to quarantine?", value = 14),
+                conditionalPanel("input.scenario_b == true",
+                                 h3("Scenario B: Quarantine Days"),
+
+                                 numericInput("quarantine_time_b", "How many days are contacts told to quarantine?", value = 14)
+                )
             )
+          )
           )
         ),
         ## About ----

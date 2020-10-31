@@ -306,6 +306,22 @@ function(input, output, session) {
       (t_qcs_b() * (1 - alpha_b()) + t_qca_b() * alpha_b()) * (1 - eta_b())
   })
 
+  quarantine_time <- reactive({
+    if (input$update_quar) {
+      return(input$quarantine_time)
+    } else {
+      Inf
+    }
+  })
+
+  quarantine_time_b <- reactive({
+    if (input$update_quar) {
+      return(input$quarantine_time_b)
+    } else {
+      Inf
+    }
+  })
+
   ## Home page -----------------------------------------------------------------
 
 
@@ -1074,6 +1090,12 @@ function(input, output, session) {
     }
   })
 
+  observeEvent(input$quarantine_time, {
+    if (!input$scenario_b) {
+      updateNumericInput(session, "quarantine_time_b", value = input$quarantine_time)
+    }
+  })
+
   observeEvent(input$n_detect, {
     updateNumericInput(session, "n_detect_a", value = input$n_detect)
     if (!input$scenario_b) {
@@ -1611,7 +1633,8 @@ function(input, output, session) {
       t_q = t_q(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
   })
 
@@ -1676,7 +1699,8 @@ function(input, output, session) {
       t_q = t_q_b(),
       offset = - 2.31,
       shape = as.numeric(input$generation_b),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time_b()
     )
   })
 
@@ -1764,7 +1788,8 @@ function(input, output, session) {
         rho_a = 1,
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = quarantine_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -1804,7 +1829,8 @@ function(input, output, session) {
       rho_a = 1,
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
 
     grid <- grid %>%
@@ -1920,7 +1946,8 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = quarantine_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -1969,7 +1996,8 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
 
     grid <- grid %>%
@@ -2082,7 +2110,8 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = quarantine_time_b()
       )
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
@@ -2117,7 +2146,8 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
 
@@ -2231,7 +2261,8 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = quarantine_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -2279,7 +2310,8 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
 
     grid <- grid %>%
@@ -2393,7 +2425,8 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = quarantine_time_b()
       )
 
 
@@ -2430,7 +2463,8 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
     d <- d %>%
@@ -2542,7 +2576,8 @@ function(input, output, session) {
         rho_a = rho_a_b(),
         offset = - 2.31,
         shape = as.numeric(input$generation_b),
-        rate = 0.5
+        rate = 0.5,
+        quarantine_days = quarantine_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -2588,7 +2623,8 @@ function(input, output, session) {
       rho_a = rho_a(),
       offset = - 2.31,
       shape = as.numeric(input$generation),
-      rate = 0.5
+      rate = 0.5,
+      quarantine_days = quarantine_time()
     )
     grid <- grid %>%
       mutate(
@@ -2816,6 +2852,7 @@ function(input, output, session) {
           t_qhs = t_qhs(),
           t_qha = t_qha(),
           t_q = t_q(),
+          quarantine_time = quarantine_time(),
           alpha_b = alpha_b(),
           mult_b = mult_b(),
           omega_c_b = omega_c_b(),
@@ -2834,7 +2871,8 @@ function(input, output, session) {
           t_qhs_b = t_qhs_b(),
           t_qha_b = t_qha_b(),
           t_q_b = t_q_b(),
-          generation_b = as.numeric(input$generation_b)
+          generation_b = as.numeric(input$generation_b),
+          quarantine_time_b = quarantine_time_b()
         )
       } else {
         file.copy("report.Rmd", tempReport, overwrite = TRUE)
@@ -2860,7 +2898,8 @@ function(input, output, session) {
           t_qca = t_qca(),
           t_qhs = t_qhs(),
           t_qha = t_qha(),
-          t_q = t_q()
+          t_q = t_q(),
+          quarantine_time = quarantine_time()
         )
       }
 
