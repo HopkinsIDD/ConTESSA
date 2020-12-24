@@ -2756,8 +2756,8 @@ function(input, output, session) {
       "transmissibility of asymptomatic individuals (people infected who ",
       "never develop symptoms) compared to ",
       "symptomatic individuals is assumed to be ",
-      "<span class='assumption'>{input$kappa}</span>. The median generation time is assumed to be ",
-      "<span class='assumption'>{if (input$generation == '2.12') '5.4 days' else if (input$generation == '3') '6.7 days' else '8.1 days'}",
+      "<span class='assumption'>{input$kappa}</span>. The mean generation time is assumed to be ",
+      "<span class='assumption'>{if (input$generation == '0.9') '5 days' else if (input$generation == '1.65') '6.5 days' else '8 days'}",
       "</span>."
     ))
   })
