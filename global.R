@@ -15,6 +15,7 @@ library(tippy)
 library(yaml)
 library(V8)
 library(shinycssloaders)
+library(fontawesome)
 
 ## Helper functions ----
 
@@ -28,7 +29,7 @@ my_tippy <- function(text, help_file, placement = "right") {
 text_q <- function(text, help) {
   tagList(
     text,
-    icon("question-circle") %>% my_tippy(help)
+    fa("question-circle") %>% my_tippy(help)
   )
 }
 
