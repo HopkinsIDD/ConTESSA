@@ -85,8 +85,8 @@ function(input, output, session) {
       "nu_b",
       "generation",
       "generation_b",
-      "t_da",
-      "t_da_b"
+      "t_pa",
+      "t_pa_b"
     )
     if (is.null(file)) {
       return(NULL)
@@ -155,8 +155,8 @@ function(input, output, session) {
       "nu_b",
       "generation",
       "generation_b",
-      "t_da",
-      "t_da_b"
+      "t_pa",
+      "t_pa_b"
     )
     validate(
       need(
@@ -214,8 +214,8 @@ function(input, output, session) {
     updateSliderInput(session, "nu_b", value = saved_inputs[["nu_b"]])
     updateRadioButtons(session, "generation", selected = saved_inputs[["generation"]])
     updateRadioButtons(session, "generation_b", selected = saved_inputs[["generation_b"]])
-    updateSliderTextInput(session, "t_da", selected = saved_inputs[["t_da"]])
-    updateSliderTextInput(session, "t_da_b", selected = saved_inputs[["t_da_b"]])
+    updateSliderTextInput(session, "t_pa", selected = saved_inputs[["t_pa"]])
+    updateSliderTextInput(session, "t_pa_b", selected = saved_inputs[["t_pa_b"]])
   })
 
 
@@ -257,11 +257,11 @@ function(input, output, session) {
   })
 
   t_da <- reactive({
-    text_to_time(input$t_da)
+    text_to_time(input$t_pa)
   })
 
   t_da_b <- reactive({
-    text_to_time(input$t_da_b)
+    text_to_time(input$t_pa_b)
   })
 
   t_qhs <- reactive({
@@ -625,7 +625,7 @@ function(input, output, session) {
   })
 
   listen_tp <- reactive({
-    list(input$pass_isol, input$t_da)
+    list(input$pass_isol, input$t_pa)
   })
 
   changed_tp <- eventReactive(listen_tp(), {
@@ -707,11 +707,11 @@ function(input, output, session) {
   })
 
   observeEvent(input$pass_isol, {
-    updateSliderTextInput(session, "t_da", selected = input$pass_isol[2])
+    updateSliderTextInput(session, "t_pa", selected = input$pass_isol[2])
   })
 
   observeEvent(input$pass_isol_b, {
-    updateSliderTextInput(session, "t_da_b", selected = input$pass_isol_b)
+    updateSliderTextInput(session, "t_pa_b", selected = input$pass_isol_b)
   })
 
 
@@ -1084,9 +1084,9 @@ function(input, output, session) {
     }
   })
 
-  observeEvent(input$t_da, {
+  observeEvent(input$t_pa, {
     if (!input$scenario_b) {
-      updateSliderTextInput(session, "t_da_b", selected = input$t_da)
+      updateSliderTextInput(session, "t_pa_b", selected = input$t_pa)
     }
   })
 
