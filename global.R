@@ -13,7 +13,6 @@ library(viridisLite)
 library(tools)
 library(tippy)
 library(yaml)
-library(V8)
 library(shinycssloaders)
 library(fontawesome)
 
