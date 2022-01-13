@@ -328,7 +328,7 @@ function(input, output, session) {
     } else if (as.numeric(input$generation) == 1.15) {
       return(3)
     } else {
-      5
+      5.5
     }
   })
 
@@ -338,7 +338,7 @@ function(input, output, session) {
     } else if (as.numeric(input$generation_b) == 1.15) {
       return(3)
     } else {
-      5
+      5.5
     }
   })
 
@@ -1698,6 +1698,7 @@ function(input, output, session) {
       t_qhs = t_qhs(),
       t_qha = t_qha(),
       t_q = t_q(),
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -1734,6 +1735,7 @@ function(input, output, session) {
                     t_qhs = t_qhs(),
                     t_qha = t_qha(),
                     t_q = t_q(),
+                    t_incubation = t_incubation(),
                     offset = offset(),
                     shape = shape(),
                     rate = rate()
@@ -1766,6 +1768,7 @@ function(input, output, session) {
       t_qhs = t_qhs_b(),
       t_qha = t_qha_b(),
       t_q = t_q_b(),
+      t_incubation = t_incubation_b(),
       offset = offset_b(),
       shape = shape_b(),
       rate = rate_b(),
@@ -1814,6 +1817,7 @@ function(input, output, session) {
                     t_qhs = t_qhs_b(),
                     t_qha = t_qha_b(),
                     t_q = t_q_b(),
+                    t_incubation = t_incubation_b(),
                     offset = offset_b(),
                     shape = shape_b(),
                     rate = rate_b()
@@ -1857,6 +1861,7 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = seq(0, 1, 0.01),
         rho_a = 1,
+        t_incubation = t_incubation_b(),
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
@@ -1898,6 +1903,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = seq(0, 1, 0.01),
       rho_a = 1,
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -2015,6 +2021,7 @@ function(input, output, session) {
         omega_q = omega_q(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
+        t_incubation = t_incubation_b(),
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
@@ -2065,6 +2072,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -2179,6 +2187,7 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
+        t_incubation = t_incubation_b(),
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
@@ -2215,6 +2224,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -2330,6 +2340,7 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
+        t_incubation = t_incubation_b(),
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
@@ -2379,6 +2390,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -2494,6 +2506,7 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
+        t_incubation = t_incubation_b(),
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
@@ -2532,6 +2545,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -2645,6 +2659,7 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
+        t_incubation = t_incubation(),
         offset = offset(),
         shape = shape(),
         rate = rate(),
@@ -2692,6 +2707,7 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
+      t_incubation = t_incubation(),
       offset = offset(),
       shape = shape(),
       rate = rate(),
@@ -2828,7 +2844,7 @@ function(input, output, session) {
       "never develop symptoms) compared to ",
       "symptomatic individuals is assumed to be ",
       "<span class='assumption'>{input$kappa}</span>. The average generation time is assumed to be ",
-      "<span class='assumption'>{round(5.5 + offset() + shape() / rate(), 1)} days",
+      "<span class='assumption'>{round(t_incubation() + offset() + shape() / rate(), 1)} days",
       "</span>. ",
       "The average incubation period is assumed to be <span class='assumption'>{t_incubation()} days",
       "</span>."
