@@ -1714,7 +1714,9 @@ function(input, output, session) {
                     t_qhs = t_qhs(),
                     t_qha = t_qha(),
                     t_q = t_q(),
-                    shape = as.numeric(input$generation)
+                    offset = offset(),
+                    shape = shape(),
+                    rate = rate()
     )
   })
   output$r_eff <- renderUI({
@@ -1792,7 +1794,9 @@ function(input, output, session) {
                     t_qhs = t_qhs_b(),
                     t_qha = t_qha_b(),
                     t_q = t_q_b(),
-                    shape = as.numeric(input$generation_b)
+                    offset = offset_b(),
+                    shape = shape_b(),
+                    rate = rate_b()
     )
   })
 
