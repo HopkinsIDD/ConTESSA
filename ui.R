@@ -117,7 +117,7 @@ function(request) {
       var el = $("#" + params.id);
       el.css("background-color", params.col);
                     }',
-      functions = "bkg_col"),
+                    functions = "bkg_col"),
       tags$script(HTML("$('body').addClass('fixed');")),
       tabItems(
         ## Home --------------------------------------------------------------------
@@ -160,9 +160,9 @@ function(request) {
           ),
           fluidRow(
             box(width = 12, status = "primary",
-            checkboxInput("save_server",
-                          tagList("Please check this box to save your inputs temporarily in your browser. Checking this option may enhance your user experience with this application. If you don't check this box, you could lose your work if you lose internet connectivity or disconnect from the server for other reasons. This information will not be used by our team nor shared with anyone else.",
- br(), br(), "Regardless of whether you check this box, you should regularly save your inputs locally by clicking 'Save Inputs' in the Navigation pane."))
+                checkboxInput("save_server",
+                              tagList("Please check this box to save your inputs temporarily in your browser. Checking this option may enhance your user experience with this application. If you don't check this box, you could lose your work if you lose internet connectivity or disconnect from the server for other reasons. This information will not be used by our team nor shared with anyone else.",
+                                      br(), br(), "Regardless of whether you check this box, you should regularly save your inputs locally by clicking 'Save Inputs' in the Navigation pane."))
             ),
             actionButton("surv", "GET STARTED",
                          style = "background-color: #f1c400;"
@@ -674,7 +674,7 @@ function(request) {
               checkboxInput("scenario_b", "I'd like to create a 'Scenario B'"),
               conditionalPanel("input.scenario_b == true",
                                p("If you uncheck this box, you will lose your current Scenario B inputs."),
-              br()),
+                               br()),
               conditionalPanel(
                 "input.scenario_b == true & (input.update_b >= input.plots)",
                 ## Scenario A Inputs ----
@@ -1078,7 +1078,7 @@ function(request) {
               sliderInput("mult", text_q(
                 "Asymptomatic cases are x times as likely to be detected and isolated compared to symptomatic cases",
                 "help/mult.md"),
-                          min = 0, max = 1, value = 0.5
+                min = 0, max = 1, value = 0.5
               ),
               uiOutput("mult_warning"),
               conditionalPanel("input.scenario_b == true",
@@ -1145,17 +1145,44 @@ function(request) {
             ),
             box(
               radioButtons(
-                "generation",
-                "Disease generation time",
+                "generation_choice",
+                "How would you like to input disease generation time?",
                 choices = c(
-                  "Short (mean of 5 days)" = "0.9",
-                  "Medium (mean of 6.5 days)" = "1.65",
-                  "Long (mean of 8 days)" = "2.4"
+                  "I'd like to use a default" = "default",
+                  "I'd like to put my own parameters into a distribution" = "params"
                 ),
-                selected = "1.65"
+                selected = "default"
+              ),
+              conditionalPanel("input.generation_choice == 'default'",
+                               radioButtons(
+                                 "generation",
+                                 "Disease generation time",
+                                 choices = c(
+                                   "Short (mean of 5 days)" = "0.9",
+                                   "Medium (mean of 6.5 days)" = "1.65",
+                                   "Long (mean of 8 days)" = "2.4"
+                                 ),
+                                 selected = "1.65"
+                               )
+              ),
+              conditionalPanel("input.generation_choice == 'params'",
+                               "Input the following parameters for a gamma distribution describing the incubation period",
+                               numericInput("offset", "Offset", value = -2.31),
+                               numericInput("shape", "Shape", value = 1.65),
+                               numericInput("rate", "Rate", value = 0.5)
               ),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
+                               radioButtons(
+                                 "generation_choice_b",
+                                 "How would you like to input disease generation time?",
+                                 choices = c(
+                                   "I'd like to use a default" = "default",
+                                   "I'd like to put my own parameters into a distribution" = "params"
+                                 ),
+                                 selected = "default"
+                               ),
+                               conditionalPanel("input.generation_choice_b == 'default'",
                                radioButtons(
                                  "generation_b",
                                  "Disease generation time (Scenario B)",
@@ -1165,7 +1192,14 @@ function(request) {
                                    "Long (mean of 8 days)" = "2.4"
                                  ),
                                  selected = "1.65"
-                               ))
+                               )),
+                               conditionalPanel("input.generation_choice_b == 'params'",
+                                                "Input the following parameters for a gamma distribution describing the incubation period",
+                                                numericInput("offset_b", "Offset", value = -2.31),
+                                                numericInput("shape_b", "Shape", value = 1.65),
+                                                numericInput("rate_b", "Rate", value = 0.5)
+                               )
+              )
             )
           ),
           br(),
@@ -1196,14 +1230,14 @@ function(request) {
                 h3("Quarantine Days"),
                 checkboxInput("update_quar", "I would like to examine the impact of quarantine time."),
                 conditionalPanel("input.update_quar == true",
-                numericInput("quarantine_time", "How many days are contacts told to quarantine?", value = 14),
-                conditionalPanel("input.scenario_b == true",
-                                 h3("Scenario B: Quarantine Days"),
+                                 numericInput("quarantine_time", "How many days are contacts told to quarantine?", value = 14),
+                                 conditionalPanel("input.scenario_b == true",
+                                                  h3("Scenario B: Quarantine Days"),
 
-                                 numericInput("quarantine_time_b", "How many days are contacts told to quarantine?", value = 14)
+                                                  numericInput("quarantine_time_b", "How many days are contacts told to quarantine?", value = 14)
+                                 )
                 )
             )
-          )
           )
         ),
         ## About ----

@@ -11,7 +11,7 @@ function(input, output, session) {
       spin_loaders(id = 11, color = "#f1c400"),
       br(), br(), br(),
       reload_button("Click here to reload",
-        class = "success"
+                    class = "success"
       ),
       h3("Infectious Disease Dynamics | Johns Hopkins Bloomberg School of Public Health")
     ),
@@ -22,8 +22,8 @@ function(input, output, session) {
 
   observe({
     if (input$save_server == TRUE) {
-    reactiveValuesToList(input)
-    session$doBookmark()
+      reactiveValuesToList(input)
+      session$doBookmark()
     }
   })
   onBookmarked(function(url) {
@@ -222,7 +222,7 @@ function(input, output, session) {
   output$save <- downloadHandler(
     filename <- function() {
       glue("{input$file_name}.yaml")
-      },
+    },
     content <- function(file) {
       inputs <- reactiveValuesToList(input)
       input_yaml <- as.yaml(inputs)
@@ -322,13 +322,60 @@ function(input, output, session) {
     }
   })
 
+  offset <- reactive({
+    if (input$generation_choice == "params") {
+      return(input$offset)
+    } else {
+      - 2.31
+    }
+  })
+
+  offset_b <- reactive({
+    if (input$generation_choice_b == "params") {
+      return(input$offset_b)
+    } else {
+      - 2.31
+    }
+  })
+
+  shape <- reactive({
+    if (input$generation_choice == "params") {
+      return(input$shape)
+    } else {
+      as.numeric(input$generation)}
+  })
+
+  shape_b <- reactive({
+    if (input$generation_choice_b == "params") {
+      return(input$shape_b)
+    } else {
+      as.numeric(input$generation_b)
+    }
+  })
+
+  rate <- reactive({
+    if (input$generation_choice == "params") {
+      return(input$rate)
+    } else {
+      0.5
+    }
+  })
+
+  rate_b <- reactive({
+    if (input$generation_choice_b == "params") {
+      return(input$rate_b)
+    } else {
+      0.5
+    }
+  })
+
   ## Home page -----------------------------------------------------------------
 
 
   output$welcome <- renderUI({
     req(input$name)
     span(glue("Welcome, {input$name}!"),
-      style = "color: #002d72; font-size:30px; font-weight:400;"
+         style = "color: #002d72; font-size:30px; font-weight:400;"
     )
   })
 
@@ -442,14 +489,14 @@ function(input, output, session) {
   output$mult_warning <- renderUI({
     constraint <- (prop_detect_isol_passive() - (1 - alpha())) / alpha()
     if (constraint > input$mult) {
-    p(glue("Based on S2, S3, and S4 in the 'Surveillance and Isolation' tab, you ",
-         "are isolating {round(prop_detect_isol_passive() * 100)}% of infections ",
-         "who were not identified during contact tracing. Based on the advanced ",
-         "options (above), {input$alpha}% of infections are asymptomatic. Therefore, ",
-         "the minimum value possible for this slider is ",
-         "{round(constraint, 2)}, the value ",
-         "you have input is currently being ignored, the model is using {round(constraint, 2)}."),
-    style = "background-color: #f1c400;")
+      p(glue("Based on S2, S3, and S4 in the 'Surveillance and Isolation' tab, you ",
+             "are isolating {round(prop_detect_isol_passive() * 100)}% of infections ",
+             "who were not identified during contact tracing. Based on the advanced ",
+             "options (above), {input$alpha}% of infections are asymptomatic. Therefore, ",
+             "the minimum value possible for this slider is ",
+             "{round(constraint, 2)}, the value ",
+             "you have input is currently being ignored, the model is using {round(constraint, 2)}."),
+        style = "background-color: #f1c400;")
     }
   })
 
@@ -478,7 +525,7 @@ function(input, output, session) {
 
 
   prop_detect_isol_passive <- reactive({
-   (input$n_detect_quar) / (n_infect() - (input$n_isolate - input$n_detect_quar))
+    (input$n_detect_quar) / (n_infect() - (input$n_isolate - input$n_detect_quar))
   })
 
 
@@ -565,7 +612,7 @@ function(input, output, session) {
       new_isol <- "Day 14+"
     }
     updateSliderTextInput(session, "pass_isol",
-      selected = c(input$pass_test, new_isol)
+                          selected = c(input$pass_test, new_isol)
     )
   })
 
@@ -676,7 +723,7 @@ function(input, output, session) {
 
   observeEvent(input$n_isolate, {
     if (input$tabs == "passive") {
-    updateNumericInput(session, "n_detect_quar", value = input$n_isolate)
+      updateNumericInput(session, "n_detect_quar", value = input$n_isolate)
     }
   })
 
@@ -1099,35 +1146,35 @@ function(input, output, session) {
   observeEvent(input$n_detect, {
     updateNumericInput(session, "n_detect_a", value = input$n_detect)
     if (!input$scenario_b) {
-    updateNumericInput(session, "n_detect_b", value = input$n_detect)
+      updateNumericInput(session, "n_detect_b", value = input$n_detect)
     }
   })
 
   observeEvent(input$n_infect_calc, {
     updateRadioButtons(session, "n_infect_calc_a", selected = input$n_infect_calc)
     if (!input$scenario_b) {
-    updateRadioButtons(session, "n_infect_calc_b", selected = input$n_infect_calc)
+      updateRadioButtons(session, "n_infect_calc_b", selected = input$n_infect_calc)
     }
   })
 
   observeEvent(input$n_deaths, {
     updateNumericInput(session, "n_deaths_a", value = input$n_deaths)
     if (!input$scenario_b) {
-    updateNumericInput(session, "n_deaths_b", value = input$n_deaths)
+      updateNumericInput(session, "n_deaths_b", value = input$n_deaths)
     }
   })
 
   observeEvent(input$ifr, {
     updateRadioButtons(session, "ifr_a", selected = input$ifr)
     if (!input$scenario_b) {
-    updateRadioButtons(session, "ifr_b", selected = input$ifr)
+      updateRadioButtons(session, "ifr_b", selected = input$ifr)
     }
   })
 
   observeEvent(input$ifr_other, {
     updateNumericInput(session, "ifr_other_a", value = input$ifr_other)
     if (!input$scenario_b) {
-    updateNumericInput(session, "ifr_other_b", value = input$ifr_other)
+      updateNumericInput(session, "ifr_other_b", value = input$ifr_other)
     }
   })
 
@@ -1152,7 +1199,7 @@ function(input, output, session) {
   observeEvent(input$n_detect_quar, {
     updateNumericInput(session, "n_detect_quar_a", value = input$n_detect_quar)
     if (!input$scenario_b) {
-    updateNumericInput(session, "n_detect_quar_b", value = input$n_detect_quar)
+      updateNumericInput(session, "n_detect_quar_b", value = input$n_detect_quar)
     }
   })
 
@@ -1234,7 +1281,7 @@ function(input, output, session) {
   observeEvent(input$omega_c, {
     updateSliderInput(session, "omega_c_a", value = input$omega_c)
     if (!input$scenario_b) {
-    updateSliderInput(session, "omega_c_b", value = input$omega_c)
+      updateSliderInput(session, "omega_c_b", value = input$omega_c)
     }
   })
 
@@ -1348,7 +1395,7 @@ function(input, output, session) {
     } else if (input$house_quar_b == "Day 14+") {
       return(14)
     } else {
-    return(as.numeric(gsub("Day", "", input$house_quar_b)))
+      return(as.numeric(gsub("Day", "", input$house_quar_b)))
     }
   })
 
@@ -1358,7 +1405,7 @@ function(input, output, session) {
     } else if (input$comm_quar_b == "Day 14+") {
       return(14)
     } else {
-     return(as.numeric(gsub("Day", "", input$comm_quar_b)))
+      return(as.numeric(gsub("Day", "", input$comm_quar_b)))
     }
   })
 
@@ -1631,9 +1678,9 @@ function(input, output, session) {
       t_qhs = t_qhs(),
       t_qha = t_qha(),
       t_q = t_q(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
   })
@@ -1644,8 +1691,8 @@ function(input, output, session) {
 
   output$prop_q <- renderHighchart({
     hc_gauge(perc_q(),
-      title = "",
-      name = "percent of infections isolated or quarantined"
+             title = "",
+             name = "percent of infections isolated or quarantined"
     )
   })
 
@@ -1655,19 +1702,19 @@ function(input, output, session) {
 
   r_eff <- reactive({
     get_r_effective(dqc(),
-      alpha = alpha(),
-      R = input$R,
-      kappa = input$kappa,
-      eta = eta(),
-      nu = input$nu,
-      t_ds = t_ds(),
-      t_da = t_da(),
-      t_qcs = t_qcs(),
-      t_qca = t_qca(),
-      t_qhs = t_qhs(),
-      t_qha = t_qha(),
-      t_q = t_q(),
-      shape = as.numeric(input$generation)
+                    alpha = alpha(),
+                    R = input$R,
+                    kappa = input$kappa,
+                    eta = eta(),
+                    nu = input$nu,
+                    t_ds = t_ds(),
+                    t_da = t_da(),
+                    t_qcs = t_qcs(),
+                    t_qca = t_qca(),
+                    t_qhs = t_qhs(),
+                    t_qha = t_qha(),
+                    t_q = t_q(),
+                    shape = as.numeric(input$generation)
     )
   })
   output$r_eff <- renderUI({
@@ -1697,9 +1744,9 @@ function(input, output, session) {
       t_qhs = t_qhs_b(),
       t_qha = t_qha_b(),
       t_q = t_q_b(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation_b),
-      rate = 0.5,
+      offset = offset_b(),
+      shape = shape_b(),
+      rate = rate_b(),
       quarantine_days = quarantine_time_b()
     )
   })
@@ -1710,15 +1757,15 @@ function(input, output, session) {
 
   output$prop_q_b <- renderHighchart({
     hc_gauge(perc_q_b(),
-      title = "",
-      name = "percent of infections isolated or quarantined"
+             title = "",
+             name = "percent of infections isolated or quarantined"
     )
   })
 
   output$prop_q_a <- renderHighchart({
     hc_gauge(perc_q(),
-      title = "",
-      name = "percent of infections isolated or quarantined"
+             title = "",
+             name = "percent of infections isolated or quarantined"
     )
   })
 
@@ -1733,19 +1780,19 @@ function(input, output, session) {
   r_eff_b <- reactive({
     val_b()
     get_r_effective(dqc_b(),
-      alpha = alpha_b(),
-      R = input$R_b,
-      kappa = input$kappa_b,
-      eta = eta_b(),
-      nu = input$nu_b,
-      t_ds = t_ds_b(),
-      t_da = t_da_b(),
-      t_qcs = t_qcs_b(),
-      t_qca = t_qca_b(),
-      t_qhs = t_qhs_b(),
-      t_qha = t_qha_b(),
-      t_q = t_q_b(),
-      shape = as.numeric(input$generation_b)
+                    alpha = alpha_b(),
+                    R = input$R_b,
+                    kappa = input$kappa_b,
+                    eta = eta_b(),
+                    nu = input$nu_b,
+                    t_ds = t_ds_b(),
+                    t_da = t_da_b(),
+                    t_qcs = t_qcs_b(),
+                    t_qca = t_qca_b(),
+                    t_qhs = t_qhs_b(),
+                    t_qha = t_qha_b(),
+                    t_q = t_q_b(),
+                    shape = as.numeric(input$generation_b)
     )
   })
 
@@ -1786,9 +1833,9 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = seq(0, 1, 0.01),
         rho_a = 1,
-        offset = - 2.31,
-        shape = as.numeric(input$generation_b),
-        rate = 0.5,
+        offset = offset_b(),
+        shape = shape_b(),
+        rate = rate_b(),
         quarantine_days = quarantine_time_b()
       )
 
@@ -1827,9 +1874,9 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = seq(0, 1, 0.01),
       rho_a = 1,
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
 
@@ -1855,10 +1902,10 @@ function(input, output, session) {
       hc_title(text = "Impact of the percent of infections isolated who were not identified during contact tracing on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
-        type = "scatter",
-        hcaes(x = x, y = y, group = name),
-        color = "blue",
-        showInLegend = TRUE
+                    type = "scatter",
+                    hcaes(x = x, y = y, group = name),
+                    color = "blue",
+                    showInLegend = TRUE
       ) %>%
       hc_yAxis(
         title = list(
@@ -1892,21 +1939,21 @@ function(input, output, session) {
     if (input$scenario_b) {
       p <- p %>%
         hc_add_series(b_p,
-          type = "scatter",
-          hcaes(x = x, y = y, group = name),
-          color = "#5dc863",
-          showInLegend = TRUE
+                      type = "scatter",
+                      hcaes(x = x, y = y, group = name),
+                      color = "#5dc863",
+                      showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
-          type = "line",
-          hcaes(x = prop_detect, y = r_effective),
-          color = "#5dc863"
+                      type = "line",
+                      hcaes(x = prop_detect, y = r_effective),
+                      color = "#5dc863"
         )
     }
     r$value <- TRUE
     if (input$log_scale) {
-    p <- p %>%
-      hc_yAxis(type = "logarithmic")
+      p <- p %>%
+        hc_yAxis(type = "logarithmic")
     }
     p
   })
@@ -1944,9 +1991,9 @@ function(input, output, session) {
         omega_q = omega_q(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = - 2.31,
-        shape = as.numeric(input$generation_b),
-        rate = 0.5,
+        offset = offset_b(),
+        shape = shape_b(),
+        rate = rate_b(),
         quarantine_days = quarantine_time_b()
       )
 
@@ -1994,9 +2041,9 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
 
@@ -2022,10 +2069,10 @@ function(input, output, session) {
       hc_title(text = "Impact of the delay from symptom onset to isolation on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
-        type = "scatter",
-        hcaes(x = x, y = y, group = name),
-        color = "blue",
-        showInLegend = TRUE
+                    type = "scatter",
+                    hcaes(x = x, y = y, group = name),
+                    color = "blue",
+                    showInLegend = TRUE
       ) %>%
       hc_yAxis(
         title = list(
@@ -2059,15 +2106,15 @@ function(input, output, session) {
     if (input$scenario_b) {
       p <- p %>%
         hc_add_series(b_p,
-          type = "scatter",
-          hcaes(x = x, y = y, group = name),
-          color = "#5dc863",
-          showInLegend = TRUE
+                      type = "scatter",
+                      hcaes(x = x, y = y, group = name),
+                      color = "#5dc863",
+                      showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
-          type = "line",
-          hcaes(x = t, y = r_effective),
-          color = "#5dc863"
+                      type = "line",
+                      hcaes(x = t, y = r_effective),
+                      color = "#5dc863"
         )
     }
     r$value <- TRUE
@@ -2108,9 +2155,9 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = - 2.31,
-        shape = as.numeric(input$generation_b),
-        rate = 0.5,
+        offset = offset_b(),
+        shape = shape_b(),
+        rate = rate_b(),
         quarantine_days = quarantine_time_b()
       )
 
@@ -2144,9 +2191,9 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
@@ -2167,10 +2214,10 @@ function(input, output, session) {
       hc_title(text = "Impact of the percent of household contacts that are contacted and quarantined on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
-        type = "scatter",
-        hcaes(x = x, y = y, group = name),
-        color = "blue",
-        showInLegend = TRUE
+                    type = "scatter",
+                    hcaes(x = x, y = y, group = name),
+                    color = "blue",
+                    showInLegend = TRUE
       ) %>%
       hc_yAxis(
         title = list(
@@ -2204,15 +2251,15 @@ function(input, output, session) {
     if (input$scenario_b) {
       p <- p %>%
         hc_add_series(b_h,
-          type = "scatter",
-          hcaes(x = x, y = y, group = name),
-          color = "#5dc863",
-          showInLegend = TRUE
+                      type = "scatter",
+                      hcaes(x = x, y = y, group = name),
+                      color = "#5dc863",
+                      showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
-          type = "line",
-          hcaes(x = omega_h, y = r_effective),
-          color = "#5dc863"
+                      type = "line",
+                      hcaes(x = omega_h, y = r_effective),
+                      color = "#5dc863"
         )
     }
     r$value <- TRUE
@@ -2259,9 +2306,9 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = - 2.31,
-        shape = as.numeric(input$generation_b),
-        rate = 0.5,
+        offset = offset_b(),
+        shape = shape_b(),
+        rate = rate_b(),
         quarantine_days = quarantine_time_b()
       )
 
@@ -2308,9 +2355,9 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
 
@@ -2337,10 +2384,10 @@ function(input, output, session) {
       hc_title(text = "Impact of the delay in quarantine of household contacts on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
-        type = "scatter",
-        hcaes(x = x, y = y, group = name),
-        color = "blue",
-        showInLegend = TRUE
+                    type = "scatter",
+                    hcaes(x = x, y = y, group = name),
+                    color = "blue",
+                    showInLegend = TRUE
       ) %>%
       hc_yAxis(
         title = list(
@@ -2374,15 +2421,15 @@ function(input, output, session) {
     if (input$scenario_b) {
       p <- p %>%
         hc_add_series(b_h,
-          type = "scatter",
-          hcaes(x = x, y = y, group = name),
-          color = "#5dc863",
-          showInLegend = TRUE
+                      type = "scatter",
+                      hcaes(x = x, y = y, group = name),
+                      color = "#5dc863",
+                      showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
-          type = "line",
-          hcaes(x = t, y = r_effective),
-          color = "#5dc863"
+                      type = "line",
+                      hcaes(x = t, y = r_effective),
+                      color = "#5dc863"
         )
     }
     r$value <- TRUE
@@ -2423,9 +2470,9 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = - 2.31,
-        shape = as.numeric(input$generation_b),
-        rate = 0.5,
+        offset = offset_b(),
+        shape = shape_b(),
+        rate = rate_b(),
         quarantine_days = quarantine_time_b()
       )
 
@@ -2461,9 +2508,9 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
@@ -2483,10 +2530,10 @@ function(input, output, session) {
       hc_title(text = "Impact of the percent of community contacts that are contacted and quarantined on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
-        type = "scatter",
-        hcaes(x = x, y = y, group = name),
-        color = "blue",
-        showInLegend = TRUE
+                    type = "scatter",
+                    hcaes(x = x, y = y, group = name),
+                    color = "blue",
+                    showInLegend = TRUE
       ) %>%
       hc_yAxis(
         title = list(
@@ -2520,15 +2567,15 @@ function(input, output, session) {
     if (input$scenario_b) {
       p <- p %>%
         hc_add_series(b_c,
-          type = "scatter",
-          hcaes(x = x, y = y, group = name),
-          color = "#5dc863",
-          showInLegend = TRUE
+                      type = "scatter",
+                      hcaes(x = x, y = y, group = name),
+                      color = "#5dc863",
+                      showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
-          type = "line",
-          hcaes(x = omega_c, y = r_effective),
-          color = "#5dc863"
+                      type = "line",
+                      hcaes(x = omega_c, y = r_effective),
+                      color = "#5dc863"
         )
     }
     r$value <- TRUE
@@ -2574,9 +2621,9 @@ function(input, output, session) {
         omega_q = omega_q_b(),
         rho_s = rho_s_b(),
         rho_a = rho_a_b(),
-        offset = - 2.31,
-        shape = as.numeric(input$generation_b),
-        rate = 0.5,
+        offset = offset(),
+        shape = shape(),
+        rate = rate(),
         quarantine_days = quarantine_time_b()
       )
 
@@ -2621,9 +2668,9 @@ function(input, output, session) {
       omega_q = omega_q(),
       rho_s = rho_s(),
       rho_a = rho_a(),
-      offset = - 2.31,
-      shape = as.numeric(input$generation),
-      rate = 0.5,
+      offset = offset(),
+      shape = shape(),
+      rate = rate(),
       quarantine_days = quarantine_time()
     )
     grid <- grid %>%
@@ -2649,10 +2696,10 @@ function(input, output, session) {
       hc_title(text = "Impact of the delay in the quarantining of community contacts on the reproductive number") %>%
       hc_add_theme(idd_hc) %>%
       hc_add_series(you_are_here,
-        type = "scatter",
-        hcaes(x = x, y = y, group = name),
-        color = "blue",
-        showInLegend = TRUE
+                    type = "scatter",
+                    hcaes(x = x, y = y, group = name),
+                    color = "blue",
+                    showInLegend = TRUE
       ) %>%
       hc_yAxis(
         title = list(
@@ -2686,15 +2733,15 @@ function(input, output, session) {
     if (input$scenario_b) {
       p <- p %>%
         hc_add_series(b_c,
-          type = "scatter",
-          hcaes(x = x, y = y, group = name),
-          color = "#5dc863",
-          showInLegend = TRUE
+                      type = "scatter",
+                      hcaes(x = x, y = y, group = name),
+                      color = "#5dc863",
+                      showInLegend = TRUE
         ) %>%
         hc_add_series(d_b,
-          type = "line",
-          hcaes(x = t, y = r_effective),
-          color = "#5dc863"
+                      type = "line",
+                      hcaes(x = t, y = r_effective),
+                      color = "#5dc863"
         )
     }
     r$value <- TRUE
@@ -2824,92 +2871,92 @@ function(input, output, session) {
     content <- function(file) {
       print("Report Downloaded")
       withProgress(message = "Download in progress...", {
-      tempReport <- file.path(tempdir(), report$temp)
+        tempReport <- file.path(tempdir(), report$temp)
 
-      if (input$scenario_b) {
+        if (input$scenario_b) {
 
-        file.copy("report_versionB.Rmd", tempReport, overwrite = TRUE)
+          file.copy("report_versionB.Rmd", tempReport, overwrite = TRUE)
 
-        params <- list(
-          name = input$name,
-          prepared_by = input$prepared_by,
-          mult = mult(),
-          alpha = alpha(),
-          omega_c = omega_c(),
-          omega_h = omega_h(),
-          omega_q = omega_q(),
-          rho_s = rho_s(),
-          rho_a = rho_a(),
-          R = input$R,
-          kappa = input$kappa,
-          eta = eta(),
-          nu = input$nu,
-          generation = as.numeric(input$generation),
-          t_ds = t_ds(),
-          t_da = t_da(),
-          t_qcs = t_qcs(),
-          t_qca = t_qca(),
-          t_qhs = t_qhs(),
-          t_qha = t_qha(),
-          t_q = t_q(),
-          quarantine_time = quarantine_time(),
-          alpha_b = alpha_b(),
-          mult_b = mult_b(),
-          omega_c_b = omega_c_b(),
-          omega_h_b = omega_h_b(),
-          omega_q_b = omega_q_b(),
-          rho_s_b = rho_s_b(),
-          rho_a_b = rho_a_b(),
-          R_b = input$R_b,
-          kappa_b = input$kappa_b,
-          eta_b = eta_b(),
-          nu_b = input$nu_b,
-          t_ds_b = t_ds_b(),
-          t_da_b = t_da_b(),
-          t_qcs_b = t_qcs_b(),
-          t_qca_b = t_qca_b(),
-          t_qhs_b = t_qhs_b(),
-          t_qha_b = t_qha_b(),
-          t_q_b = t_q_b(),
-          generation_b = as.numeric(input$generation_b),
-          quarantine_time_b = quarantine_time_b()
+          params <- list(
+            name = input$name,
+            prepared_by = input$prepared_by,
+            mult = mult(),
+            alpha = alpha(),
+            omega_c = omega_c(),
+            omega_h = omega_h(),
+            omega_q = omega_q(),
+            rho_s = rho_s(),
+            rho_a = rho_a(),
+            R = input$R,
+            kappa = input$kappa,
+            eta = eta(),
+            nu = input$nu,
+            generation = as.numeric(input$generation),
+            t_ds = t_ds(),
+            t_da = t_da(),
+            t_qcs = t_qcs(),
+            t_qca = t_qca(),
+            t_qhs = t_qhs(),
+            t_qha = t_qha(),
+            t_q = t_q(),
+            quarantine_time = quarantine_time(),
+            alpha_b = alpha_b(),
+            mult_b = mult_b(),
+            omega_c_b = omega_c_b(),
+            omega_h_b = omega_h_b(),
+            omega_q_b = omega_q_b(),
+            rho_s_b = rho_s_b(),
+            rho_a_b = rho_a_b(),
+            R_b = input$R_b,
+            kappa_b = input$kappa_b,
+            eta_b = eta_b(),
+            nu_b = input$nu_b,
+            t_ds_b = t_ds_b(),
+            t_da_b = t_da_b(),
+            t_qcs_b = t_qcs_b(),
+            t_qca_b = t_qca_b(),
+            t_qhs_b = t_qhs_b(),
+            t_qha_b = t_qha_b(),
+            t_q_b = t_q_b(),
+            generation_b = as.numeric(input$generation_b),
+            quarantine_time_b = quarantine_time_b()
+          )
+        } else {
+          file.copy("report.Rmd", tempReport, overwrite = TRUE)
+
+          params <- list(
+            name = input$name,
+            prepared_by = input$prepared_by,
+            mult = mult(),
+            alpha = alpha(),
+            omega_c = omega_c(),
+            omega_h = omega_h(),
+            omega_q = omega_q(),
+            rho_s = rho_s(),
+            rho_a = rho_a(),
+            R = input$R,
+            kappa = input$kappa,
+            eta = eta(),
+            nu = input$nu,
+            generation = as.numeric(input$generation),
+            t_ds = t_ds(),
+            t_da = t_da(),
+            t_qcs = t_qcs(),
+            t_qca = t_qca(),
+            t_qhs = t_qhs(),
+            t_qha = t_qha(),
+            t_q = t_q(),
+            quarantine_time = quarantine_time()
+          )
+        }
+
+        rmarkdown::render(
+          tempReport,
+          output_file = file,
+          output_format = report$type,
+          params = params,
+          envir = new.env(parent = globalenv())
         )
-      } else {
-        file.copy("report.Rmd", tempReport, overwrite = TRUE)
-
-        params <- list(
-          name = input$name,
-          prepared_by = input$prepared_by,
-          mult = mult(),
-          alpha = alpha(),
-          omega_c = omega_c(),
-          omega_h = omega_h(),
-          omega_q = omega_q(),
-          rho_s = rho_s(),
-          rho_a = rho_a(),
-          R = input$R,
-          kappa = input$kappa,
-          eta = eta(),
-          nu = input$nu,
-          generation = as.numeric(input$generation),
-          t_ds = t_ds(),
-          t_da = t_da(),
-          t_qcs = t_qcs(),
-          t_qca = t_qca(),
-          t_qhs = t_qhs(),
-          t_qha = t_qha(),
-          t_q = t_q(),
-          quarantine_time = quarantine_time()
-        )
-      }
-
-      rmarkdown::render(
-        tempReport,
-        output_file = file,
-        output_format = report$type,
-        params = params,
-        envir = new.env(parent = globalenv())
-      )
       })
     }
   )
