@@ -322,6 +322,26 @@ function(input, output, session) {
     }
   })
 
+  t_incubation <- reactive({
+    if (input$generation_choice == "params") {
+      return(input$t_incubation)
+    } else if (as.numeric(input$generation) == 1.15) {
+      return(3)
+    } else {
+      5
+    }
+  })
+
+  t_incubation_b <- reactive({
+    if (input$generation_choice_b == "params") {
+      return(input$t_incubation_b)
+    } else if (as.numeric(input$generation_b) == 1.15) {
+      return(3)
+    } else {
+      5
+    }
+  })
+
   offset <- reactive({
     if (input$generation_choice == "params") {
       return(input$offset)
@@ -2807,8 +2827,10 @@ function(input, output, session) {
       "transmissibility of asymptomatic individuals (people infected who ",
       "never develop symptoms) compared to ",
       "symptomatic individuals is assumed to be ",
-      "<span class='assumption'>{input$kappa}</span>. The mean generation time is assumed to be ",
-      "<span class='assumption'>{if (input$generation == '0.9') '5 days' else if (input$generation == '1.65') '6.5 days' else '8 days'}",
+      "<span class='assumption'>{input$kappa}</span>. The average generation time is assumed to be ",
+      "<span class='assumption'>{round(5.5 + offset() + shape() / rate(), 1)} days",
+      "</span>. ",
+      "The average incubation period is assumed to be <span class='assumption'>{t_incubation()} days",
       "</span>."
     ))
   })
