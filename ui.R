@@ -1166,7 +1166,7 @@ function(request) {
                                )
               ),
               conditionalPanel("input.generation_choice == 'params'",
-                               "Input the following parameters for a gamma distribution describing the incubation period",
+                               "Input the following parameters for a gamma distribution describing the infectiouness distribution",
                                numericInput("offset", "Offset", value = -2.31),
                                numericInput("shape", "Shape", value = 1.65),
                                numericInput("rate", "Rate", value = 0.5)
@@ -1194,7 +1194,7 @@ function(request) {
                                  selected = "1.65"
                                )),
                                conditionalPanel("input.generation_choice_b == 'params'",
-                                                "Input the following parameters for a gamma distribution describing the incubation period",
+                                                "Input the following parameters for a gamma distribution describing the infectiousness distribution",
                                                 numericInput("offset_b", "Offset", value = -2.31),
                                                 numericInput("shape_b", "Shape", value = 1.65),
                                                 numericInput("rate_b", "Rate", value = 0.5)
