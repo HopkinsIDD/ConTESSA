@@ -1158,6 +1158,7 @@ function(request) {
                                  "generation",
                                  "Disease generation time",
                                  choices = c(
+                                   "Omicron-like (mean of 3 days)" = "1.15",
                                    "Short (mean of 5 days)" = "0.9",
                                    "Medium (mean of 6.5 days)" = "1.65",
                                    "Long (mean of 8 days)" = "2.4"
@@ -1166,10 +1167,12 @@ function(request) {
                                )
               ),
               conditionalPanel("input.generation_choice == 'params'",
-                               "Input the following parameters for a gamma distribution describing the infectiouness distribution",
+                               "Input the following parameters for a gamma distribution describing the infectiousness distribution",
                                numericInput("offset", "Offset", value = -2.31),
                                numericInput("shape", "Shape", value = 1.65),
-                               numericInput("rate", "Rate", value = 0.5)
+                               numericInput("rate", "Rate", value = 0.5),
+                               "Input the average duration of the incubation period (in days)",
+                               numericInput("t_incubation", "Average incubation period (days)", value = 5.5)
               ),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
@@ -1183,21 +1186,24 @@ function(request) {
                                  selected = "default"
                                ),
                                conditionalPanel("input.generation_choice_b == 'default'",
-                               radioButtons(
-                                 "generation_b",
-                                 "Disease generation time (Scenario B)",
-                                 choices = c(
-                                   "Short (mean of 5 days)" = "0.9",
-                                   "Medium (mean of 6.5 days)" = "1.65",
-                                   "Long (mean of 8 days)" = "2.4"
-                                 ),
-                                 selected = "1.65"
-                               )),
+                                                radioButtons(
+                                                  "generation_b",
+                                                  "Disease generation time (Scenario B)",
+                                                  choices = c(
+                                                    "Omicron-like (mean of 3 days)" = "1.15",
+                                                    "Short (mean of 5 days)" = "0.9",
+                                                    "Medium (mean of 6.5 days)" = "1.65",
+                                                    "Long (mean of 8 days)" = "2.4"
+                                                  ),
+                                                  selected = "1.65"
+                                                )),
                                conditionalPanel("input.generation_choice_b == 'params'",
                                                 "Input the following parameters for a gamma distribution describing the infectiousness distribution",
                                                 numericInput("offset_b", "Offset", value = -2.31),
                                                 numericInput("shape_b", "Shape", value = 1.65),
-                                                numericInput("rate_b", "Rate", value = 0.5)
+                                                numericInput("rate_b", "Rate", value = 0.5),
+                                                "Input the average duration of the incubation period (in days)",
+                                                numericInput("t_incubation_b", "Average incubation period (days)", value = 5.5)
                                )
               )
             )
