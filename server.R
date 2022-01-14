@@ -2794,6 +2794,29 @@ function(input, output, session) {
 
   ## Assumptions -------------------------------------------------------------
 
+  output$calc_generation_time <- renderUI({
+    time <- t_incubation() + offset() + shape() / rate()
+    if (time > 0) {
+      glue("Based on your inputs, the average generation time is {round(time, 1)} days.")
+    } else {
+      span(glue("Warning: Based on your inputs, you have a negative average generation time ({time} days).",
+      " Consider updating the parameters above."),
+      style = "color: red;"
+      )
+    }
+  })
+
+  output$calc_generation_time_b <- renderUI({
+    time <- t_incubation_b() + offset_b() + shape_b() / rate_b()
+    if (time > 0) {
+      glue("Based on your inputs, the average generation time is {round(time, 1)} days.")
+    } else {
+      span(glue("Warning: Based on your inputs, you have a negative average generation time ({time} days).",
+                " Consider updating the parameters above."),
+           style = "color: red;"
+      )
+    }
+  })
   output$eta <- renderUI({
     glue("The percent of contacts that are household contacts is {round(eta() * 100)}.")
   })
