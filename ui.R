@@ -1172,7 +1172,9 @@ function(request) {
                                numericInput("shape", "Shape", value = 1.65),
                                numericInput("rate", "Rate", value = 0.5),
                                "Input the average duration of the incubation period (in days)",
-                               numericInput("t_incubation", "Average incubation period (days)", value = 5.5)
+                               numericInput("t_incubation", "Average incubation period (days)", value = 5.5),
+                               uiOutput("calc_generation_time")
+
               ),
               conditionalPanel("input.scenario_b == true",
                                h3("Scenario B:"),
@@ -1203,7 +1205,9 @@ function(request) {
                                                 numericInput("shape_b", "Shape", value = 1.65),
                                                 numericInput("rate_b", "Rate", value = 0.5),
                                                 "Input the average duration of the incubation period (in days)",
-                                                numericInput("t_incubation_b", "Average incubation period (days)", value = 5.5)
+                                                numericInput("t_incubation_b", "Average incubation period (days)", value = 5.5),
+                                                uiOutput("calc_generation_time_b")
+
                                )
               )
             )
