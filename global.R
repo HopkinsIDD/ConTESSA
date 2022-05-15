@@ -15,6 +15,7 @@ library(tippy)
 library(yaml)
 library(shinycssloaders)
 library(fontawesome)
+library(markdown)
 
 ## Helper functions ----
 

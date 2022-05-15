@@ -322,6 +322,22 @@ function(input, output, session) {
     }
   })
 
+  isolation_time <- reactive({
+    if (input$update_isol) {
+      return(input$isolation_time)
+    } else {
+      Inf
+    }
+  })
+
+  isolation_time_b <- reactive({
+    if (input$update_isol) {
+      return(input$isolation_time_b)
+    } else {
+      Inf
+    }
+  })
+
   t_incubation <- reactive({
     if (input$generation_choice == "params") {
       return(input$t_incubation)
@@ -1163,6 +1179,12 @@ function(input, output, session) {
     }
   })
 
+  observeEvent(input$isolation_time, {
+    if (!input$scenario_b) {
+      updateNumericInput(session, "isolation_time_b", value = input$isolation_time)
+    }
+  })
+
   observeEvent(input$n_detect, {
     updateNumericInput(session, "n_detect_a", value = input$n_detect)
     if (!input$scenario_b) {
@@ -1702,7 +1724,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
   })
 
@@ -1738,7 +1761,8 @@ function(input, output, session) {
                     t_incubation = t_incubation(),
                     offset = offset(),
                     shape = shape(),
-                    rate = rate()
+                    rate = rate(),
+                    isolation_days = isolation_time()
     )
   })
   output$r_eff <- renderUI({
@@ -1772,7 +1796,8 @@ function(input, output, session) {
       offset = offset_b(),
       shape = shape_b(),
       rate = rate_b(),
-      quarantine_days = quarantine_time_b()
+      quarantine_days = quarantine_time_b(),
+      isolation_days = isolation_time_b()
     )
   })
 
@@ -1820,7 +1845,8 @@ function(input, output, session) {
                     t_incubation = t_incubation_b(),
                     offset = offset_b(),
                     shape = shape_b(),
-                    rate = rate_b()
+                    rate = rate_b(),
+                    isolation_days = isolation_time_b()
     )
   })
 
@@ -1865,7 +1891,8 @@ function(input, output, session) {
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
-        quarantine_days = quarantine_time_b()
+        quarantine_days = quarantine_time_b(),
+        isolation_days = isolation_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -1907,7 +1934,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
 
     grid <- grid %>%
@@ -2025,7 +2053,8 @@ function(input, output, session) {
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
-        quarantine_days = quarantine_time_b()
+        quarantine_days = quarantine_time_b(),
+        isolation_days = isolation_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -2076,7 +2105,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
 
     grid <- grid %>%
@@ -2191,7 +2221,8 @@ function(input, output, session) {
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
-        quarantine_days = quarantine_time_b()
+        quarantine_days = quarantine_time_b(),
+        isolation_days = isolation_time_b()
       )
 
       d_b <- pmap_df(grid_b, tti:::get_r_effective_df_one)
@@ -2228,7 +2259,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
 
@@ -2344,7 +2376,8 @@ function(input, output, session) {
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
-        quarantine_days = quarantine_time_b()
+        quarantine_days = quarantine_time_b(),
+        isolation_days = isolation_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -2394,7 +2427,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
 
     grid <- grid %>%
@@ -2510,7 +2544,8 @@ function(input, output, session) {
         offset = offset_b(),
         shape = shape_b(),
         rate = rate_b(),
-        quarantine_days = quarantine_time_b()
+        quarantine_days = quarantine_time_b(),
+        isolation_days = isolation_time_b()
       )
 
 
@@ -2549,7 +2584,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
     d <- pmap_df(grid, tti:::get_r_effective_df_one)
     d <- d %>%
@@ -2663,7 +2699,8 @@ function(input, output, session) {
         offset = offset(),
         shape = shape(),
         rate = rate(),
-        quarantine_days = quarantine_time_b()
+        quarantine_days = quarantine_time_b(),
+        isolation_days = isolation_time_b()
       )
 
       grid_b <- grid_b %>%
@@ -2711,7 +2748,8 @@ function(input, output, session) {
       offset = offset(),
       shape = shape(),
       rate = rate(),
-      quarantine_days = quarantine_time()
+      quarantine_days = quarantine_time(),
+      isolation_days = isolation_time()
     )
     grid <- grid %>%
       mutate(
@@ -2956,7 +2994,10 @@ function(input, output, session) {
             kappa = input$kappa,
             eta = eta(),
             nu = input$nu,
-            generation = as.numeric(input$generation),
+            shape = shape(),
+            rate = rate(),
+            offset = offset(),
+            t_incubation = t_incubation(),
             t_ds = t_ds(),
             t_da = t_da(),
             t_qcs = t_qcs(),
@@ -2965,6 +3006,7 @@ function(input, output, session) {
             t_qha = t_qha(),
             t_q = t_q(),
             quarantine_time = quarantine_time(),
+            isolation_time = isolation_time(),
             alpha_b = alpha_b(),
             mult_b = mult_b(),
             omega_c_b = omega_c_b(),
@@ -2983,8 +3025,12 @@ function(input, output, session) {
             t_qhs_b = t_qhs_b(),
             t_qha_b = t_qha_b(),
             t_q_b = t_q_b(),
-            generation_b = as.numeric(input$generation_b),
-            quarantine_time_b = quarantine_time_b()
+            shape_b = shape_b(),
+            rate_b = rate_b(),
+            offset_b = offset_b(),
+            t_incubation_b = t_incubation_b(),
+            quarantine_time_b = quarantine_time_b(),
+            isolation_time_b = isolation_time_b()
           )
         } else {
           file.copy("report.Rmd", tempReport, overwrite = TRUE)
@@ -3003,7 +3049,10 @@ function(input, output, session) {
             kappa = input$kappa,
             eta = eta(),
             nu = input$nu,
-            generation = as.numeric(input$generation),
+            shape = shape(),
+            rate = rate(),
+            offset = offset(),
+            t_incubation = t_incubation(),
             t_ds = t_ds(),
             t_da = t_da(),
             t_qcs = t_qcs(),
@@ -3011,7 +3060,8 @@ function(input, output, session) {
             t_qhs = t_qhs(),
             t_qha = t_qha(),
             t_q = t_q(),
-            quarantine_time = quarantine_time()
+            quarantine_time = quarantine_time(),
+            isolation_time = isolation_time()
           )
         }
 
